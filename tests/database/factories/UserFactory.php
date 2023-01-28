@@ -1,15 +1,23 @@
 <?php
 
-$factory->define(\TCG\Voyager\Models\User::class, function (Faker\Generator $faker) {
-    static $password;
+namespace TCG\Voyager\Tests\Database\Factories;
 
-    return [
-        'name'    => $faker->name,
-        'email'   => $faker->unique()->safeEmail,
-        'role_id' => function () {
-            return factory(\TCG\Voyager\Models\Role::class)->create()->id;
-        },
-        'password'       => $password ?: $password = bcrypt('secret'),
-        'remember_token' => Illuminate\Support\Str::random(10),
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+ 
+class UserFactory extends Factory
+{
+    protected $model = \TCG\Voyager\Models\User::class;
+
+    public function definition()
+    {
+        static $password;
+
+        return [
+            'name'           => $this->faker->name(),
+            'email'          => $this->faker->unique()->safeEmail(),
+            'password'       => $password ?: $password = bcrypt('secret'),
+            'remember_token' => Str::random(10),
+        ];
+    }
+}

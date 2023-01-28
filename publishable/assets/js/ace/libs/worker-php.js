@@ -1,1 +1,3779 @@
-!function(t){if(!(void 0!==t.window&&t.document||t.require&&t.define)){t.console||(t.console=function(){var t=Array.prototype.slice.call(arguments,0);postMessage({type:"log",data:t})},t.console.error=t.console.warn=t.console.log=t.console.trace=t.console),t.window=t,t.ace=t,t.onerror=function(t,e,n,s,r){postMessage({type:"error",data:{message:t,data:r.data,file:e,line:n,col:s,stack:r.stack}})},t.normalizeModule=function(e,n){if(-1!==n.indexOf("!")){var s=n.split("!");return t.normalizeModule(e,s[0])+"!"+t.normalizeModule(e,s[1])}if("."==n.charAt(0)){var r=e.split("/").slice(0,-1).join("/");for(n=(r?r+"/":"")+n;-1!==n.indexOf(".")&&o!=n;){var o=n;n=n.replace(/^\.\//,"").replace(/\/\.\//,"/").replace(/[^\/]+\/\.\.\//,"")}}return n},t.require=function(e,n){if(n||(n=e,e=null),!n.charAt)throw new Error("worker.js require() accepts only (parentId, id) as arguments");n=t.normalizeModule(e,n);var s=t.require.modules[n];if(s)return s.initialized||(s.initialized=!0,s.exports=s.factory().exports),s.exports;if(!t.require.tlns)return console.log("unable to load "+n);var r=function(t,e){var n=t,s="";for(;n;){var r=e[n];if("string"==typeof r)return r+s;if(r)return r.location.replace(/\/*$/,"/")+(s||r.main||r.name);if(!1===r)return"";var o=n.lastIndexOf("/");if(-1===o)break;s=n.substr(o)+s,n=n.slice(0,o)}return t}(n,t.require.tlns);return".js"!=r.slice(-3)&&(r+=".js"),t.require.id=n,t.require.modules[n]={},importScripts(r),t.require(e,n)},t.require.modules={},t.require.tlns={},t.define=function(e,n,s){if(2==arguments.length?(s=n,"string"!=typeof e&&(n=e,e=t.require.id)):1==arguments.length&&(s=e,n=[],e=t.require.id),"function"==typeof s){n.length||(n=["require","exports","module"]);var r=function(n){return t.require(e,n)};t.require.modules[e]={exports:{},factory:function(){var t=this,e=s.apply(this,n.slice(0,s.length).map((function(e){switch(e){case"require":return r;case"exports":return t.exports;case"module":return t;default:return r(e)}})));return e&&(t.exports=e),t}}}else t.require.modules[e]={exports:s,initialized:!0}},t.define.amd={},require.tlns={},t.initBaseUrls=function(t){for(var e in t)require.tlns[e]=t[e]},t.initSender=function(){var e=t.require("ace/lib/event_emitter").EventEmitter,n=t.require("ace/lib/oop"),s=function(){};return function(){n.implement(this,e),this.callback=function(t,e){postMessage({type:"call",id:e,data:t})},this.emit=function(t,e){postMessage({type:"event",name:t,data:e})}}.call(s.prototype),new s};var e=t.main=null,n=t.sender=null;t.onmessage=function(s){var r=s.data;if(r.event&&n)n._signal(r.event,r.data);else if(r.command)if(e[r.command])e[r.command].apply(e,r.args);else{if(!t[r.command])throw new Error("Unknown command:"+r.command);t[r.command].apply(t,r.args)}else if(r.init){t.initBaseUrls(r.tlns),n=t.sender=t.initSender();var o=require(r.module)[r.classname];e=t.main=new o(n)}}}}(this),ace.define("ace/lib/oop",[],(function(t,e,n){"use strict";e.inherits=function(t,e){t.super_=e,t.prototype=Object.create(e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}})},e.mixin=function(t,e){for(var n in e)t[n]=e[n];return t},e.implement=function(t,n){e.mixin(t,n)}})),ace.define("ace/range",[],(function(t,e,n){"use strict";var s=function(t,e,n,s){this.start={row:t,column:e},this.end={row:n,column:s}};(function(){this.isEqual=function(t){return this.start.row===t.start.row&&this.end.row===t.end.row&&this.start.column===t.start.column&&this.end.column===t.end.column},this.toString=function(){return"Range: ["+this.start.row+"/"+this.start.column+"] -> ["+this.end.row+"/"+this.end.column+"]"},this.contains=function(t,e){return 0==this.compare(t,e)},this.compareRange=function(t){var e,n=t.end,s=t.start;return 1==(e=this.compare(n.row,n.column))?1==(e=this.compare(s.row,s.column))?2:0==e?1:0:-1==e?-2:-1==(e=this.compare(s.row,s.column))?-1:1==e?42:0},this.comparePoint=function(t){return this.compare(t.row,t.column)},this.containsRange=function(t){return 0==this.comparePoint(t.start)&&0==this.comparePoint(t.end)},this.intersects=function(t){var e=this.compareRange(t);return-1==e||0==e||1==e},this.isEnd=function(t,e){return this.end.row==t&&this.end.column==e},this.isStart=function(t,e){return this.start.row==t&&this.start.column==e},this.setStart=function(t,e){"object"==typeof t?(this.start.column=t.column,this.start.row=t.row):(this.start.row=t,this.start.column=e)},this.setEnd=function(t,e){"object"==typeof t?(this.end.column=t.column,this.end.row=t.row):(this.end.row=t,this.end.column=e)},this.inside=function(t,e){return 0==this.compare(t,e)&&(!this.isEnd(t,e)&&!this.isStart(t,e))},this.insideStart=function(t,e){return 0==this.compare(t,e)&&!this.isEnd(t,e)},this.insideEnd=function(t,e){return 0==this.compare(t,e)&&!this.isStart(t,e)},this.compare=function(t,e){return this.isMultiLine()||t!==this.start.row?t<this.start.row?-1:t>this.end.row?1:this.start.row===t?e>=this.start.column?0:-1:this.end.row===t?e<=this.end.column?0:1:0:e<this.start.column?-1:e>this.end.column?1:0},this.compareStart=function(t,e){return this.start.row==t&&this.start.column==e?-1:this.compare(t,e)},this.compareEnd=function(t,e){return this.end.row==t&&this.end.column==e?1:this.compare(t,e)},this.compareInside=function(t,e){return this.end.row==t&&this.end.column==e?1:this.start.row==t&&this.start.column==e?-1:this.compare(t,e)},this.clipRows=function(t,e){if(this.end.row>e)var n={row:e+1,column:0};else if(this.end.row<t)n={row:t,column:0};if(this.start.row>e)var r={row:e+1,column:0};else if(this.start.row<t)r={row:t,column:0};return s.fromPoints(r||this.start,n||this.end)},this.extend=function(t,e){var n=this.compare(t,e);if(0==n)return this;if(-1==n)var r={row:t,column:e};else var o={row:t,column:e};return s.fromPoints(r||this.start,o||this.end)},this.isEmpty=function(){return this.start.row===this.end.row&&this.start.column===this.end.column},this.isMultiLine=function(){return this.start.row!==this.end.row},this.clone=function(){return s.fromPoints(this.start,this.end)},this.collapseRows=function(){return 0==this.end.column?new s(this.start.row,0,Math.max(this.start.row,this.end.row-1),0):new s(this.start.row,0,this.end.row,0)},this.toScreenRange=function(t){var e=t.documentToScreenPosition(this.start),n=t.documentToScreenPosition(this.end);return new s(e.row,e.column,n.row,n.column)},this.moveBy=function(t,e){this.start.row+=t,this.start.column+=e,this.end.row+=t,this.end.column+=e}}).call(s.prototype),s.fromPoints=function(t,e){return new s(t.row,t.column,e.row,e.column)},s.comparePoints=function(t,e){return t.row-e.row||t.column-e.column},s.comparePoints=function(t,e){return t.row-e.row||t.column-e.column},e.Range=s})),ace.define("ace/apply_delta",[],(function(t,e,n){"use strict";e.applyDelta=function(t,e,n){var s=e.start.row,r=e.start.column,o=t[s]||"";switch(e.action){case"insert":if(1===e.lines.length)t[s]=o.substring(0,r)+e.lines[0]+o.substring(r);else{var i=[s,1].concat(e.lines);t.splice.apply(t,i),t[s]=o.substring(0,r)+t[s],t[s+e.lines.length-1]+=o.substring(r)}break;case"remove":var a=e.end.column,_=e.end.row;s===_?t[s]=o.substring(0,r)+o.substring(a):t.splice(s,_-s+1,o.substring(0,r)+t[_].substring(a))}}})),ace.define("ace/lib/event_emitter",[],(function(t,e,n){"use strict";var s={},r=function(){this.propagationStopped=!0},o=function(){this.defaultPrevented=!0};s._emit=s._dispatchEvent=function(t,e){this._eventRegistry||(this._eventRegistry={}),this._defaultHandlers||(this._defaultHandlers={});var n=this._eventRegistry[t]||[],s=this._defaultHandlers[t];if(n.length||s){"object"==typeof e&&e||(e={}),e.type||(e.type=t),e.stopPropagation||(e.stopPropagation=r),e.preventDefault||(e.preventDefault=o),n=n.slice();for(var i=0;i<n.length&&(n[i](e,this),!e.propagationStopped);i++);return s&&!e.defaultPrevented?s(e,this):void 0}},s._signal=function(t,e){var n=(this._eventRegistry||{})[t];if(n){n=n.slice();for(var s=0;s<n.length;s++)n[s](e,this)}},s.once=function(t,e){var n=this;if(this.on(t,(function s(){n.off(t,s),e.apply(null,arguments)})),!e)return new Promise((function(t){e=t}))},s.setDefaultHandler=function(t,e){var n=this._defaultHandlers;if(n||(n=this._defaultHandlers={_disabled_:{}}),n[t]){var s=n[t],r=n._disabled_[t];r||(n._disabled_[t]=r=[]),r.push(s);var o=r.indexOf(e);-1!=o&&r.splice(o,1)}n[t]=e},s.removeDefaultHandler=function(t,e){var n=this._defaultHandlers;if(n){var s=n._disabled_[t];if(n[t]==e)s&&this.setDefaultHandler(t,s.pop());else if(s){var r=s.indexOf(e);-1!=r&&s.splice(r,1)}}},s.on=s.addEventListener=function(t,e,n){this._eventRegistry=this._eventRegistry||{};var s=this._eventRegistry[t];return s||(s=this._eventRegistry[t]=[]),-1==s.indexOf(e)&&s[n?"unshift":"push"](e),e},s.off=s.removeListener=s.removeEventListener=function(t,e){this._eventRegistry=this._eventRegistry||{};var n=this._eventRegistry[t];if(n){var s=n.indexOf(e);-1!==s&&n.splice(s,1)}},s.removeAllListeners=function(t){t||(this._eventRegistry=this._defaultHandlers=void 0),this._eventRegistry&&(this._eventRegistry[t]=void 0),this._defaultHandlers&&(this._defaultHandlers[t]=void 0)},e.EventEmitter=s})),ace.define("ace/anchor",[],(function(t,e,n){"use strict";var s=t("./lib/oop"),r=t("./lib/event_emitter").EventEmitter,o=e.Anchor=function(t,e,n){this.$onChange=this.onChange.bind(this),this.attach(t),void 0===n?this.setPosition(e.row,e.column):this.setPosition(e,n)};(function(){function t(t,e,n){var s=n?t.column<=e.column:t.column<e.column;return t.row<e.row||t.row==e.row&&s}s.implement(this,r),this.getPosition=function(){return this.$clipPositionToDocument(this.row,this.column)},this.getDocument=function(){return this.document},this.$insertRight=!1,this.onChange=function(e){if(!(e.start.row==e.end.row&&e.start.row!=this.row||e.start.row>this.row)){var n=function(e,n,s){var r="insert"==e.action,o=(r?1:-1)*(e.end.row-e.start.row),i=(r?1:-1)*(e.end.column-e.start.column),a=e.start,_=r?a:e.end;if(t(n,a,s))return{row:n.row,column:n.column};if(t(_,n,!s))return{row:n.row+o,column:n.column+(n.row==_.row?i:0)};return{row:a.row,column:a.column}}(e,{row:this.row,column:this.column},this.$insertRight);this.setPosition(n.row,n.column,!0)}},this.setPosition=function(t,e,n){var s;if(s=n?{row:t,column:e}:this.$clipPositionToDocument(t,e),this.row!=s.row||this.column!=s.column){var r={row:this.row,column:this.column};this.row=s.row,this.column=s.column,this._signal("change",{old:r,value:s})}},this.detach=function(){this.document.off("change",this.$onChange)},this.attach=function(t){this.document=t||this.document,this.document.on("change",this.$onChange)},this.$clipPositionToDocument=function(t,e){var n={};return t>=this.document.getLength()?(n.row=Math.max(0,this.document.getLength()-1),n.column=this.document.getLine(n.row).length):t<0?(n.row=0,n.column=0):(n.row=t,n.column=Math.min(this.document.getLine(n.row).length,Math.max(0,e))),e<0&&(n.column=0),n}}).call(o.prototype)})),ace.define("ace/document",[],(function(t,e,n){"use strict";var s=t("./lib/oop"),r=t("./apply_delta").applyDelta,o=t("./lib/event_emitter").EventEmitter,i=t("./range").Range,a=t("./anchor").Anchor,_=function(t){this.$lines=[""],0===t.length?this.$lines=[""]:Array.isArray(t)?this.insertMergedLines({row:0,column:0},t):this.insert({row:0,column:0},t)};(function(){s.implement(this,o),this.setValue=function(t){var e=this.getLength()-1;this.remove(new i(0,0,e,this.getLine(e).length)),this.insert({row:0,column:0},t)},this.getValue=function(){return this.getAllLines().join(this.getNewLineCharacter())},this.createAnchor=function(t,e){return new a(this,t,e)},0==="aaa".split(/a/).length?this.$split=function(t){return t.replace(/\r\n|\r/g,"\n").split("\n")}:this.$split=function(t){return t.split(/\r\n|\r|\n/)},this.$detectNewLine=function(t){var e=t.match(/^.*?(\r\n|\r|\n)/m);this.$autoNewLine=e?e[1]:"\n",this._signal("changeNewLineMode")},this.getNewLineCharacter=function(){switch(this.$newLineMode){case"windows":return"\r\n";case"unix":return"\n";default:return this.$autoNewLine||"\n"}},this.$autoNewLine="",this.$newLineMode="auto",this.setNewLineMode=function(t){this.$newLineMode!==t&&(this.$newLineMode=t,this._signal("changeNewLineMode"))},this.getNewLineMode=function(){return this.$newLineMode},this.isNewLine=function(t){return"\r\n"==t||"\r"==t||"\n"==t},this.getLine=function(t){return this.$lines[t]||""},this.getLines=function(t,e){return this.$lines.slice(t,e+1)},this.getAllLines=function(){return this.getLines(0,this.getLength())},this.getLength=function(){return this.$lines.length},this.getTextRange=function(t){return this.getLinesForRange(t).join(this.getNewLineCharacter())},this.getLinesForRange=function(t){var e;if(t.start.row===t.end.row)e=[this.getLine(t.start.row).substring(t.start.column,t.end.column)];else{(e=this.getLines(t.start.row,t.end.row))[0]=(e[0]||"").substring(t.start.column);var n=e.length-1;t.end.row-t.start.row==n&&(e[n]=e[n].substring(0,t.end.column))}return e},this.insertLines=function(t,e){return console.warn("Use of document.insertLines is deprecated. Use the insertFullLines method instead."),this.insertFullLines(t,e)},this.removeLines=function(t,e){return console.warn("Use of document.removeLines is deprecated. Use the removeFullLines method instead."),this.removeFullLines(t,e)},this.insertNewLine=function(t){return console.warn("Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead."),this.insertMergedLines(t,["",""])},this.insert=function(t,e){return this.getLength()<=1&&this.$detectNewLine(e),this.insertMergedLines(t,this.$split(e))},this.insertInLine=function(t,e){var n=this.clippedPos(t.row,t.column),s=this.pos(t.row,t.column+e.length);return this.applyDelta({start:n,end:s,action:"insert",lines:[e]},!0),this.clonePos(s)},this.clippedPos=function(t,e){var n=this.getLength();void 0===t?t=n:t<0?t=0:t>=n&&(t=n-1,e=void 0);var s=this.getLine(t);return null==e&&(e=s.length),{row:t,column:e=Math.min(Math.max(e,0),s.length)}},this.clonePos=function(t){return{row:t.row,column:t.column}},this.pos=function(t,e){return{row:t,column:e}},this.$clipPosition=function(t){var e=this.getLength();return t.row>=e?(t.row=Math.max(0,e-1),t.column=this.getLine(e-1).length):(t.row=Math.max(0,t.row),t.column=Math.min(Math.max(t.column,0),this.getLine(t.row).length)),t},this.insertFullLines=function(t,e){var n=0;(t=Math.min(Math.max(t,0),this.getLength()))<this.getLength()?(e=e.concat([""]),n=0):(e=[""].concat(e),t--,n=this.$lines[t].length),this.insertMergedLines({row:t,column:n},e)},this.insertMergedLines=function(t,e){var n=this.clippedPos(t.row,t.column),s={row:n.row+e.length-1,column:(1==e.length?n.column:0)+e[e.length-1].length};return this.applyDelta({start:n,end:s,action:"insert",lines:e}),this.clonePos(s)},this.remove=function(t){var e=this.clippedPos(t.start.row,t.start.column),n=this.clippedPos(t.end.row,t.end.column);return this.applyDelta({start:e,end:n,action:"remove",lines:this.getLinesForRange({start:e,end:n})}),this.clonePos(e)},this.removeInLine=function(t,e,n){var s=this.clippedPos(t,e),r=this.clippedPos(t,n);return this.applyDelta({start:s,end:r,action:"remove",lines:this.getLinesForRange({start:s,end:r})},!0),this.clonePos(s)},this.removeFullLines=function(t,e){t=Math.min(Math.max(0,t),this.getLength()-1);var n=(e=Math.min(Math.max(0,e),this.getLength()-1))==this.getLength()-1&&t>0,s=e<this.getLength()-1,r=n?t-1:t,o=n?this.getLine(r).length:0,a=s?e+1:e,_=s?0:this.getLine(a).length,T=new i(r,o,a,_),u=this.$lines.slice(t,e+1);return this.applyDelta({start:T.start,end:T.end,action:"remove",lines:this.getLinesForRange(T)}),u},this.removeNewLine=function(t){t<this.getLength()-1&&t>=0&&this.applyDelta({start:this.pos(t,this.getLine(t).length),end:this.pos(t+1,0),action:"remove",lines:["",""]})},this.replace=function(t,e){return t instanceof i||(t=i.fromPoints(t.start,t.end)),0===e.length&&t.isEmpty()?t.start:e==this.getTextRange(t)?t.end:(this.remove(t),e?this.insert(t.start,e):t.start)},this.applyDeltas=function(t){for(var e=0;e<t.length;e++)this.applyDelta(t[e])},this.revertDeltas=function(t){for(var e=t.length-1;e>=0;e--)this.revertDelta(t[e])},this.applyDelta=function(t,e){var n="insert"==t.action;(n?t.lines.length<=1&&!t.lines[0]:!i.comparePoints(t.start,t.end))||(n&&t.lines.length>2e4?this.$splitAndapplyLargeDelta(t,2e4):(r(this.$lines,t,e),this._signal("change",t)))},this.$safeApplyDelta=function(t){var e=this.$lines.length;("remove"==t.action&&t.start.row<e&&t.end.row<e||"insert"==t.action&&t.start.row<=e)&&this.applyDelta(t)},this.$splitAndapplyLargeDelta=function(t,e){for(var n=t.lines,s=n.length-e+1,r=t.start.row,o=t.start.column,i=0,a=0;i<s;i=a){a+=e-1;var _=n.slice(i,a);_.push(""),this.applyDelta({start:this.pos(r+i,o),end:this.pos(r+a,o=0),action:t.action,lines:_},!0)}t.lines=n.slice(i),t.start.row=r+i,t.start.column=o,this.applyDelta(t,!0)},this.revertDelta=function(t){this.$safeApplyDelta({start:this.clonePos(t.start),end:this.clonePos(t.end),action:"insert"==t.action?"remove":"insert",lines:t.lines.slice()})},this.indexToPosition=function(t,e){for(var n=this.$lines||this.getAllLines(),s=this.getNewLineCharacter().length,r=e||0,o=n.length;r<o;r++)if((t-=n[r].length+s)<0)return{row:r,column:t+n[r].length+s};return{row:o-1,column:t+n[o-1].length+s}},this.positionToIndex=function(t,e){for(var n=this.$lines||this.getAllLines(),s=this.getNewLineCharacter().length,r=0,o=Math.min(t.row,n.length),i=e||0;i<o;++i)r+=n[i].length+s;return r+t.column}}).call(_.prototype),e.Document=_})),ace.define("ace/lib/lang",[],(function(t,e,n){"use strict";e.last=function(t){return t[t.length-1]},e.stringReverse=function(t){return t.split("").reverse().join("")},e.stringRepeat=function(t,e){for(var n="";e>0;)1&e&&(n+=t),(e>>=1)&&(t+=t);return n};var s=/^\s\s*/,r=/\s\s*$/;e.stringTrimLeft=function(t){return t.replace(s,"")},e.stringTrimRight=function(t){return t.replace(r,"")},e.copyObject=function(t){var e={};for(var n in t)e[n]=t[n];return e},e.copyArray=function(t){for(var e=[],n=0,s=t.length;n<s;n++)t[n]&&"object"==typeof t[n]?e[n]=this.copyObject(t[n]):e[n]=t[n];return e},e.deepCopy=function t(e){if("object"!=typeof e||!e)return e;var n;if(Array.isArray(e)){n=[];for(var s=0;s<e.length;s++)n[s]=t(e[s]);return n}if("[object Object]"!==Object.prototype.toString.call(e))return e;for(var s in n={},e)n[s]=t(e[s]);return n},e.arrayToMap=function(t){for(var e={},n=0;n<t.length;n++)e[t[n]]=1;return e},e.createMap=function(t){var e=Object.create(null);for(var n in t)e[n]=t[n];return e},e.arrayRemove=function(t,e){for(var n=0;n<=t.length;n++)e===t[n]&&t.splice(n,1)},e.escapeRegExp=function(t){return t.replace(/([.*+?^${}()|[\]\/\\])/g,"\\$1")},e.escapeHTML=function(t){return(""+t).replace(/&/g,"&#38;").replace(/"/g,"&#34;").replace(/'/g,"&#39;").replace(/</g,"&#60;")},e.getMatchOffsets=function(t,e){var n=[];return t.replace(e,(function(t){n.push({offset:arguments[arguments.length-2],length:t.length})})),n},e.deferredCall=function(t){var e=null,n=function(){e=null,t()},s=function(t){return s.cancel(),e=setTimeout(n,t||0),s};return s.schedule=s,s.call=function(){return this.cancel(),t(),s},s.cancel=function(){return clearTimeout(e),e=null,s},s.isPending=function(){return e},s},e.delayedCall=function(t,e){var n=null,s=function(){n=null,t()},r=function(t){null==n&&(n=setTimeout(s,t||e))};return r.delay=function(t){n&&clearTimeout(n),n=setTimeout(s,t||e)},r.schedule=r,r.call=function(){this.cancel(),t()},r.cancel=function(){n&&clearTimeout(n),n=null},r.isPending=function(){return n},r}})),ace.define("ace/worker/mirror",[],(function(t,e,n){"use strict";t("../range").Range;var s=t("../document").Document,r=t("../lib/lang"),o=e.Mirror=function(t){this.sender=t;var e=this.doc=new s(""),n=this.deferredUpdate=r.delayedCall(this.onUpdate.bind(this)),o=this;t.on("change",(function(t){var s=t.data;if(s[0].start)e.applyDeltas(s);else for(var r=0;r<s.length;r+=2){if(Array.isArray(s[r+1]))var i={action:"insert",start:s[r],lines:s[r+1]};else i={action:"remove",start:s[r],end:s[r+1]};e.applyDelta(i,!0)}if(o.$timeout)return n.schedule(o.$timeout);o.onUpdate()}))};(function(){this.$timeout=500,this.setTimeout=function(t){this.$timeout=t},this.setValue=function(t){this.doc.setValue(t),this.deferredUpdate.schedule(this.$timeout)},this.getValue=function(t){this.sender.callback(this.doc.getValue(),t)},this.onUpdate=function(){},this.isPending=function(){return this.deferredUpdate.isPending()}}).call(o.prototype)})),ace.define("ace/mode/php/php",[],(function(t,e,n){var s={Constants:{}};s.Constants.T_INCLUDE=259,s.Constants.T_INCLUDE_ONCE=260,s.Constants.T_EVAL=318,s.Constants.T_REQUIRE=261,s.Constants.T_REQUIRE_ONCE=262,s.Constants.T_LOGICAL_OR=263,s.Constants.T_LOGICAL_XOR=264,s.Constants.T_LOGICAL_AND=265,s.Constants.T_PRINT=266,s.Constants.T_YIELD=267,s.Constants.T_DOUBLE_ARROW=268,s.Constants.T_YIELD_FROM=269,s.Constants.T_PLUS_EQUAL=270,s.Constants.T_MINUS_EQUAL=271,s.Constants.T_MUL_EQUAL=272,s.Constants.T_DIV_EQUAL=273,s.Constants.T_CONCAT_EQUAL=274,s.Constants.T_MOD_EQUAL=275,s.Constants.T_AND_EQUAL=276,s.Constants.T_OR_EQUAL=277,s.Constants.T_XOR_EQUAL=278,s.Constants.T_SL_EQUAL=279,s.Constants.T_SR_EQUAL=280,s.Constants.T_POW_EQUAL=281,s.Constants.T_COALESCE_EQUAL=282,s.Constants.T_COALESCE=283,s.Constants.T_BOOLEAN_OR=284,s.Constants.T_BOOLEAN_AND=285,s.Constants.T_IS_EQUAL=286,s.Constants.T_IS_NOT_EQUAL=287,s.Constants.T_IS_IDENTICAL=288,s.Constants.T_IS_NOT_IDENTICAL=289,s.Constants.T_SPACESHIP=290,s.Constants.T_IS_SMALLER_OR_EQUAL=291,s.Constants.T_IS_GREATER_OR_EQUAL=292,s.Constants.T_SL=293,s.Constants.T_SR=294,s.Constants.T_INSTANCEOF=295,s.Constants.T_INC=319,s.Constants.T_DEC=320,s.Constants.T_INT_CAST=296,s.Constants.T_DOUBLE_CAST=297,s.Constants.T_STRING_CAST=298,s.Constants.T_ARRAY_CAST=299,s.Constants.T_OBJECT_CAST=300,s.Constants.T_BOOL_CAST=301,s.Constants.T_UNSET_CAST=302,s.Constants.T_POW=303,s.Constants.T_NEW=304,s.Constants.T_CLONE=305,s.Constants.T_EXIT=321,s.Constants.T_IF=322,s.Constants.T_ELSEIF=307,s.Constants.T_ELSE=308,s.Constants.T_ENDIF=323,s.Constants.T_LNUMBER=309,s.Constants.T_DNUMBER=310,s.Constants.T_STRING=311,s.Constants.T_STRING_VARNAME=316,s.Constants.T_VARIABLE=312,s.Constants.T_NUM_STRING=317,s.Constants.T_INLINE_HTML=313,s.Constants.T_BAD_CHARACTER=395,s.Constants.T_ENCAPSED_AND_WHITESPACE=314,s.Constants.T_CONSTANT_ENCAPSED_STRING=315,s.Constants.T_ECHO=324,s.Constants.T_DO=325,s.Constants.T_WHILE=326,s.Constants.T_ENDWHILE=327,s.Constants.T_FOR=328,s.Constants.T_ENDFOR=329,s.Constants.T_FOREACH=330,s.Constants.T_ENDFOREACH=331,s.Constants.T_DECLARE=332,s.Constants.T_ENDDECLARE=333,s.Constants.T_AS=334,s.Constants.T_SWITCH=335,s.Constants.T_ENDSWITCH=336,s.Constants.T_CASE=337,s.Constants.T_DEFAULT=338,s.Constants.T_BREAK=339,s.Constants.T_CONTINUE=340,s.Constants.T_GOTO=341,s.Constants.T_FUNCTION=342,s.Constants.T_FN=343,s.Constants.T_CONST=344,s.Constants.T_RETURN=345,s.Constants.T_TRY=346,s.Constants.T_CATCH=347,s.Constants.T_FINALLY=348,s.Constants.T_THROW=349,s.Constants.T_USE=350,s.Constants.T_INSTEADOF=351,s.Constants.T_GLOBAL=352,s.Constants.T_STATIC=353,s.Constants.T_ABSTRACT=354,s.Constants.T_FINAL=355,s.Constants.T_PRIVATE=356,s.Constants.T_PROTECTED=357,s.Constants.T_PUBLIC=358,s.Constants.T_VAR=359,s.Constants.T_UNSET=360,s.Constants.T_ISSET=361,s.Constants.T_EMPTY=362,s.Constants.T_HALT_COMPILER=363,s.Constants.T_CLASS=364,s.Constants.T_TRAIT=365,s.Constants.T_INTERFACE=366,s.Constants.T_EXTENDS=367,s.Constants.T_IMPLEMENTS=368,s.Constants.T_OBJECT_OPERATOR=369,s.Constants.T_DOUBLE_ARROW=268,s.Constants.T_LIST=370,s.Constants.T_ARRAY=371,s.Constants.T_CALLABLE=372,s.Constants.T_CLASS_C=376,s.Constants.T_TRAIT_C=377,s.Constants.T_METHOD_C=378,s.Constants.T_FUNC_C=379,s.Constants.T_LINE=373,s.Constants.T_FILE=374,s.Constants.T_COMMENT=380,s.Constants.T_DOC_COMMENT=381,s.Constants.T_OPEN_TAG=382,s.Constants.T_OPEN_TAG_WITH_ECHO=383,s.Constants.T_CLOSE_TAG=384,s.Constants.T_WHITESPACE=385,s.Constants.T_START_HEREDOC=386,s.Constants.T_END_HEREDOC=387,s.Constants.T_DOLLAR_OPEN_CURLY_BRACES=388,s.Constants.T_CURLY_OPEN=389,s.Constants.T_PAAMAYIM_NEKUDOTAYIM=390,s.Constants.T_NAMESPACE=391,s.Constants.T_NS_C=392,s.Constants.T_DIR=375,s.Constants.T_NS_SEPARATOR=393,s.Constants.T_ELLIPSIS=394,s.Lexer=function(t,e){var n,r,o=["INITIAL"],i=0,a=function(t){o[i]=t},_=function(t){o[++i]=t},T=function(){--i},u=void 0===e||/^(on|true|1)$/i.test(e.short_open_tag),l=u?/^(\<\?php(?:\r\n|[ \t\r\n])|<\?|\<script language\=('|")?php('|")?\>)/i:/^(\<\?php(?:\r\n|[ \t\r\n])|\<script language\=('|")?php('|")?\>)/i,E=u?/[^<]*(?:<(?!\?|script language\=('|")?php('|")?\>)[^<]*)*/i:/[^<]*(?:<(?!\?=|\?php[ \t\r\n]|script language\=('|")?php('|")?\>)[^<]*)*/i,C="[a-zA-Z_\\x7f-\\uffff][a-zA-Z0-9_\\x7f-\\uffff]*",c=function(t){return"[^"+t+"\\\\${]*(?:(?:\\\\[\\s\\S]|\\$(?!\\{|[a-zA-Z_\\x7f-\\uffff])|\\{(?!\\$))[^"+t+"\\\\${]*)*"},h=[{value:s.Constants.T_VARIABLE,re:new RegExp("^\\$"+C+"(?=\\[)"),func:function(){_("VAR_OFFSET")}},{value:s.Constants.T_VARIABLE,re:new RegExp("^\\$"+C+"(?=->"+C+")"),func:function(){_("LOOKING_FOR_PROPERTY")}},{value:s.Constants.T_DOLLAR_OPEN_CURLY_BRACES,re:new RegExp("^\\$\\{(?="+C+"[\\[}])"),func:function(){_("LOOKING_FOR_VARNAME")}},{value:s.Constants.T_VARIABLE,re:new RegExp("^\\$"+C)},{value:s.Constants.T_DOLLAR_OPEN_CURLY_BRACES,re:/^\$\{/,func:function(){_("IN_SCRIPTING")}},{value:s.Constants.T_CURLY_OPEN,re:/^\{(?=\$)/,func:function(){_("IN_SCRIPTING")}}],p={INITIAL:[{value:s.Constants.T_OPEN_TAG_WITH_ECHO,re:/^<\?=/i,func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_OPEN_TAG,re:l,func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_INLINE_HTML,re:E}],IN_SCRIPTING:[{value:s.Constants.T_WHITESPACE,re:/^[ \n\r\t]+/},{value:s.Constants.T_ABSTRACT,re:/^abstract\b/i},{value:s.Constants.T_LOGICAL_AND,re:/^and\b/i},{value:s.Constants.T_ARRAY,re:/^array\b/i},{value:s.Constants.T_AS,re:/^as\b/i},{value:s.Constants.T_BREAK,re:/^break\b/i},{value:s.Constants.T_CALLABLE,re:/^callable\b/i},{value:s.Constants.T_CASE,re:/^case\b/i},{value:s.Constants.T_CATCH,re:/^catch\b/i},{value:s.Constants.T_CLASS,re:/^class\b/i},{value:s.Constants.T_CLONE,re:/^clone\b/i},{value:s.Constants.T_CONST,re:/^const\b/i},{value:s.Constants.T_CONTINUE,re:/^continue\b/i},{value:s.Constants.T_DECLARE,re:/^declare\b/i},{value:s.Constants.T_DEFAULT,re:/^default\b/i},{value:s.Constants.T_DO,re:/^do\b/i},{value:s.Constants.T_ECHO,re:/^echo\b/i},{value:s.Constants.T_ELSE,re:/^else\b/i},{value:s.Constants.T_ELSEIF,re:/^elseif\b/i},{value:s.Constants.T_ENDDECLARE,re:/^enddeclare\b/i},{value:s.Constants.T_ENDFOR,re:/^endfor\b/i},{value:s.Constants.T_ENDFOREACH,re:/^endforeach\b/i},{value:s.Constants.T_ENDIF,re:/^endif\b/i},{value:s.Constants.T_ENDSWITCH,re:/^endswitch\b/i},{value:s.Constants.T_ENDWHILE,re:/^endwhile\b/i},{value:s.Constants.T_EMPTY,re:/^empty\b/i},{value:s.Constants.T_EVAL,re:/^eval\b/i},{value:s.Constants.T_EXIT,re:/^(?:exit|die)\b/i},{value:s.Constants.T_EXTENDS,re:/^extends\b/i},{value:s.Constants.T_FINAL,re:/^final\b/i},{value:s.Constants.T_FINALLY,re:/^finally\b/i},{value:s.Constants.T_FN,re:/^fn\b/i},{value:s.Constants.T_FOR,re:/^for\b/i},{value:s.Constants.T_FOREACH,re:/^foreach\b/i},{value:s.Constants.T_FUNCTION,re:/^function\b/i},{value:s.Constants.T_GLOBAL,re:/^global\b/i},{value:s.Constants.T_GOTO,re:/^goto\b/i},{value:s.Constants.T_IF,re:/^if\b/i},{value:s.Constants.T_IMPLEMENTS,re:/^implements\b/i},{value:s.Constants.T_INCLUDE,re:/^include\b/i},{value:s.Constants.T_INCLUDE_ONCE,re:/^include_once\b/i},{value:s.Constants.T_INSTANCEOF,re:/^instanceof\b/i},{value:s.Constants.T_INSTEADOF,re:/^insteadof\b/i},{value:s.Constants.T_INTERFACE,re:/^interface\b/i},{value:s.Constants.T_ISSET,re:/^isset\b/i},{value:s.Constants.T_LIST,re:/^list\b/i},{value:s.Constants.T_NAMESPACE,re:/^namespace\b/i},{value:s.Constants.T_NEW,re:/^new\b/i},{value:s.Constants.T_LOGICAL_OR,re:/^or\b/i},{value:s.Constants.T_PRINT,re:/^print\b/i},{value:s.Constants.T_PRIVATE,re:/^private\b/i},{value:s.Constants.T_PROTECTED,re:/^protected\b/i},{value:s.Constants.T_PUBLIC,re:/^public\b/i},{value:s.Constants.T_REQUIRE,re:/^require\b/i},{value:s.Constants.T_REQUIRE_ONCE,re:/^require_once\b/i},{value:s.Constants.T_STATIC,re:/^static\b/i},{value:s.Constants.T_SWITCH,re:/^switch\b/i},{value:s.Constants.T_THROW,re:/^throw\b/i},{value:s.Constants.T_TRAIT,re:/^trait\b/i},{value:s.Constants.T_TRY,re:/^try\b/i},{value:s.Constants.T_UNSET,re:/^unset\b/i},{value:s.Constants.T_USE,re:/^use\b/i},{value:s.Constants.T_VAR,re:/^var\b/i},{value:s.Constants.T_WHILE,re:/^while\b/i},{value:s.Constants.T_LOGICAL_XOR,re:/^xor\b/i},{value:s.Constants.T_YIELD_FROM,re:/^yield\s+from\b/i},{value:s.Constants.T_YIELD,re:/^yield\b/i},{value:s.Constants.T_RETURN,re:/^return\b/i},{value:s.Constants.T_METHOD_C,re:/^__METHOD__\b/i},{value:s.Constants.T_LINE,re:/^__LINE__\b/i},{value:s.Constants.T_FILE,re:/^__FILE__\b/i},{value:s.Constants.T_FUNC_C,re:/^__FUNCTION__\b/i},{value:s.Constants.T_NS_C,re:/^__NAMESPACE__\b/i},{value:s.Constants.T_TRAIT_C,re:/^__TRAIT__\b/i},{value:s.Constants.T_DIR,re:/^__DIR__\b/i},{value:s.Constants.T_CLASS_C,re:/^__CLASS__\b/i},{value:s.Constants.T_AND_EQUAL,re:/^&=/},{value:s.Constants.T_ARRAY_CAST,re:/^\([ \t]*array[ \t]*\)/i},{value:s.Constants.T_BOOL_CAST,re:/^\([ \t]*(?:bool|boolean)[ \t]*\)/i},{value:s.Constants.T_DOUBLE_CAST,re:/^\([ \t]*(?:real|float|double)[ \t]*\)/i},{value:s.Constants.T_INT_CAST,re:/^\([ \t]*(?:int|integer)[ \t]*\)/i},{value:s.Constants.T_OBJECT_CAST,re:/^\([ \t]*object[ \t]*\)/i},{value:s.Constants.T_STRING_CAST,re:/^\([ \t]*(?:binary|string)[ \t]*\)/i},{value:s.Constants.T_UNSET_CAST,re:/^\([ \t]*unset[ \t]*\)/i},{value:s.Constants.T_BOOLEAN_AND,re:/^&&/},{value:s.Constants.T_BOOLEAN_OR,re:/^\|\|/},{value:s.Constants.T_CLOSE_TAG,re:/^(?:\?>|<\/script>)(\r\n|\r|\n)?/i,func:function(){a("INITIAL")}},{value:s.Constants.T_DOUBLE_ARROW,re:/^=>/},{value:s.Constants.T_PAAMAYIM_NEKUDOTAYIM,re:/^::/},{value:s.Constants.T_INC,re:/^\+\+/},{value:s.Constants.T_DEC,re:/^--/},{value:s.Constants.T_CONCAT_EQUAL,re:/^\.=/},{value:s.Constants.T_DIV_EQUAL,re:/^\/=/},{value:s.Constants.T_XOR_EQUAL,re:/^\^=/},{value:s.Constants.T_MUL_EQUAL,re:/^\*=/},{value:s.Constants.T_MOD_EQUAL,re:/^%=/},{value:s.Constants.T_SL_EQUAL,re:/^<<=/},{value:s.Constants.T_START_HEREDOC,re:new RegExp("^[bB]?<<<[ \\t]*'("+C+")'(?:\\r\\n|\\r|\\n)"),func:function(t){n=t[1],a("NOWDOC")}},{value:s.Constants.T_START_HEREDOC,re:new RegExp('^[bB]?<<<[ \\t]*("?)('+C+")\\1(?:\\r\\n|\\r|\\n)"),func:function(t){n=t[2],r=!0,a("HEREDOC")}},{value:s.Constants.T_SL,re:/^<</},{value:s.Constants.T_SPACESHIP,re:/^<=>/},{value:s.Constants.T_IS_SMALLER_OR_EQUAL,re:/^<=/},{value:s.Constants.T_SR_EQUAL,re:/^>>=/},{value:s.Constants.T_SR,re:/^>>/},{value:s.Constants.T_IS_GREATER_OR_EQUAL,re:/^>=/},{value:s.Constants.T_OR_EQUAL,re:/^\|=/},{value:s.Constants.T_PLUS_EQUAL,re:/^\+=/},{value:s.Constants.T_MINUS_EQUAL,re:/^-=/},{value:s.Constants.T_OBJECT_OPERATOR,re:new RegExp("^->(?=[ \n\r\t]*"+C+")"),func:function(){_("LOOKING_FOR_PROPERTY")}},{value:s.Constants.T_OBJECT_OPERATOR,re:/^->/i},{value:s.Constants.T_ELLIPSIS,re:/^\.\.\./},{value:s.Constants.T_POW_EQUAL,re:/^\*\*=/},{value:s.Constants.T_POW,re:/^\*\*/},{value:s.Constants.T_COALESCE,re:/^\?\?/},{value:s.Constants.T_COMMENT,re:/^\/\*([\S\s]*?)(?:\*\/|$)/},{value:s.Constants.T_COMMENT,re:/^(?:\/\/|#)[^\r\n?]*(?:\?(?!>)[^\r\n?]*)*(?:\r\n|\r|\n)?/},{value:s.Constants.T_IS_IDENTICAL,re:/^===/},{value:s.Constants.T_IS_EQUAL,re:/^==/},{value:s.Constants.T_IS_NOT_IDENTICAL,re:/^!==/},{value:s.Constants.T_IS_NOT_EQUAL,re:/^(!=|<>)/},{value:s.Constants.T_DNUMBER,re:/^(?:[0-9]+\.[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?/},{value:s.Constants.T_DNUMBER,re:/^[0-9]+[eE][+-]?[0-9]+/},{value:s.Constants.T_LNUMBER,re:/^(?:0x[0-9A-F]+|0b[01]+|[0-9]+)/i},{value:s.Constants.T_VARIABLE,re:new RegExp("^\\$"+C)},{value:s.Constants.T_CONSTANT_ENCAPSED_STRING,re:/^[bB]?'[^'\\]*(?:\\[\s\S][^'\\]*)*'/},{value:s.Constants.T_CONSTANT_ENCAPSED_STRING,re:new RegExp('^[bB]?"'+c('"')+'"')},{value:-1,re:/^[bB]?"/,func:function(){a("DOUBLE_QUOTES")}},{value:-1,re:/^`/,func:function(){a("BACKTICKS")}},{value:s.Constants.T_NS_SEPARATOR,re:/^\\/},{value:s.Constants.T_STRING,re:/^[a-zA-Z_\x7f-\uffff][a-zA-Z0-9_\x7f-\uffff]*/},{value:-1,re:/^\{/,func:function(){_("IN_SCRIPTING")}},{value:-1,re:/^\}/,func:function(){i>0&&T()}},{value:-1,re:/^[\[\];:?()!.,><=+-/*|&@^%"'$~]/}],DOUBLE_QUOTES:h.concat([{value:-1,re:/^"/,func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_ENCAPSED_AND_WHITESPACE,re:new RegExp("^"+c('"'))}]),BACKTICKS:h.concat([{value:-1,re:/^`/,func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_ENCAPSED_AND_WHITESPACE,re:new RegExp("^"+c("`"))}]),VAR_OFFSET:[{value:-1,re:/^\]/,func:function(){T()}},{value:s.Constants.T_NUM_STRING,re:/^(?:0x[0-9A-F]+|0b[01]+|[0-9]+)/i},{value:s.Constants.T_VARIABLE,re:new RegExp("^\\$"+C)},{value:s.Constants.T_STRING,re:new RegExp("^"+C)},{value:-1,re:/^[;:,.\[()|^&+-/*=%!~$<>?@{}"`]/}],LOOKING_FOR_PROPERTY:[{value:s.Constants.T_OBJECT_OPERATOR,re:/^->/},{value:s.Constants.T_STRING,re:new RegExp("^"+C),func:function(){T()}},{value:s.Constants.T_WHITESPACE,re:/^[ \n\r\t]+/}],LOOKING_FOR_VARNAME:[{value:s.Constants.T_STRING_VARNAME,re:new RegExp("^"+C+"(?=[\\[}])"),func:function(){a("IN_SCRIPTING")}}],NOWDOC:[{value:s.Constants.T_END_HEREDOC,matchFunc:function(t){var e=new RegExp("^"+n+"(?=;?[\\r\\n])");return t.match(e)?[t.substr(0,n.length)]:null},func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_ENCAPSED_AND_WHITESPACE,matchFunc:function(t){var e=new RegExp("[\\r\\n]"+n+"(?=;?[\\r\\n])").exec(t),s=e?e.index+1:t.length;return[t.substring(0,s)]}}],HEREDOC:h.concat([{value:s.Constants.T_END_HEREDOC,matchFunc:function(t){if(!r)return null;var e=new RegExp("^"+n+"(?=;?[\\r\\n])");return t.match(e)?[t.substr(0,n.length)]:null},func:function(){a("IN_SCRIPTING")}},{value:s.Constants.T_ENCAPSED_AND_WHITESPACE,matchFunc:function(t){var e=t.length,s=new RegExp("^"+c("")),o=s.exec(t);return o&&(e=o[0].length),(o=(s=new RegExp("([\\r\\n])"+n+"(?=;?[\\r\\n])")).exec(t.substring(0,e)))?(e=o.index+1,r=!0):r=!1,0==e?null:[t.substring(0,e)]}}])},A=[],L=1,N=!0;if(null===t)return A;for("string"!=typeof t&&(t=t.toString());t.length>0&&!0===N;){N=p[o[i]].some((function(e){var n=void 0!==e.matchFunc?e.matchFunc(t):t.match(e.re);if(null!==n){if(0==n[0].length)throw new Error("empty match");if(void 0!==e.func&&e.func(n),-1===e.value)A.push(n[0]);else{var s=n[0];A.push([parseInt(e.value,10),s,L]),L+=s.split("\n").length-1}return t=t.substring(n[0].length),!0}return!1}))}return A},s.Parser=function(t,e){var n=this.yybase,r=this.yydefault,o=this.yycheck,i=this.yyaction,a=this.yylen,_=this.yygbase,T=this.yygcheck,u=this.yyp,l=this.yygoto,E=this.yylhs,C=this.terminals,c=this.translate,h=this.yygdefault;this.pos=-1,this.line=1,this.tokenMap=this.createTokenMap(),this.dropTokens={},this.dropTokens[s.Constants.T_WHITESPACE]=1,this.dropTokens[s.Constants.T_OPEN_TAG]=1;var p=[];t.forEach((function(t,e){"object"==typeof t&&t[0]===s.Constants.T_OPEN_TAG_WITH_ECHO?(p.push([s.Constants.T_OPEN_TAG,t[1],t[2]]),p.push([s.Constants.T_ECHO,t[1],t[2]])):p.push(t)})),this.tokens=p;var A=this.TOKEN_NONE;this.startAttributes={startLine:1},this.endAttributes={};var L,N,f=[this.startAttributes],R=0,O=[R];for(this.yyastk=[],this.stackPos=0;;){if(0===n[R])L=r[R];else if(A===this.TOKEN_NONE&&(A=(N=this.getNextToken())>=0&&N<this.TOKEN_MAP_SIZE?c[N]:this.TOKEN_INVALID,f[this.stackPos]=this.startAttributes),((L=n[R]+A)>=0&&L<this.YYLAST&&o[L]===A||R<this.YY2TBLSTATE&&(L=n[R+this.YYNLSTATES]+A)>=0&&L<this.YYLAST&&o[L]===A)&&(L=i[L])!==this.YYDEFAULT)if(L>0){if(++this.stackPos,O[this.stackPos]=R=L,this.yyastk[this.stackPos]=this.tokenValue,f[this.stackPos]=this.startAttributes,A=this.TOKEN_NONE,L<this.YYNLSTATES)continue;L-=this.YYNLSTATES}else L=-L;else L=r[R];for(;;){if(0===L)return this.yyval;if(L===this.YYUNEXPECTED){if(!0!==e){for(var I=[],S=0;S<this.TOKEN_MAP_SIZE;++S)if(((L=n[R]+S)>=0&&L<this.YYLAST&&o[L]==S||R<this.YY2TBLSTATE&&(L=n[R+this.YYNLSTATES]+S)&&L<this.YYLAST&&o[L]==S)&&i[L]!=this.YYUNEXPECTED){if(4==I.length){I=[];break}I.push(this.terminals[S])}var P="";throw I.length&&(P=", expecting "+I.join(" or ")),new s.ParseError("syntax error, unexpected "+C[A]+P,this.startAttributes.startLine)}return this.startAttributes.startLine}for(var v in this.endAttributes)f[this.stackPos-a[L]][v]=this.endAttributes[v];if(this.stackPos-=a[L],R=(u=_[L=E[L]]+O[this.stackPos])>=0&&u<this.YYGLAST&&T[u]===L?l[u]:h[L],++this.stackPos,O[this.stackPos]=R,this.yyastk[this.stackPos]=this.yyval,f[this.stackPos]=this.startAttributes,R<this.YYNLSTATES)break;L=R-this.YYNLSTATES}}},s.ParseError=function(t,e){this.message=t,this.line=e},s.Parser.prototype.getNextToken=function(){var t,e;for(this.startAttributes={},this.endAttributes={};void 0!==this.tokens[++this.pos];){if("string"==typeof(t=this.tokens[this.pos]))return this.startAttributes.startLine=this.line,this.endAttributes.endLine=this.line,'b"'===t?(this.tokenValue='b"','"'.charCodeAt(0)):(this.tokenValue=t,t.charCodeAt(0));if(this.line+=null===(e=t[1].match(/\n/g))?0:e.length,s.Constants.T_COMMENT===t[0])Array.isArray(this.startAttributes.comments)||(this.startAttributes.comments=[]),this.startAttributes.comments.push({type:"comment",comment:t[1],line:t[2]});else if(s.Constants.T_DOC_COMMENT===t[0])this.startAttributes.comments.push(new PHPParser_Comment_Doc(t[1],t[2]));else if(void 0===this.dropTokens[t[0]])return this.tokenValue=t[1],this.startAttributes.startLine=t[2],this.endAttributes.endLine=this.line,this.tokenMap[t[0]]}return this.startAttributes.startLine=this.line,0},s.Parser.prototype.tokenName=function(t){var e="UNKNOWN";return["T_INCLUDE","T_INCLUDE_ONCE","T_EVAL","T_REQUIRE","T_REQUIRE_ONCE","T_LOGICAL_OR","T_LOGICAL_XOR","T_LOGICAL_AND","T_PRINT","T_YIELD","T_DOUBLE_ARROW","T_YIELD_FROM","T_PLUS_EQUAL","T_MINUS_EQUAL","T_MUL_EQUAL","T_DIV_EQUAL","T_CONCAT_EQUAL","T_MOD_EQUAL","T_AND_EQUAL","T_OR_EQUAL","T_XOR_EQUAL","T_SL_EQUAL","T_SR_EQUAL","T_POW_EQUAL","T_COALESCE_EQUAL","T_COALESCE","T_BOOLEAN_OR","T_BOOLEAN_AND","T_IS_EQUAL","T_IS_NOT_EQUAL","T_IS_IDENTICAL","T_IS_NOT_IDENTICAL","T_SPACESHIP","T_IS_SMALLER_OR_EQUAL","T_IS_GREATER_OR_EQUAL","T_SL","T_SR","T_INSTANCEOF","T_INC","T_DEC","T_INT_CAST","T_DOUBLE_CAST","T_STRING_CAST","T_ARRAY_CAST","T_OBJECT_CAST","T_BOOL_CAST","T_UNSET_CAST","T_POW","T_NEW","T_CLONE","T_EXIT","T_IF","T_ELSEIF","T_ELSE","T_ENDIF","T_LNUMBER","T_DNUMBER","T_STRING","T_STRING_VARNAME","T_VARIABLE","T_NUM_STRING","T_INLINE_HTML","T_CHARACTER","T_BAD_CHARACTER","T_ENCAPSED_AND_WHITESPACE","T_CONSTANT_ENCAPSED_STRING","T_ECHO","T_DO","T_WHILE","T_ENDWHILE","T_FOR","T_ENDFOR","T_FOREACH","T_ENDFOREACH","T_DECLARE","T_ENDDECLARE","T_AS","T_SWITCH","T_ENDSWITCH","T_CASE","T_DEFAULT","T_BREAK","T_CONTINUE","T_GOTO","T_FUNCTION","T_FN","T_CONST","T_RETURN","T_TRY","T_CATCH","T_FINALLY","T_THROW","T_USE","T_INSTEADOF","T_GLOBAL","T_STATIC","T_ABSTRACT","T_FINAL","T_PRIVATE","T_PROTECTED","T_PUBLIC","T_VAR","T_UNSET","T_ISSET","T_EMPTY","T_HALT_COMPILER","T_CLASS","T_TRAIT","T_INTERFACE","T_EXTENDS","T_IMPLEMENTS","T_OBJECT_OPERATOR","T_DOUBLE_ARROW","T_LIST","T_ARRAY","T_CALLABLE","T_CLASS_C","T_TRAIT_C","T_METHOD_C","T_FUNC_C","T_LINE","T_FILE","T_COMMENT","T_DOC_COMMENT","T_OPEN_TAG","T_OPEN_TAG_WITH_ECHO","T_CLOSE_TAG","T_WHITESPACE","T_START_HEREDOC","T_END_HEREDOC","T_DOLLAR_OPEN_CURLY_BRACES","T_CURLY_OPEN","T_PAAMAYIM_NEKUDOTAYIM","T_NAMESPACE","T_NS_C","T_DIR","T_NS_SEPARATOR","T_ELLIPSIS"].some((function(n){return s.Constants[n]===t&&(e=n,!0)})),e},s.Parser.prototype.createTokenMap=function(){var t,e,n={};for(e=256;e<1e3;++e)s.Constants.T_OPEN_TAG_WITH_ECHO===e?n[e]=s.Constants.T_ECHO:s.Constants.T_CLOSE_TAG===e?n[e]=59:"UNKNOWN"!==(t=this.tokenName(e))&&(n[e]=this[t]);return n},s.Parser.prototype.TOKEN_NONE=-1,s.Parser.prototype.TOKEN_INVALID=159,s.Parser.prototype.TOKEN_MAP_SIZE=394,s.Parser.prototype.YYLAST=964,s.Parser.prototype.YY2TBLSTATE=348,s.Parser.prototype.YYGLAST=508,s.Parser.prototype.YYNLSTATES=602,s.Parser.prototype.YYUNEXPECTED=32767,s.Parser.prototype.YYDEFAULT=-32766,s.Parser.prototype.YYERRTOK=256,s.Parser.prototype.T_INCLUDE=257,s.Parser.prototype.T_INCLUDE_ONCE=258,s.Parser.prototype.T_EVAL=259,s.Parser.prototype.T_REQUIRE=260,s.Parser.prototype.T_REQUIRE_ONCE=261,s.Parser.prototype.T_LOGICAL_OR=262,s.Parser.prototype.T_LOGICAL_XOR=263,s.Parser.prototype.T_LOGICAL_AND=264,s.Parser.prototype.T_PRINT=265,s.Parser.prototype.T_YIELD=266,s.Parser.prototype.T_DOUBLE_ARROW=267,s.Parser.prototype.T_YIELD_FROM=268,s.Parser.prototype.T_PLUS_EQUAL=269,s.Parser.prototype.T_MINUS_EQUAL=270,s.Parser.prototype.T_MUL_EQUAL=271,s.Parser.prototype.T_DIV_EQUAL=272,s.Parser.prototype.T_CONCAT_EQUAL=273,s.Parser.prototype.T_MOD_EQUAL=274,s.Parser.prototype.T_AND_EQUAL=275,s.Parser.prototype.T_OR_EQUAL=276,s.Parser.prototype.T_XOR_EQUAL=277,s.Parser.prototype.T_SL_EQUAL=278,s.Parser.prototype.T_SR_EQUAL=279,s.Parser.prototype.T_POW_EQUAL=280,s.Parser.prototype.T_COALESCE_EQUAL=281,s.Parser.prototype.T_COALESCE=282,s.Parser.prototype.T_BOOLEAN_OR=283,s.Parser.prototype.T_BOOLEAN_AND=284,s.Parser.prototype.T_IS_EQUAL=285,s.Parser.prototype.T_IS_NOT_EQUAL=286,s.Parser.prototype.T_IS_IDENTICAL=287,s.Parser.prototype.T_IS_NOT_IDENTICAL=288,s.Parser.prototype.T_SPACESHIP=289,s.Parser.prototype.T_IS_SMALLER_OR_EQUAL=290,s.Parser.prototype.T_IS_GREATER_OR_EQUAL=291,s.Parser.prototype.T_SL=292,s.Parser.prototype.T_SR=293,s.Parser.prototype.T_INSTANCEOF=294,s.Parser.prototype.T_INC=295,s.Parser.prototype.T_DEC=296,s.Parser.prototype.T_INT_CAST=297,s.Parser.prototype.T_DOUBLE_CAST=298,s.Parser.prototype.T_STRING_CAST=299,s.Parser.prototype.T_ARRAY_CAST=300,s.Parser.prototype.T_OBJECT_CAST=301,s.Parser.prototype.T_BOOL_CAST=302,s.Parser.prototype.T_UNSET_CAST=303,s.Parser.prototype.T_POW=304,s.Parser.prototype.T_NEW=305,s.Parser.prototype.T_CLONE=306,s.Parser.prototype.T_EXIT=307,s.Parser.prototype.T_IF=308,s.Parser.prototype.T_ELSEIF=309,s.Parser.prototype.T_ELSE=310,s.Parser.prototype.T_ENDIF=311,s.Parser.prototype.T_LNUMBER=312,s.Parser.prototype.T_DNUMBER=313,s.Parser.prototype.T_STRING=314,s.Parser.prototype.T_STRING_VARNAME=315,s.Parser.prototype.T_VARIABLE=316,s.Parser.prototype.T_NUM_STRING=317,s.Parser.prototype.T_INLINE_HTML=318,s.Parser.prototype.T_CHARACTER=319,s.Parser.prototype.T_BAD_CHARACTER=320,s.Parser.prototype.T_ENCAPSED_AND_WHITESPACE=321,s.Parser.prototype.T_CONSTANT_ENCAPSED_STRING=322,s.Parser.prototype.T_ECHO=323,s.Parser.prototype.T_DO=324,s.Parser.prototype.T_WHILE=325,s.Parser.prototype.T_ENDWHILE=326,s.Parser.prototype.T_FOR=327,s.Parser.prototype.T_ENDFOR=328,s.Parser.prototype.T_FOREACH=329,s.Parser.prototype.T_ENDFOREACH=330,s.Parser.prototype.T_DECLARE=331,s.Parser.prototype.T_ENDDECLARE=332,s.Parser.prototype.T_AS=333,s.Parser.prototype.T_SWITCH=334,s.Parser.prototype.T_ENDSWITCH=335,s.Parser.prototype.T_CASE=336,s.Parser.prototype.T_DEFAULT=337,s.Parser.prototype.T_BREAK=338,s.Parser.prototype.T_CONTINUE=339,s.Parser.prototype.T_GOTO=340,s.Parser.prototype.T_FUNCTION=341,s.Parser.prototype.T_FN=342,s.Parser.prototype.T_CONST=343,s.Parser.prototype.T_RETURN=344,s.Parser.prototype.T_TRY=345,s.Parser.prototype.T_CATCH=346,s.Parser.prototype.T_FINALLY=347,s.Parser.prototype.T_THROW=348,s.Parser.prototype.T_USE=349,s.Parser.prototype.T_INSTEADOF=350,s.Parser.prototype.T_GLOBAL=351,s.Parser.prototype.T_STATIC=352,s.Parser.prototype.T_ABSTRACT=353,s.Parser.prototype.T_FINAL=354,s.Parser.prototype.T_PRIVATE=355,s.Parser.prototype.T_PROTECTED=356,s.Parser.prototype.T_PUBLIC=357,s.Parser.prototype.T_VAR=358,s.Parser.prototype.T_UNSET=359,s.Parser.prototype.T_ISSET=360,s.Parser.prototype.T_EMPTY=361,s.Parser.prototype.T_HALT_COMPILER=362,s.Parser.prototype.T_CLASS=363,s.Parser.prototype.T_TRAIT=364,s.Parser.prototype.T_INTERFACE=365,s.Parser.prototype.T_EXTENDS=366,s.Parser.prototype.T_IMPLEMENTS=367,s.Parser.prototype.T_OBJECT_OPERATOR=368,s.Parser.prototype.T_LIST=369,s.Parser.prototype.T_ARRAY=370,s.Parser.prototype.T_CALLABLE=371,s.Parser.prototype.T_CLASS_C=372,s.Parser.prototype.T_TRAIT_C=373,s.Parser.prototype.T_METHOD_C=374,s.Parser.prototype.T_FUNC_C=375,s.Parser.prototype.T_LINE=376,s.Parser.prototype.T_FILE=377,s.Parser.prototype.T_COMMENT=378,s.Parser.prototype.T_DOC_COMMENT=379,s.Parser.prototype.T_OPEN_TAG=380,s.Parser.prototype.T_OPEN_TAG_WITH_ECHO=381,s.Parser.prototype.T_CLOSE_TAG=382,s.Parser.prototype.T_WHITESPACE=383,s.Parser.prototype.T_START_HEREDOC=384,s.Parser.prototype.T_END_HEREDOC=385,s.Parser.prototype.T_DOLLAR_OPEN_CURLY_BRACES=386,s.Parser.prototype.T_CURLY_OPEN=387,s.Parser.prototype.T_PAAMAYIM_NEKUDOTAYIM=388,s.Parser.prototype.T_NAMESPACE=389,s.Parser.prototype.T_NS_C=390,s.Parser.prototype.T_DIR=391,s.Parser.prototype.T_NS_SEPARATOR=392,s.Parser.prototype.T_ELLIPSIS=393,s.Parser.prototype.terminals=["EOF","error","T_INCLUDE","T_INCLUDE_ONCE","T_EVAL","T_REQUIRE","T_REQUIRE_ONCE","','","T_LOGICAL_OR","T_LOGICAL_XOR","T_LOGICAL_AND","T_PRINT","T_YIELD","T_DOUBLE_ARROW","T_YIELD_FROM","'='","T_PLUS_EQUAL","T_MINUS_EQUAL","T_MUL_EQUAL","T_DIV_EQUAL","T_CONCAT_EQUAL","T_MOD_EQUAL","T_AND_EQUAL","T_OR_EQUAL","T_XOR_EQUAL","T_SL_EQUAL","T_SR_EQUAL","T_POW_EQUAL","T_COALESCE_EQUAL","'?'","':'","T_COALESCE","T_BOOLEAN_OR","T_BOOLEAN_AND","'|'","'^'","'&'","T_IS_EQUAL","T_IS_NOT_EQUAL","T_IS_IDENTICAL","T_IS_NOT_IDENTICAL","T_SPACESHIP","'<'","T_IS_SMALLER_OR_EQUAL","'>'","T_IS_GREATER_OR_EQUAL","T_SL","T_SR","'+'","'-'","'.'","'*'","'/'","'%'","'!'","T_INSTANCEOF","'~'","T_INC","T_DEC","T_INT_CAST","T_DOUBLE_CAST","T_STRING_CAST","T_ARRAY_CAST","T_OBJECT_CAST","T_BOOL_CAST","T_UNSET_CAST","'@'","T_POW","'['","T_NEW","T_CLONE","T_EXIT","T_IF","T_ELSEIF","T_ELSE","T_ENDIF","T_LNUMBER","T_DNUMBER","T_STRING","T_STRING_VARNAME","T_VARIABLE","T_NUM_STRING","T_INLINE_HTML","T_ENCAPSED_AND_WHITESPACE","T_CONSTANT_ENCAPSED_STRING","T_ECHO","T_DO","T_WHILE","T_ENDWHILE","T_FOR","T_ENDFOR","T_FOREACH","T_ENDFOREACH","T_DECLARE","T_ENDDECLARE","T_AS","T_SWITCH","T_ENDSWITCH","T_CASE","T_DEFAULT","T_BREAK","T_CONTINUE","T_GOTO","T_FUNCTION","T_FN","T_CONST","T_RETURN","T_TRY","T_CATCH","T_FINALLY","T_THROW","T_USE","T_INSTEADOF","T_GLOBAL","T_STATIC","T_ABSTRACT","T_FINAL","T_PRIVATE","T_PROTECTED","T_PUBLIC","T_VAR","T_UNSET","T_ISSET","T_EMPTY","T_HALT_COMPILER","T_CLASS","T_TRAIT","T_INTERFACE","T_EXTENDS","T_IMPLEMENTS","T_OBJECT_OPERATOR","T_LIST","T_ARRAY","T_CALLABLE","T_CLASS_C","T_TRAIT_C","T_METHOD_C","T_FUNC_C","T_LINE","T_FILE","T_START_HEREDOC","T_END_HEREDOC","T_DOLLAR_OPEN_CURLY_BRACES","T_CURLY_OPEN","T_PAAMAYIM_NEKUDOTAYIM","T_NAMESPACE","T_NS_C","T_DIR","T_NS_SEPARATOR","T_ELLIPSIS","';'","'{'","'}'","'('","')'","'`'","']'","'\"'","'$'","???"],s.Parser.prototype.translate=[0,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,54,157,159,158,53,36,159,153,154,51,48,7,49,50,52,159,159,159,159,159,159,159,159,159,159,30,150,42,15,44,29,66,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,68,159,156,35,159,155,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,151,34,152,56,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,1,2,3,4,5,6,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,33,37,38,39,40,41,43,45,46,47,55,57,58,59,60,61,62,63,64,65,67,69,70,71,72,73,74,75,76,77,78,79,80,81,82,159,159,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,159,159,159,159,159,159,140,141,142,143,144,145,146,147,148,149],s.Parser.prototype.yyaction=[607,608,609,610,611,685,612,613,614,650,651,0,32,103,104,105,106,107,108,109,110,111,112,113,114,115,-32767,-32767,-32767,-32767,94,95,96,97,98,-32766,-32766,-32766,687,491,-497,904,905,906,903,902,901,904,905,906,903,902,901,615,938,940,-32766,9,-32766,-32766,-32766,-32766,-32766,-32766,-32766,-32766,-32766,616,617,618,619,620,621,622,333,1104,683,-32766,-32766,-32766,846,1103,119,623,624,625,626,627,628,629,630,631,632,633,653,654,655,656,657,645,646,647,675,648,649,634,635,636,637,638,639,640,677,678,679,680,681,682,641,642,643,644,674,665,663,664,660,661,402,652,658,659,666,667,669,668,670,671,45,46,421,47,48,662,673,672,27,49,50,233,51,-32766,-32766,-32766,96,97,98,24,-32766,-32766,-32766,-458,261,121,1023,-32766,-32766,-32766,1091,1073,-32766,-32766,-32766,1039,-32766,-32766,-32766,-32766,-32766,-32766,-496,-32766,-32766,-32766,52,53,-32766,-497,-32766,-32766,54,687,55,231,232,56,57,58,59,60,61,62,63,1016,24,242,64,369,-32766,-32766,-32766,226,1040,1041,423,1076,1073,-493,880,508,1039,436,1023,-458,768,1073,239,333,-500,-32766,-500,-32766,-32766,-32766,-32766,856,253,-458,276,378,372,786,68,1073,-458,685,-461,278,1126,403,289,1127,288,99,100,101,303,252,433,434,822,-32766,69,261,237,850,851,435,436,102,1045,1046,1047,1048,1042,1043,256,1016,-456,-456,306,444,1049,1044,375,133,561,-239,363,66,237,268,692,273,278,422,-137,-137,-137,-4,768,1073,310,278,1035,757,687,362,37,20,424,-137,425,-137,426,-137,427,-137,127,428,-295,278,-295,38,39,370,371,-496,271,40,429,277,687,65,261,1016,302,896,430,431,-456,-456,333,-494,432,44,42,743,791,373,374,-457,-234,562,-456,-456,375,-32766,-32766,-32766,882,-456,-456,124,-493,75,850,851,333,-273,-260,422,768,770,576,-137,261,125,-32766,278,823,757,857,1073,37,20,424,240,425,-178,426,589,427,393,503,428,687,235,241,38,39,370,371,125,354,40,429,260,259,65,267,687,302,-457,430,431,-296,-177,-296,24,432,305,365,700,791,373,374,-457,120,118,24,1073,30,366,-457,1039,-460,850,851,687,367,691,1073,422,291,768,1039,333,-83,770,576,-4,467,757,126,368,37,20,424,-92,425,278,426,444,427,1016,375,428,-219,-219,-219,38,39,370,371,333,1016,40,429,850,851,65,435,436,302,236,430,431,225,708,-494,709,432,435,436,743,791,373,374,690,387,136,1117,578,68,413,238,8,33,278,1053,227,708,687,709,68,422,-260,535,21,278,770,576,-219,550,551,757,687,116,37,20,424,117,425,358,426,-178,427,132,328,428,-218,-218,-218,38,39,370,371,687,333,40,429,122,768,65,383,384,302,123,430,431,29,234,333,-177,432,528,529,743,791,373,374,129,850,851,135,76,77,78,1092,881,599,582,254,333,137,138,782,590,593,293,767,131,252,770,576,-218,31,102,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,43,252,422,558,768,687,690,-32766,471,130,476,685,757,102,553,37,20,424,526,425,688,426,272,427,910,1016,428,792,1128,793,38,39,370,583,269,570,40,429,536,1052,65,275,1055,302,-415,541,270,-81,10,391,768,432,542,554,784,594,5,0,12,577,0,0,304,0,0,0,0,336,342,0,0,0,0,0,0,422,0,0,0,584,770,576,0,0,0,757,0,0,37,20,424,343,425,0,426,0,427,768,0,428,0,0,0,38,39,370,347,387,473,40,429,359,360,65,744,35,302,36,597,598,748,422,825,809,432,816,587,876,877,806,817,757,746,804,37,20,424,885,425,888,426,889,427,768,886,428,887,893,-485,38,39,370,579,770,576,40,429,581,585,65,586,588,302,592,286,287,352,353,422,580,432,1123,591,1125,703,790,702,712,757,789,713,37,20,424,710,425,1124,426,788,427,768,1004,428,711,777,785,38,39,370,808,576,-483,40,429,775,814,65,815,1122,302,1074,1067,1081,1086,422,1089,-237,432,-461,-460,-459,23,25,28,757,34,41,37,20,424,67,425,70,426,71,427,72,73,428,74,128,134,38,39,370,139,770,576,40,429,229,230,65,246,247,302,248,249,250,251,290,422,355,432,357,-427,-235,-234,14,15,16,757,17,19,37,20,424,325,425,404,426,406,427,409,411,428,412,419,567,38,39,370,770,576,1027,40,429,977,1037,65,858,1008,302,-32766,-32766,-32766,-92,13,18,22,432,263,324,501,522,569,981,978,0,994,0,1036,1065,1066,-32766,1080,-32766,-32766,-32766,-32766,-32766,-32766,-32767,-32767,-32767,-32767,-32767,1120,532,770,576,1054],s.Parser.prototype.yycheck=[2,3,4,5,6,78,8,9,10,11,12,0,15,16,17,18,19,20,21,22,23,24,25,26,27,28,42,43,44,45,46,47,48,49,50,8,9,10,78,79,7,114,115,116,117,118,119,114,115,116,117,118,119,55,57,58,29,7,31,32,33,34,35,36,8,9,10,69,70,71,72,73,74,75,114,1,78,8,9,10,1,7,13,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,30,131,132,133,134,135,136,137,138,139,2,3,4,5,6,145,146,147,7,11,12,36,14,8,9,10,48,49,50,68,8,9,10,68,29,7,1,8,9,10,1,80,8,9,29,84,31,32,33,34,35,29,7,31,32,33,48,49,29,154,31,32,54,78,56,57,58,59,60,61,62,63,64,65,66,114,68,69,70,71,8,9,10,13,76,77,78,1,80,7,1,49,84,132,1,130,1,80,7,114,154,29,156,31,32,33,34,1,7,144,7,103,104,1,153,80,151,78,153,158,78,151,114,81,7,51,52,53,7,55,122,123,30,8,149,29,36,132,133,131,132,67,134,135,136,137,138,139,140,114,68,68,7,145,146,147,148,13,78,154,125,153,36,155,1,157,158,72,73,74,75,0,1,80,7,158,1,82,78,7,85,86,87,88,89,90,91,92,93,94,151,96,103,158,105,100,101,102,103,154,111,106,107,68,78,110,29,114,113,120,115,116,130,130,114,7,121,68,68,124,125,126,127,68,154,145,144,144,148,8,9,10,152,151,151,30,154,151,132,133,114,152,7,72,1,150,151,152,29,149,29,158,150,82,154,80,85,86,87,36,89,7,91,151,93,130,1,96,78,36,36,100,101,102,103,149,105,106,107,130,130,110,111,78,113,130,115,116,103,7,105,68,121,144,7,124,125,126,127,144,151,151,68,80,7,7,151,84,153,132,133,78,7,150,80,72,145,1,84,114,30,150,151,152,83,82,151,7,85,86,87,154,89,158,91,145,93,114,148,96,97,98,99,100,101,102,103,114,114,106,107,132,133,110,131,132,113,36,115,116,95,103,154,105,121,131,132,124,125,126,127,80,148,13,83,151,153,103,36,105,13,158,141,13,103,78,105,153,72,154,73,74,158,150,151,152,73,74,82,78,15,85,86,87,15,89,148,91,154,93,98,99,96,97,98,99,100,101,102,103,78,114,106,107,15,1,110,103,104,113,15,115,116,142,143,114,154,121,108,109,124,125,126,127,15,132,133,15,8,9,10,154,150,151,30,30,114,15,15,36,30,30,34,30,30,55,150,151,152,29,67,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,68,55,72,75,1,78,80,83,83,68,87,78,82,67,92,85,86,87,111,89,78,91,112,93,80,114,96,125,81,125,100,101,102,30,128,90,106,107,88,141,110,128,141,113,144,94,129,95,95,95,1,121,97,97,149,152,144,-1,144,151,-1,-1,144,-1,-1,-1,-1,148,148,-1,-1,-1,-1,-1,-1,72,-1,-1,-1,30,150,151,-1,-1,-1,82,-1,-1,85,86,87,148,89,-1,91,-1,93,1,-1,96,-1,-1,-1,100,101,102,148,148,148,106,107,148,148,110,152,150,113,150,150,150,150,72,150,150,121,150,30,150,150,150,150,82,150,150,85,86,87,150,89,150,91,150,93,1,150,96,150,150,153,100,101,102,151,150,151,106,107,151,151,110,151,151,113,151,151,151,151,151,72,151,121,152,30,152,152,152,152,152,82,152,152,85,86,87,152,89,152,91,152,93,1,152,96,152,152,152,100,101,102,150,151,153,106,107,152,152,110,152,152,113,152,152,152,152,72,152,154,121,153,153,153,153,153,153,82,153,153,85,86,87,153,89,153,91,153,93,153,153,96,153,153,153,100,101,102,153,150,151,106,107,153,153,110,153,153,113,153,153,153,153,153,72,153,121,153,155,154,154,154,154,154,82,154,154,85,86,87,154,89,154,91,154,93,154,154,96,154,154,154,100,101,102,150,151,154,106,107,154,154,110,154,154,113,8,9,10,154,154,154,154,121,154,154,154,154,154,154,154,-1,155,-1,156,156,156,29,156,31,32,33,34,35,36,37,38,39,40,41,156,156,150,151,157],s.Parser.prototype.yybase=[0,223,299,371,444,303,208,618,-2,-2,-73,-2,-2,625,718,718,764,718,552,671,811,811,811,228,113,113,113,254,361,-40,361,333,449,470,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,435,291,291,230,393,495,779,784,781,776,775,780,785,498,678,680,562,681,682,683,685,782,804,777,783,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,253,69,162,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,349,349,349,157,210,150,200,211,143,27,917,917,917,917,917,-16,-16,-16,-16,351,351,362,217,89,89,89,89,89,89,89,89,89,89,89,89,89,163,313,106,106,133,133,133,133,133,133,221,305,234,347,369,523,806,167,167,441,93,283,202,202,202,386,547,533,533,533,533,419,419,533,533,170,214,74,211,211,277,211,211,211,409,409,409,452,318,352,546,318,619,640,577,675,578,677,278,585,145,586,145,145,145,458,445,451,774,291,522,291,291,291,291,722,291,291,291,291,291,291,98,291,79,430,230,240,240,556,240,452,538,263,635,410,425,538,538,538,636,637,336,363,198,638,382,402,173,33,549,549,555,555,566,551,549,549,549,549,549,690,690,555,548,555,566,695,555,551,551,555,555,549,555,690,551,156,415,249,273,551,551,426,528,549,535,535,433,555,219,555,139,539,690,690,539,229,551,231,590,591,529,527,553,245,553,553,300,529,553,551,553,448,50,548,295,553,11,699,701,418,703,694,705,731,706,530,524,526,719,720,708,692,691,561,582,513,517,534,554,689,581,531,531,531,554,687,531,531,531,531,531,531,531,531,787,540,545,723,537,541,576,543,623,520,582,582,584,732,786,564,722,762,709,587,557,741,725,525,542,565,726,727,745,765,628,513,766,641,563,643,582,644,531,670,617,788,789,688,791,736,747,749,580,645,569,803,646,768,629,631,589,737,684,751,647,752,754,649,592,572,734,573,733,272,729,632,650,654,656,658,661,710,594,738,544,740,735,595,597,560,663,488,599,570,571,600,714,558,550,601,602,769,664,728,604,665,756,574,581,536,532,575,567,634,755,559,605,609,611,613,674,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,136,136,136,136,-2,-2,-2,0,0,-2,0,0,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,136,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,568,-3,568,568,-3,568,568,568,568,568,568,568,202,202,202,202,318,318,318,-67,318,318,318,318,318,318,318,318,318,318,318,318,318,318,-67,202,202,318,318,318,318,318,318,318,318,318,318,419,419,419,145,145,318,0,0,0,0,0,549,419,318,318,318,318,0,0,318,318,548,145,0,0,0,0,0,0,0,549,549,549,548,0,549,419,0,240,291,440,440,440,440,0,549,0,549,0,0,0,0,0,0,551,0,690,0,0,0,0,555,0,0,0,0,0,0,0,0,548,0,0,0,0,548,0,0,531,0,564,0,0,531,531,531,564,564,0,0,0,564],s.Parser.prototype.yydefault=[3,32767,32767,32767,32767,32767,32767,32767,32767,92,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,510,510,510,94,499,32767,499,32767,32767,32767,314,314,314,32767,454,454,454,454,454,454,454,32767,32767,32767,32767,32767,394,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,92,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,506,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,377,378,380,381,313,455,509,259,505,312,130,270,261,211,243,310,134,342,395,344,393,397,343,319,323,324,325,326,327,328,329,330,331,332,333,334,335,317,318,396,398,399,374,373,372,340,316,341,345,316,347,346,363,364,361,362,365,366,367,368,369,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,94,32767,32767,32767,293,354,355,250,250,250,250,250,250,32767,250,32767,250,32767,32767,32767,32767,32767,32767,448,371,349,350,348,32767,426,32767,32767,32767,32767,32767,428,32767,92,32767,32767,32767,337,339,420,508,320,507,32767,32767,94,414,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,423,32767,32767,92,32767,32767,92,174,230,232,179,32767,431,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,414,359,517,32767,456,32767,351,352,353,32767,32767,456,456,456,32767,456,32767,456,456,32767,32767,32767,32767,32767,179,32767,32767,32767,32767,94,429,429,92,92,92,92,424,32767,179,179,32767,32767,32767,32767,32767,179,91,91,91,91,179,179,91,194,32767,192,192,91,32767,93,32767,93,196,32767,470,196,91,179,91,216,216,405,181,252,93,252,252,93,405,252,179,252,91,91,32767,91,252,32767,32767,32767,85,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,416,32767,436,32767,449,468,32767,357,358,360,32767,458,382,383,384,385,386,387,388,390,32767,419,32767,32767,32767,87,121,269,32767,515,87,417,32767,515,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,87,87,32767,32767,32767,32767,32767,495,32767,516,32767,456,418,32767,356,432,475,32767,32767,457,32767,32767,32767,32767,87,32767,32767,32767,32767,32767,32767,32767,32767,32767,436,32767,32767,32767,32767,32767,32767,32767,456,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,456,32767,32767,242,32767,32767,32767,309,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,85,60,32767,289,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,136,136,3,272,3,272,136,136,136,272,272,136,136,136,136,136,136,136,169,224,227,216,216,281,136,136],s.Parser.prototype.yygoto=[171,144,144,144,171,152,153,152,155,187,172,168,168,168,168,169,169,169,169,169,169,169,164,165,166,167,184,182,185,445,446,334,447,450,451,452,453,454,455,456,457,924,141,145,146,147,170,148,149,143,150,151,154,181,183,186,206,209,211,212,214,215,216,217,218,219,220,221,222,223,224,244,245,264,265,266,339,340,341,496,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,156,203,157,173,174,175,207,176,158,159,160,177,161,208,142,204,162,178,205,179,180,163,563,210,463,210,516,516,1038,572,1038,1038,1038,1038,1038,1038,1038,1038,1038,1038,1038,1038,1038,468,468,468,514,537,468,297,489,521,489,498,274,533,534,698,483,258,468,448,448,448,725,448,448,448,448,448,448,448,448,448,448,448,448,448,449,449,449,699,449,449,449,449,449,449,449,449,449,449,449,449,449,1114,1114,734,725,899,725,315,319,475,499,500,502,1083,1084,468,468,760,1114,761,900,482,506,468,468,468,329,330,686,481,545,495,332,510,596,523,525,294,469,538,556,559,835,566,574,831,765,729,717,864,494,807,868,490,860,716,716,810,697,1013,1105,726,726,726,728,715,840,1093,800,824,805,805,803,805,595,313,460,833,828,459,3,4,907,733,539,1009,487,317,461,459,497,892,575,972,474,843,557,890,1129,484,485,505,517,519,520,568,801,801,801,801,465,855,795,802,1002,787,405,1003,799,327,571,356,1082,530,1014,848,346,540,350,11,337,337,280,281,283,493,344,284,345,285,348,524,351,1015,1069,1113,1113,543,301,298,299,721,560,838,838,1100,295,865,718,600,323,544,1113,1010,1017,511,1005,869,849,849,849,849,849,849,1017,849,849,849,720,730,1116,714,812,849,1088,1088,909,465,398,513,414,1017,1017,1017,1017,0,1079,1017,1017,0,701,0,0,0,0,0,1079,0,0,0,0,0,773,1090,1090,774,706,0,756,751,752,766,0,707,753,704,754,755,705,0,759,0,1075,0,0,0,0,0,1012,0,0,0,480,0,0,0,0,0,0,0,0,0,0,0,0,0,867,0,1077,1077,867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,462,478,0,0,0,0,0,0,0,0,0,462,0,478,0,0,316,0,0,466,386,0,388,0,0,0,0,0,0,0,0,0,0,0,0,0,0,724,0,1121],s.Parser.prototype.yygcheck=[33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,63,56,10,56,86,86,86,8,86,86,86,86,86,86,86,86,86,86,86,86,86,10,10,10,46,46,10,80,85,73,85,97,134,73,73,17,10,134,10,135,135,135,26,135,135,135,135,135,135,135,135,135,135,135,135,135,137,137,137,18,137,137,137,137,137,137,137,137,137,137,137,137,137,148,148,36,26,111,26,49,49,49,49,49,49,141,141,10,10,55,148,55,111,10,10,10,10,10,69,69,5,39,69,2,69,2,39,39,39,69,10,39,39,39,39,39,39,39,13,14,14,14,10,40,14,136,94,26,26,14,16,92,146,26,26,26,26,26,14,143,14,16,16,16,16,16,16,52,16,16,16,75,37,37,14,14,54,14,53,65,65,75,7,7,7,118,65,88,7,7,12,65,65,68,68,68,68,68,75,75,75,75,12,90,75,75,67,67,65,67,76,76,76,89,139,24,92,91,56,56,56,65,56,56,56,56,56,56,56,56,56,56,56,56,56,92,92,147,147,12,20,80,80,30,12,85,85,85,11,96,28,82,19,23,147,127,63,15,124,99,63,63,63,63,63,63,63,63,63,63,15,32,147,15,79,63,8,8,114,12,71,72,122,63,63,63,63,-1,97,63,63,-1,13,-1,-1,-1,-1,-1,97,-1,-1,-1,-1,-1,63,97,97,63,13,-1,13,13,13,13,-1,13,13,13,13,13,13,-1,13,-1,97,-1,-1,-1,-1,-1,12,-1,-1,-1,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,97,-1,97,97,97,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,-1,8,-1,-1,8,-1,-1,8,8,-1,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,-1,8],s.Parser.prototype.yygbase=[0,0,-358,0,0,207,0,274,114,0,-148,54,10,94,-144,-40,245,150,174,48,70,0,0,-3,25,0,-108,0,44,0,52,0,3,-23,0,0,183,-331,0,-359,221,0,0,0,0,0,106,0,0,157,0,0,227,45,47,191,90,0,0,0,0,0,0,111,0,-95,0,-26,43,-193,0,-12,-20,-435,0,26,37,0,0,4,-259,0,20,0,0,117,-104,0,31,55,46,53,-64,0,216,0,40,143,0,-10,0,0,0,0,0,0,0,0,0,0,0,-34,0,0,7,0,0,0,30,0,0,0,-32,0,-9,0,0,-5,0,0,0,0,0,0,-119,-69,217,-52,0,51,0,-102,0,226,0,0,223,77,-67,0,0],s.Parser.prototype.yygdefault=[-32768,420,603,2,604,676,684,548,437,573,438,464,335,758,913,778,740,741,742,320,361,311,318,531,518,410,727,381,719,407,722,380,731,140,549,416,735,1,737,470,769,308,745,309,552,747,477,749,750,314,321,322,917,486,515,762,213,479,763,307,764,772,331,312,392,417,326,894,504,527,376,395,512,507,488,1024,797,401,390,811,296,819,601,827,830,439,440,399,842,400,853,847,1032,394,859,382,866,1064,385,870,228,873,255,546,349,878,879,6,884,564,565,7,243,415,908,547,379,923,364,991,993,472,408,1006,389,555,418,1011,1068,377,441,396,282,300,257,442,458,262,443,397,1071,1078,338,1094,279,26,1106,1115,292,492,509],s.Parser.prototype.yylhs=[0,1,3,3,2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,7,7,8,9,10,10,11,12,13,13,14,14,15,15,4,4,4,4,4,4,4,4,4,4,4,20,20,21,21,21,21,23,25,25,19,27,27,24,29,29,26,26,28,28,30,30,22,31,31,32,34,35,35,36,37,37,39,38,38,38,38,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,16,16,59,59,62,62,61,60,60,53,64,64,65,65,66,66,67,67,17,18,18,18,70,70,70,71,71,74,74,72,72,76,77,77,47,47,55,55,58,58,58,57,78,78,79,48,48,48,48,80,80,81,81,82,82,45,45,41,41,83,43,43,84,42,42,44,44,54,54,54,54,68,68,87,87,88,88,88,90,90,91,91,91,89,89,69,69,69,92,92,93,93,94,94,94,50,95,95,96,51,98,98,99,99,100,100,73,101,101,101,101,101,106,106,107,107,108,108,108,108,108,109,110,110,105,105,102,102,104,104,112,112,111,111,111,111,111,111,103,113,113,115,114,114,52,116,116,46,46,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,123,117,117,122,122,125,126,126,127,128,128,128,75,75,63,63,63,118,118,118,130,130,119,119,121,121,121,124,124,135,135,135,86,137,137,137,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,49,49,133,133,133,129,129,129,138,138,138,138,138,138,56,56,56,97,97,97,97,141,140,132,132,132,132,132,132,131,131,131,139,139,139,139,85,142,142,143,143,143,143,143,143,143,136,145,145,144,144,146,146,146,146,146,146,134,134,134,134,148,149,147,147,147,147,147,147,147,150,150,150,150],s.Parser.prototype.yylen=[1,1,2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,0,1,0,1,1,1,1,1,3,5,4,3,4,2,3,1,1,7,8,6,7,2,3,1,2,3,1,2,3,1,1,3,1,2,1,2,2,3,1,3,2,3,1,3,2,0,1,1,1,1,1,3,7,10,5,7,9,5,3,3,3,3,3,3,1,2,5,7,9,6,5,6,3,3,2,1,1,1,0,2,1,3,8,0,4,2,1,3,0,1,0,1,3,1,8,7,6,5,1,2,2,0,2,0,2,0,2,2,1,3,1,4,1,4,1,1,4,2,1,3,3,3,4,4,5,0,2,4,3,1,1,1,4,0,2,5,0,2,6,0,2,0,3,1,2,1,1,2,0,1,3,4,6,4,1,2,1,1,1,0,1,0,2,2,2,4,1,3,1,2,2,2,3,1,1,2,3,1,1,3,2,0,1,4,4,9,3,1,1,3,0,2,4,5,4,4,4,3,1,1,1,1,1,1,0,1,1,2,1,1,1,1,1,1,2,1,3,1,1,3,2,3,1,0,1,1,3,3,3,4,1,2,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,5,4,3,4,4,2,2,4,2,2,2,2,2,2,2,2,2,2,2,1,3,2,1,2,4,2,8,9,8,9,7,3,2,0,4,2,1,3,2,2,2,4,1,1,1,2,3,1,1,1,1,1,0,3,0,1,1,0,1,1,3,3,3,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2,3,3,0,1,1,3,1,1,3,1,1,4,4,4,1,4,1,1,3,1,4,2,2,1,3,1,4,4,3,3,3,1,3,1,1,3,1,1,4,3,1,1,2,1,3,4,3,0,1,1,1,3,1,3,1,4,2,2,0,2,2,1,2,1,1,1,4,3,3,3,6,3,1,1,2,1],e.PHP=s})),ace.define("ace/mode/php_worker",[],(function(t,e,n){"use strict";var s=t("../lib/oop"),r=t("../worker/mirror").Mirror,o=t("./php/php").PHP,i=e.PhpWorker=function(t){r.call(this,t),this.setTimeout(500)};s.inherits(i,r),function(){this.setOptions=function(t){this.inlinePhp=t&&t.inline},this.onUpdate=function(){var t=this.doc.getValue(),e=[];this.inlinePhp&&(t="<?"+t+"?>");var n=o.Lexer(t,{short_open_tag:1});try{new o.Parser(n)}catch(t){e.push({row:t.line-1,column:null,text:t.message.charAt(0).toUpperCase()+t.message.substring(1),type:"error"})}this.sender.emit("annotate",e)}}.call(i.prototype)}));
+"no use strict";
+!(function(window) {
+if (typeof window.window != "undefined" && window.document)
+    return;
+if (window.require && window.define)
+    return;
+
+if (!window.console) {
+    window.console = function() {
+        var msgs = Array.prototype.slice.call(arguments, 0);
+        postMessage({type: "log", data: msgs});
+    };
+    window.console.error =
+    window.console.warn = 
+    window.console.log =
+    window.console.trace = window.console;
+}
+window.window = window;
+window.ace = window;
+
+window.onerror = function(message, file, line, col, err) {
+    postMessage({type: "error", data: {
+        message: message,
+        data: err && err.data,
+        file: file,
+        line: line, 
+        col: col,
+        stack: err && err.stack
+    }});
+};
+
+window.normalizeModule = function(parentId, moduleName) {
+    // normalize plugin requires
+    if (moduleName.indexOf("!") !== -1) {
+        var chunks = moduleName.split("!");
+        return window.normalizeModule(parentId, chunks[0]) + "!" + window.normalizeModule(parentId, chunks[1]);
+    }
+    // normalize relative requires
+    if (moduleName.charAt(0) == ".") {
+        var base = parentId.split("/").slice(0, -1).join("/");
+        moduleName = (base ? base + "/" : "") + moduleName;
+        
+        while (moduleName.indexOf(".") !== -1 && previous != moduleName) {
+            var previous = moduleName;
+            moduleName = moduleName.replace(/^\.\//, "").replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
+        }
+    }
+    
+    return moduleName;
+};
+
+window.require = function require(parentId, id) {
+    if (!id) {
+        id = parentId;
+        parentId = null;
+    }
+    if (!id.charAt)
+        throw new Error("worker.js require() accepts only (parentId, id) as arguments");
+
+    id = window.normalizeModule(parentId, id);
+
+    var module = window.require.modules[id];
+    if (module) {
+        if (!module.initialized) {
+            module.initialized = true;
+            module.exports = module.factory().exports;
+        }
+        return module.exports;
+    }
+   
+    if (!window.require.tlns)
+        return console.log("unable to load " + id);
+    
+    var path = resolveModuleId(id, window.require.tlns);
+    if (path.slice(-3) != ".js") path += ".js";
+    
+    window.require.id = id;
+    window.require.modules[id] = {}; // prevent infinite loop on broken modules
+    importScripts(path);
+    return window.require(parentId, id);
+};
+function resolveModuleId(id, paths) {
+    var testPath = id, tail = "";
+    while (testPath) {
+        var alias = paths[testPath];
+        if (typeof alias == "string") {
+            return alias + tail;
+        } else if (alias) {
+            return  alias.location.replace(/\/*$/, "/") + (tail || alias.main || alias.name);
+        } else if (alias === false) {
+            return "";
+        }
+        var i = testPath.lastIndexOf("/");
+        if (i === -1) break;
+        tail = testPath.substr(i) + tail;
+        testPath = testPath.slice(0, i);
+    }
+    return id;
+}
+window.require.modules = {};
+window.require.tlns = {};
+
+window.define = function(id, deps, factory) {
+    if (arguments.length == 2) {
+        factory = deps;
+        if (typeof id != "string") {
+            deps = id;
+            id = window.require.id;
+        }
+    } else if (arguments.length == 1) {
+        factory = id;
+        deps = [];
+        id = window.require.id;
+    }
+    
+    if (typeof factory != "function") {
+        window.require.modules[id] = {
+            exports: factory,
+            initialized: true
+        };
+        return;
+    }
+
+    if (!deps.length)
+        // If there is no dependencies, we inject "require", "exports" and
+        // "module" as dependencies, to provide CommonJS compatibility.
+        deps = ["require", "exports", "module"];
+
+    var req = function(childId) {
+        return window.require(id, childId);
+    };
+
+    window.require.modules[id] = {
+        exports: {},
+        factory: function() {
+            var module = this;
+            var returnExports = factory.apply(this, deps.slice(0, factory.length).map(function(dep) {
+                switch (dep) {
+                    // Because "require", "exports" and "module" aren't actual
+                    // dependencies, we must handle them seperately.
+                    case "require": return req;
+                    case "exports": return module.exports;
+                    case "module":  return module;
+                    // But for all other dependencies, we can just go ahead and
+                    // require them.
+                    default:        return req(dep);
+                }
+            }));
+            if (returnExports)
+                module.exports = returnExports;
+            return module;
+        }
+    };
+};
+window.define.amd = {};
+window.require.tlns = {};
+window.initBaseUrls  = function initBaseUrls(topLevelNamespaces) {
+    for (var i in topLevelNamespaces)
+        this.require.tlns[i] = topLevelNamespaces[i];
+};
+
+window.initSender = function initSender() {
+
+    var EventEmitter = window.require("ace/lib/event_emitter").EventEmitter;
+    var oop = window.require("ace/lib/oop");
+    
+    var Sender = function() {};
+    
+    (function() {
+        
+        oop.implement(this, EventEmitter);
+                
+        this.callback = function(data, callbackId) {
+            postMessage({
+                type: "call",
+                id: callbackId,
+                data: data
+            });
+        };
+    
+        this.emit = function(name, data) {
+            postMessage({
+                type: "event",
+                name: name,
+                data: data
+            });
+        };
+        
+    }).call(Sender.prototype);
+    
+    return new Sender();
+};
+
+var main = window.main = null;
+var sender = window.sender = null;
+
+window.onmessage = function(e) {
+    var msg = e.data;
+    if (msg.event && sender) {
+        sender._signal(msg.event, msg.data);
+    }
+    else if (msg.command) {
+        if (main[msg.command])
+            main[msg.command].apply(main, msg.args);
+        else if (window[msg.command])
+            window[msg.command].apply(window, msg.args);
+        else
+            throw new Error("Unknown command:" + msg.command);
+    }
+    else if (msg.init) {
+        window.initBaseUrls(msg.tlns);
+        sender = window.sender = window.initSender();
+        var clazz = this.require(msg.module)[msg.classname];
+        main = window.main = new clazz(sender);
+    }
+};
+})(this);
+
+ace.define("ace/lib/oop",[], function(require, exports, module){"use strict";
+exports.inherits = function (ctor, superCtor) {
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+            value: ctor,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        }
+    });
+};
+exports.mixin = function (obj, mixin) {
+    for (var key in mixin) {
+        obj[key] = mixin[key];
+    }
+    return obj;
+};
+exports.implement = function (proto, mixin) {
+    exports.mixin(proto, mixin);
+};
+
+});
+
+ace.define("ace/apply_delta",[], function(require, exports, module){"use strict";
+function throwDeltaError(delta, errorText) {
+    console.log("Invalid Delta:", delta);
+    throw "Invalid Delta: " + errorText;
+}
+function positionInDocument(docLines, position) {
+    return position.row >= 0 && position.row < docLines.length &&
+        position.column >= 0 && position.column <= docLines[position.row].length;
+}
+function validateDelta(docLines, delta) {
+    if (delta.action != "insert" && delta.action != "remove")
+        throwDeltaError(delta, "delta.action must be 'insert' or 'remove'");
+    if (!(delta.lines instanceof Array))
+        throwDeltaError(delta, "delta.lines must be an Array");
+    if (!delta.start || !delta.end)
+        throwDeltaError(delta, "delta.start/end must be an present");
+    var start = delta.start;
+    if (!positionInDocument(docLines, delta.start))
+        throwDeltaError(delta, "delta.start must be contained in document");
+    var end = delta.end;
+    if (delta.action == "remove" && !positionInDocument(docLines, end))
+        throwDeltaError(delta, "delta.end must contained in document for 'remove' actions");
+    var numRangeRows = end.row - start.row;
+    var numRangeLastLineChars = (end.column - (numRangeRows == 0 ? start.column : 0));
+    if (numRangeRows != delta.lines.length - 1 || delta.lines[numRangeRows].length != numRangeLastLineChars)
+        throwDeltaError(delta, "delta.range must match delta lines");
+}
+exports.applyDelta = function (docLines, delta, doNotValidate) {
+    var row = delta.start.row;
+    var startColumn = delta.start.column;
+    var line = docLines[row] || "";
+    switch (delta.action) {
+        case "insert":
+            var lines = delta.lines;
+            if (lines.length === 1) {
+                docLines[row] = line.substring(0, startColumn) + delta.lines[0] + line.substring(startColumn);
+            }
+            else {
+                var args = [row, 1].concat(delta.lines);
+                docLines.splice.apply(docLines, args);
+                docLines[row] = line.substring(0, startColumn) + docLines[row];
+                docLines[row + delta.lines.length - 1] += line.substring(startColumn);
+            }
+            break;
+        case "remove":
+            var endColumn = delta.end.column;
+            var endRow = delta.end.row;
+            if (row === endRow) {
+                docLines[row] = line.substring(0, startColumn) + line.substring(endColumn);
+            }
+            else {
+                docLines.splice(row, endRow - row + 1, line.substring(0, startColumn) + docLines[endRow].substring(endColumn));
+            }
+            break;
+    }
+};
+
+});
+
+ace.define("ace/lib/event_emitter",[], function(require, exports, module){"use strict";
+var EventEmitter = {};
+var stopPropagation = function () { this.propagationStopped = true; };
+var preventDefault = function () { this.defaultPrevented = true; };
+EventEmitter._emit =
+    EventEmitter._dispatchEvent = function (eventName, e) {
+        this._eventRegistry || (this._eventRegistry = {});
+        this._defaultHandlers || (this._defaultHandlers = {});
+        var listeners = this._eventRegistry[eventName] || [];
+        var defaultHandler = this._defaultHandlers[eventName];
+        if (!listeners.length && !defaultHandler)
+            return;
+        if (typeof e != "object" || !e)
+            e = {};
+        if (!e.type)
+            e.type = eventName;
+        if (!e.stopPropagation)
+            e.stopPropagation = stopPropagation;
+        if (!e.preventDefault)
+            e.preventDefault = preventDefault;
+        listeners = listeners.slice();
+        for (var i = 0; i < listeners.length; i++) {
+            listeners[i](e, this);
+            if (e.propagationStopped)
+                break;
+        }
+        if (defaultHandler && !e.defaultPrevented)
+            return defaultHandler(e, this);
+    };
+EventEmitter._signal = function (eventName, e) {
+    var listeners = (this._eventRegistry || {})[eventName];
+    if (!listeners)
+        return;
+    listeners = listeners.slice();
+    for (var i = 0; i < listeners.length; i++)
+        listeners[i](e, this);
+};
+EventEmitter.once = function (eventName, callback) {
+    var _self = this;
+    this.on(eventName, function newCallback() {
+        _self.off(eventName, newCallback);
+        callback.apply(null, arguments);
+    });
+    if (!callback) {
+        return new Promise(function (resolve) {
+            callback = resolve;
+        });
+    }
+};
+EventEmitter.setDefaultHandler = function (eventName, callback) {
+    var handlers = this._defaultHandlers;
+    if (!handlers)
+        handlers = this._defaultHandlers = { _disabled_: {} };
+    if (handlers[eventName]) {
+        var old = handlers[eventName];
+        var disabled = handlers._disabled_[eventName];
+        if (!disabled)
+            handlers._disabled_[eventName] = disabled = [];
+        disabled.push(old);
+        var i = disabled.indexOf(callback);
+        if (i != -1)
+            disabled.splice(i, 1);
+    }
+    handlers[eventName] = callback;
+};
+EventEmitter.removeDefaultHandler = function (eventName, callback) {
+    var handlers = this._defaultHandlers;
+    if (!handlers)
+        return;
+    var disabled = handlers._disabled_[eventName];
+    if (handlers[eventName] == callback) {
+        if (disabled)
+            this.setDefaultHandler(eventName, disabled.pop());
+    }
+    else if (disabled) {
+        var i = disabled.indexOf(callback);
+        if (i != -1)
+            disabled.splice(i, 1);
+    }
+};
+EventEmitter.on =
+    EventEmitter.addEventListener = function (eventName, callback, capturing) {
+        this._eventRegistry = this._eventRegistry || {};
+        var listeners = this._eventRegistry[eventName];
+        if (!listeners)
+            listeners = this._eventRegistry[eventName] = [];
+        if (listeners.indexOf(callback) == -1)
+            listeners[capturing ? "unshift" : "push"](callback);
+        return callback;
+    };
+EventEmitter.off =
+    EventEmitter.removeListener =
+        EventEmitter.removeEventListener = function (eventName, callback) {
+            this._eventRegistry = this._eventRegistry || {};
+            var listeners = this._eventRegistry[eventName];
+            if (!listeners)
+                return;
+            var index = listeners.indexOf(callback);
+            if (index !== -1)
+                listeners.splice(index, 1);
+        };
+EventEmitter.removeAllListeners = function (eventName) {
+    if (!eventName)
+        this._eventRegistry = this._defaultHandlers = undefined;
+    if (this._eventRegistry)
+        this._eventRegistry[eventName] = undefined;
+    if (this._defaultHandlers)
+        this._defaultHandlers[eventName] = undefined;
+};
+exports.EventEmitter = EventEmitter;
+
+});
+
+ace.define("ace/range",[], function(require, exports, module){"use strict";
+var comparePoints = function (p1, p2) {
+    return p1.row - p2.row || p1.column - p2.column;
+};
+var Range = function (startRow, startColumn, endRow, endColumn) {
+    this.start = {
+        row: startRow,
+        column: startColumn
+    };
+    this.end = {
+        row: endRow,
+        column: endColumn
+    };
+};
+(function () {
+    this.isEqual = function (range) {
+        return this.start.row === range.start.row &&
+            this.end.row === range.end.row &&
+            this.start.column === range.start.column &&
+            this.end.column === range.end.column;
+    };
+    this.toString = function () {
+        return ("Range: [" + this.start.row + "/" + this.start.column +
+            "] -> [" + this.end.row + "/" + this.end.column + "]");
+    };
+    this.contains = function (row, column) {
+        return this.compare(row, column) == 0;
+    };
+    this.compareRange = function (range) {
+        var cmp, end = range.end, start = range.start;
+        cmp = this.compare(end.row, end.column);
+        if (cmp == 1) {
+            cmp = this.compare(start.row, start.column);
+            if (cmp == 1) {
+                return 2;
+            }
+            else if (cmp == 0) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        else if (cmp == -1) {
+            return -2;
+        }
+        else {
+            cmp = this.compare(start.row, start.column);
+            if (cmp == -1) {
+                return -1;
+            }
+            else if (cmp == 1) {
+                return 42;
+            }
+            else {
+                return 0;
+            }
+        }
+    };
+    this.comparePoint = function (p) {
+        return this.compare(p.row, p.column);
+    };
+    this.containsRange = function (range) {
+        return this.comparePoint(range.start) == 0 && this.comparePoint(range.end) == 0;
+    };
+    this.intersects = function (range) {
+        var cmp = this.compareRange(range);
+        return (cmp == -1 || cmp == 0 || cmp == 1);
+    };
+    this.isEnd = function (row, column) {
+        return this.end.row == row && this.end.column == column;
+    };
+    this.isStart = function (row, column) {
+        return this.start.row == row && this.start.column == column;
+    };
+    this.setStart = function (row, column) {
+        if (typeof row == "object") {
+            this.start.column = row.column;
+            this.start.row = row.row;
+        }
+        else {
+            this.start.row = row;
+            this.start.column = column;
+        }
+    };
+    this.setEnd = function (row, column) {
+        if (typeof row == "object") {
+            this.end.column = row.column;
+            this.end.row = row.row;
+        }
+        else {
+            this.end.row = row;
+            this.end.column = column;
+        }
+    };
+    this.inside = function (row, column) {
+        if (this.compare(row, column) == 0) {
+            if (this.isEnd(row, column) || this.isStart(row, column)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    };
+    this.insideStart = function (row, column) {
+        if (this.compare(row, column) == 0) {
+            if (this.isEnd(row, column)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    };
+    this.insideEnd = function (row, column) {
+        if (this.compare(row, column) == 0) {
+            if (this.isStart(row, column)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    };
+    this.compare = function (row, column) {
+        if (!this.isMultiLine()) {
+            if (row === this.start.row) {
+                return column < this.start.column ? -1 : (column > this.end.column ? 1 : 0);
+            }
+        }
+        if (row < this.start.row)
+            return -1;
+        if (row > this.end.row)
+            return 1;
+        if (this.start.row === row)
+            return column >= this.start.column ? 0 : -1;
+        if (this.end.row === row)
+            return column <= this.end.column ? 0 : 1;
+        return 0;
+    };
+    this.compareStart = function (row, column) {
+        if (this.start.row == row && this.start.column == column) {
+            return -1;
+        }
+        else {
+            return this.compare(row, column);
+        }
+    };
+    this.compareEnd = function (row, column) {
+        if (this.end.row == row && this.end.column == column) {
+            return 1;
+        }
+        else {
+            return this.compare(row, column);
+        }
+    };
+    this.compareInside = function (row, column) {
+        if (this.end.row == row && this.end.column == column) {
+            return 1;
+        }
+        else if (this.start.row == row && this.start.column == column) {
+            return -1;
+        }
+        else {
+            return this.compare(row, column);
+        }
+    };
+    this.clipRows = function (firstRow, lastRow) {
+        if (this.end.row > lastRow)
+            var end = { row: lastRow + 1, column: 0 };
+        else if (this.end.row < firstRow)
+            var end = { row: firstRow, column: 0 };
+        if (this.start.row > lastRow)
+            var start = { row: lastRow + 1, column: 0 };
+        else if (this.start.row < firstRow)
+            var start = { row: firstRow, column: 0 };
+        return Range.fromPoints(start || this.start, end || this.end);
+    };
+    this.extend = function (row, column) {
+        var cmp = this.compare(row, column);
+        if (cmp == 0)
+            return this;
+        else if (cmp == -1)
+            var start = { row: row, column: column };
+        else
+            var end = { row: row, column: column };
+        return Range.fromPoints(start || this.start, end || this.end);
+    };
+    this.isEmpty = function () {
+        return (this.start.row === this.end.row && this.start.column === this.end.column);
+    };
+    this.isMultiLine = function () {
+        return (this.start.row !== this.end.row);
+    };
+    this.clone = function () {
+        return Range.fromPoints(this.start, this.end);
+    };
+    this.collapseRows = function () {
+        if (this.end.column == 0)
+            return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
+        else
+            return new Range(this.start.row, 0, this.end.row, 0);
+    };
+    this.toScreenRange = function (session) {
+        var screenPosStart = session.documentToScreenPosition(this.start);
+        var screenPosEnd = session.documentToScreenPosition(this.end);
+        return new Range(screenPosStart.row, screenPosStart.column, screenPosEnd.row, screenPosEnd.column);
+    };
+    this.moveBy = function (row, column) {
+        this.start.row += row;
+        this.start.column += column;
+        this.end.row += row;
+        this.end.column += column;
+    };
+}).call(Range.prototype);
+Range.fromPoints = function (start, end) {
+    return new Range(start.row, start.column, end.row, end.column);
+};
+Range.comparePoints = comparePoints;
+Range.comparePoints = function (p1, p2) {
+    return p1.row - p2.row || p1.column - p2.column;
+};
+exports.Range = Range;
+
+});
+
+ace.define("ace/anchor",[], function(require, exports, module){"use strict";
+var oop = require("./lib/oop");
+var EventEmitter = require("./lib/event_emitter").EventEmitter;
+var Anchor = exports.Anchor = function (doc, row, column) {
+    this.$onChange = this.onChange.bind(this);
+    this.attach(doc);
+    if (typeof column == "undefined")
+        this.setPosition(row.row, row.column);
+    else
+        this.setPosition(row, column);
+};
+(function () {
+    oop.implement(this, EventEmitter);
+    this.getPosition = function () {
+        return this.$clipPositionToDocument(this.row, this.column);
+    };
+    this.getDocument = function () {
+        return this.document;
+    };
+    this.$insertRight = false;
+    this.onChange = function (delta) {
+        if (delta.start.row == delta.end.row && delta.start.row != this.row)
+            return;
+        if (delta.start.row > this.row)
+            return;
+        var point = $getTransformedPoint(delta, { row: this.row, column: this.column }, this.$insertRight);
+        this.setPosition(point.row, point.column, true);
+    };
+    function $pointsInOrder(point1, point2, equalPointsInOrder) {
+        var bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
+        return (point1.row < point2.row) || (point1.row == point2.row && bColIsAfter);
+    }
+    function $getTransformedPoint(delta, point, moveIfEqual) {
+        var deltaIsInsert = delta.action == "insert";
+        var deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
+        var deltaColShift = (deltaIsInsert ? 1 : -1) * (delta.end.column - delta.start.column);
+        var deltaStart = delta.start;
+        var deltaEnd = deltaIsInsert ? deltaStart : delta.end; // Collapse insert range.
+        if ($pointsInOrder(point, deltaStart, moveIfEqual)) {
+            return {
+                row: point.row,
+                column: point.column
+            };
+        }
+        if ($pointsInOrder(deltaEnd, point, !moveIfEqual)) {
+            return {
+                row: point.row + deltaRowShift,
+                column: point.column + (point.row == deltaEnd.row ? deltaColShift : 0)
+            };
+        }
+        return {
+            row: deltaStart.row,
+            column: deltaStart.column
+        };
+    }
+    this.setPosition = function (row, column, noClip) {
+        var pos;
+        if (noClip) {
+            pos = {
+                row: row,
+                column: column
+            };
+        }
+        else {
+            pos = this.$clipPositionToDocument(row, column);
+        }
+        if (this.row == pos.row && this.column == pos.column)
+            return;
+        var old = {
+            row: this.row,
+            column: this.column
+        };
+        this.row = pos.row;
+        this.column = pos.column;
+        this._signal("change", {
+            old: old,
+            value: pos
+        });
+    };
+    this.detach = function () {
+        this.document.off("change", this.$onChange);
+    };
+    this.attach = function (doc) {
+        this.document = doc || this.document;
+        this.document.on("change", this.$onChange);
+    };
+    this.$clipPositionToDocument = function (row, column) {
+        var pos = {};
+        if (row >= this.document.getLength()) {
+            pos.row = Math.max(0, this.document.getLength() - 1);
+            pos.column = this.document.getLine(pos.row).length;
+        }
+        else if (row < 0) {
+            pos.row = 0;
+            pos.column = 0;
+        }
+        else {
+            pos.row = row;
+            pos.column = Math.min(this.document.getLine(pos.row).length, Math.max(0, column));
+        }
+        if (column < 0)
+            pos.column = 0;
+        return pos;
+    };
+}).call(Anchor.prototype);
+
+});
+
+ace.define("ace/document",[], function(require, exports, module){"use strict";
+var oop = require("./lib/oop");
+var applyDelta = require("./apply_delta").applyDelta;
+var EventEmitter = require("./lib/event_emitter").EventEmitter;
+var Range = require("./range").Range;
+var Anchor = require("./anchor").Anchor;
+var Document = function (textOrLines) {
+    this.$lines = [""];
+    if (textOrLines.length === 0) {
+        this.$lines = [""];
+    }
+    else if (Array.isArray(textOrLines)) {
+        this.insertMergedLines({ row: 0, column: 0 }, textOrLines);
+    }
+    else {
+        this.insert({ row: 0, column: 0 }, textOrLines);
+    }
+};
+(function () {
+    oop.implement(this, EventEmitter);
+    this.setValue = function (text) {
+        var len = this.getLength() - 1;
+        this.remove(new Range(0, 0, len, this.getLine(len).length));
+        this.insert({ row: 0, column: 0 }, text || "");
+    };
+    this.getValue = function () {
+        return this.getAllLines().join(this.getNewLineCharacter());
+    };
+    this.createAnchor = function (row, column) {
+        return new Anchor(this, row, column);
+    };
+    if ("aaa".split(/a/).length === 0) {
+        this.$split = function (text) {
+            return text.replace(/\r\n|\r/g, "\n").split("\n");
+        };
+    }
+    else {
+        this.$split = function (text) {
+            return text.split(/\r\n|\r|\n/);
+        };
+    }
+    this.$detectNewLine = function (text) {
+        var match = text.match(/^.*?(\r\n|\r|\n)/m);
+        this.$autoNewLine = match ? match[1] : "\n";
+        this._signal("changeNewLineMode");
+    };
+    this.getNewLineCharacter = function () {
+        switch (this.$newLineMode) {
+            case "windows":
+                return "\r\n";
+            case "unix":
+                return "\n";
+            default:
+                return this.$autoNewLine || "\n";
+        }
+    };
+    this.$autoNewLine = "";
+    this.$newLineMode = "auto";
+    this.setNewLineMode = function (newLineMode) {
+        if (this.$newLineMode === newLineMode)
+            return;
+        this.$newLineMode = newLineMode;
+        this._signal("changeNewLineMode");
+    };
+    this.getNewLineMode = function () {
+        return this.$newLineMode;
+    };
+    this.isNewLine = function (text) {
+        return (text == "\r\n" || text == "\r" || text == "\n");
+    };
+    this.getLine = function (row) {
+        return this.$lines[row] || "";
+    };
+    this.getLines = function (firstRow, lastRow) {
+        return this.$lines.slice(firstRow, lastRow + 1);
+    };
+    this.getAllLines = function () {
+        return this.getLines(0, this.getLength());
+    };
+    this.getLength = function () {
+        return this.$lines.length;
+    };
+    this.getTextRange = function (range) {
+        return this.getLinesForRange(range).join(this.getNewLineCharacter());
+    };
+    this.getLinesForRange = function (range) {
+        var lines;
+        if (range.start.row === range.end.row) {
+            lines = [this.getLine(range.start.row).substring(range.start.column, range.end.column)];
+        }
+        else {
+            lines = this.getLines(range.start.row, range.end.row);
+            lines[0] = (lines[0] || "").substring(range.start.column);
+            var l = lines.length - 1;
+            if (range.end.row - range.start.row == l)
+                lines[l] = lines[l].substring(0, range.end.column);
+        }
+        return lines;
+    };
+    this.insertLines = function (row, lines) {
+        console.warn("Use of document.insertLines is deprecated. Use the insertFullLines method instead.");
+        return this.insertFullLines(row, lines);
+    };
+    this.removeLines = function (firstRow, lastRow) {
+        console.warn("Use of document.removeLines is deprecated. Use the removeFullLines method instead.");
+        return this.removeFullLines(firstRow, lastRow);
+    };
+    this.insertNewLine = function (position) {
+        console.warn("Use of document.insertNewLine is deprecated. Use insertMergedLines(position, ['', '']) instead.");
+        return this.insertMergedLines(position, ["", ""]);
+    };
+    this.insert = function (position, text) {
+        if (this.getLength() <= 1)
+            this.$detectNewLine(text);
+        return this.insertMergedLines(position, this.$split(text));
+    };
+    this.insertInLine = function (position, text) {
+        var start = this.clippedPos(position.row, position.column);
+        var end = this.pos(position.row, position.column + text.length);
+        this.applyDelta({
+            start: start,
+            end: end,
+            action: "insert",
+            lines: [text]
+        }, true);
+        return this.clonePos(end);
+    };
+    this.clippedPos = function (row, column) {
+        var length = this.getLength();
+        if (row === undefined) {
+            row = length;
+        }
+        else if (row < 0) {
+            row = 0;
+        }
+        else if (row >= length) {
+            row = length - 1;
+            column = undefined;
+        }
+        var line = this.getLine(row);
+        if (column == undefined)
+            column = line.length;
+        column = Math.min(Math.max(column, 0), line.length);
+        return { row: row, column: column };
+    };
+    this.clonePos = function (pos) {
+        return { row: pos.row, column: pos.column };
+    };
+    this.pos = function (row, column) {
+        return { row: row, column: column };
+    };
+    this.$clipPosition = function (position) {
+        var length = this.getLength();
+        if (position.row >= length) {
+            position.row = Math.max(0, length - 1);
+            position.column = this.getLine(length - 1).length;
+        }
+        else {
+            position.row = Math.max(0, position.row);
+            position.column = Math.min(Math.max(position.column, 0), this.getLine(position.row).length);
+        }
+        return position;
+    };
+    this.insertFullLines = function (row, lines) {
+        row = Math.min(Math.max(row, 0), this.getLength());
+        var column = 0;
+        if (row < this.getLength()) {
+            lines = lines.concat([""]);
+            column = 0;
+        }
+        else {
+            lines = [""].concat(lines);
+            row--;
+            column = this.$lines[row].length;
+        }
+        this.insertMergedLines({ row: row, column: column }, lines);
+    };
+    this.insertMergedLines = function (position, lines) {
+        var start = this.clippedPos(position.row, position.column);
+        var end = {
+            row: start.row + lines.length - 1,
+            column: (lines.length == 1 ? start.column : 0) + lines[lines.length - 1].length
+        };
+        this.applyDelta({
+            start: start,
+            end: end,
+            action: "insert",
+            lines: lines
+        });
+        return this.clonePos(end);
+    };
+    this.remove = function (range) {
+        var start = this.clippedPos(range.start.row, range.start.column);
+        var end = this.clippedPos(range.end.row, range.end.column);
+        this.applyDelta({
+            start: start,
+            end: end,
+            action: "remove",
+            lines: this.getLinesForRange({ start: start, end: end })
+        });
+        return this.clonePos(start);
+    };
+    this.removeInLine = function (row, startColumn, endColumn) {
+        var start = this.clippedPos(row, startColumn);
+        var end = this.clippedPos(row, endColumn);
+        this.applyDelta({
+            start: start,
+            end: end,
+            action: "remove",
+            lines: this.getLinesForRange({ start: start, end: end })
+        }, true);
+        return this.clonePos(start);
+    };
+    this.removeFullLines = function (firstRow, lastRow) {
+        firstRow = Math.min(Math.max(0, firstRow), this.getLength() - 1);
+        lastRow = Math.min(Math.max(0, lastRow), this.getLength() - 1);
+        var deleteFirstNewLine = lastRow == this.getLength() - 1 && firstRow > 0;
+        var deleteLastNewLine = lastRow < this.getLength() - 1;
+        var startRow = (deleteFirstNewLine ? firstRow - 1 : firstRow);
+        var startCol = (deleteFirstNewLine ? this.getLine(startRow).length : 0);
+        var endRow = (deleteLastNewLine ? lastRow + 1 : lastRow);
+        var endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
+        var range = new Range(startRow, startCol, endRow, endCol);
+        var deletedLines = this.$lines.slice(firstRow, lastRow + 1);
+        this.applyDelta({
+            start: range.start,
+            end: range.end,
+            action: "remove",
+            lines: this.getLinesForRange(range)
+        });
+        return deletedLines;
+    };
+    this.removeNewLine = function (row) {
+        if (row < this.getLength() - 1 && row >= 0) {
+            this.applyDelta({
+                start: this.pos(row, this.getLine(row).length),
+                end: this.pos(row + 1, 0),
+                action: "remove",
+                lines: ["", ""]
+            });
+        }
+    };
+    this.replace = function (range, text) {
+        if (!(range instanceof Range))
+            range = Range.fromPoints(range.start, range.end);
+        if (text.length === 0 && range.isEmpty())
+            return range.start;
+        if (text == this.getTextRange(range))
+            return range.end;
+        this.remove(range);
+        var end;
+        if (text) {
+            end = this.insert(range.start, text);
+        }
+        else {
+            end = range.start;
+        }
+        return end;
+    };
+    this.applyDeltas = function (deltas) {
+        for (var i = 0; i < deltas.length; i++) {
+            this.applyDelta(deltas[i]);
+        }
+    };
+    this.revertDeltas = function (deltas) {
+        for (var i = deltas.length - 1; i >= 0; i--) {
+            this.revertDelta(deltas[i]);
+        }
+    };
+    this.applyDelta = function (delta, doNotValidate) {
+        var isInsert = delta.action == "insert";
+        if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
+            : !Range.comparePoints(delta.start, delta.end)) {
+            return;
+        }
+        if (isInsert && delta.lines.length > 20000) {
+            this.$splitAndapplyLargeDelta(delta, 20000);
+        }
+        else {
+            applyDelta(this.$lines, delta, doNotValidate);
+            this._signal("change", delta);
+        }
+    };
+    this.$safeApplyDelta = function (delta) {
+        var docLength = this.$lines.length;
+        if (delta.action == "remove" && delta.start.row < docLength && delta.end.row < docLength
+            || delta.action == "insert" && delta.start.row <= docLength) {
+            this.applyDelta(delta);
+        }
+    };
+    this.$splitAndapplyLargeDelta = function (delta, MAX) {
+        var lines = delta.lines;
+        var l = lines.length - MAX + 1;
+        var row = delta.start.row;
+        var column = delta.start.column;
+        for (var from = 0, to = 0; from < l; from = to) {
+            to += MAX - 1;
+            var chunk = lines.slice(from, to);
+            chunk.push("");
+            this.applyDelta({
+                start: this.pos(row + from, column),
+                end: this.pos(row + to, column = 0),
+                action: delta.action,
+                lines: chunk
+            }, true);
+        }
+        delta.lines = lines.slice(from);
+        delta.start.row = row + from;
+        delta.start.column = column;
+        this.applyDelta(delta, true);
+    };
+    this.revertDelta = function (delta) {
+        this.$safeApplyDelta({
+            start: this.clonePos(delta.start),
+            end: this.clonePos(delta.end),
+            action: (delta.action == "insert" ? "remove" : "insert"),
+            lines: delta.lines.slice()
+        });
+    };
+    this.indexToPosition = function (index, startRow) {
+        var lines = this.$lines || this.getAllLines();
+        var newlineLength = this.getNewLineCharacter().length;
+        for (var i = startRow || 0, l = lines.length; i < l; i++) {
+            index -= lines[i].length + newlineLength;
+            if (index < 0)
+                return { row: i, column: index + lines[i].length + newlineLength };
+        }
+        return { row: l - 1, column: index + lines[l - 1].length + newlineLength };
+    };
+    this.positionToIndex = function (pos, startRow) {
+        var lines = this.$lines || this.getAllLines();
+        var newlineLength = this.getNewLineCharacter().length;
+        var index = 0;
+        var row = Math.min(pos.row, lines.length);
+        for (var i = startRow || 0; i < row; ++i)
+            index += lines[i].length + newlineLength;
+        return index + pos.column;
+    };
+}).call(Document.prototype);
+exports.Document = Document;
+
+});
+
+ace.define("ace/lib/lang",[], function(require, exports, module){"use strict";
+exports.last = function (a) {
+    return a[a.length - 1];
+};
+exports.stringReverse = function (string) {
+    return string.split("").reverse().join("");
+};
+exports.stringRepeat = function (string, count) {
+    var result = '';
+    while (count > 0) {
+        if (count & 1)
+            result += string;
+        if (count >>= 1)
+            string += string;
+    }
+    return result;
+};
+var trimBeginRegexp = /^\s\s*/;
+var trimEndRegexp = /\s\s*$/;
+exports.stringTrimLeft = function (string) {
+    return string.replace(trimBeginRegexp, '');
+};
+exports.stringTrimRight = function (string) {
+    return string.replace(trimEndRegexp, '');
+};
+exports.copyObject = function (obj) {
+    var copy = {};
+    for (var key in obj) {
+        copy[key] = obj[key];
+    }
+    return copy;
+};
+exports.copyArray = function (array) {
+    var copy = [];
+    for (var i = 0, l = array.length; i < l; i++) {
+        if (array[i] && typeof array[i] == "object")
+            copy[i] = this.copyObject(array[i]);
+        else
+            copy[i] = array[i];
+    }
+    return copy;
+};
+exports.deepCopy = function deepCopy(obj) {
+    if (typeof obj !== "object" || !obj)
+        return obj;
+    var copy;
+    if (Array.isArray(obj)) {
+        copy = [];
+        for (var key = 0; key < obj.length; key++) {
+            copy[key] = deepCopy(obj[key]);
+        }
+        return copy;
+    }
+    if (Object.prototype.toString.call(obj) !== "[object Object]")
+        return obj;
+    copy = {};
+    for (var key in obj)
+        copy[key] = deepCopy(obj[key]);
+    return copy;
+};
+exports.arrayToMap = function (arr) {
+    var map = {};
+    for (var i = 0; i < arr.length; i++) {
+        map[arr[i]] = 1;
+    }
+    return map;
+};
+exports.createMap = function (props) {
+    var map = Object.create(null);
+    for (var i in props) {
+        map[i] = props[i];
+    }
+    return map;
+};
+exports.arrayRemove = function (array, value) {
+    for (var i = 0; i <= array.length; i++) {
+        if (value === array[i]) {
+            array.splice(i, 1);
+        }
+    }
+};
+exports.escapeRegExp = function (str) {
+    return str.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+};
+exports.escapeHTML = function (str) {
+    return ("" + str).replace(/&/g, "&#38;").replace(/"/g, "&#34;").replace(/'/g, "&#39;").replace(/</g, "&#60;");
+};
+exports.getMatchOffsets = function (string, regExp) {
+    var matches = [];
+    string.replace(regExp, function (str) {
+        matches.push({
+            offset: arguments[arguments.length - 2],
+            length: str.length
+        });
+    });
+    return matches;
+};
+exports.deferredCall = function (fcn) {
+    var timer = null;
+    var callback = function () {
+        timer = null;
+        fcn();
+    };
+    var deferred = function (timeout) {
+        deferred.cancel();
+        timer = setTimeout(callback, timeout || 0);
+        return deferred;
+    };
+    deferred.schedule = deferred;
+    deferred.call = function () {
+        this.cancel();
+        fcn();
+        return deferred;
+    };
+    deferred.cancel = function () {
+        clearTimeout(timer);
+        timer = null;
+        return deferred;
+    };
+    deferred.isPending = function () {
+        return timer;
+    };
+    return deferred;
+};
+exports.delayedCall = function (fcn, defaultTimeout) {
+    var timer = null;
+    var callback = function () {
+        timer = null;
+        fcn();
+    };
+    var _self = function (timeout) {
+        if (timer == null)
+            timer = setTimeout(callback, timeout || defaultTimeout);
+    };
+    _self.delay = function (timeout) {
+        timer && clearTimeout(timer);
+        timer = setTimeout(callback, timeout || defaultTimeout);
+    };
+    _self.schedule = _self;
+    _self.call = function () {
+        this.cancel();
+        fcn();
+    };
+    _self.cancel = function () {
+        timer && clearTimeout(timer);
+        timer = null;
+    };
+    _self.isPending = function () {
+        return timer;
+    };
+    return _self;
+};
+
+});
+
+ace.define("ace/worker/mirror",[], function(require, exports, module) {
+"use strict";
+
+var Document = require("../document").Document;
+var lang = require("../lib/lang");
+    
+var Mirror = exports.Mirror = function(sender) {
+    this.sender = sender;
+    var doc = this.doc = new Document("");
+    
+    var deferredUpdate = this.deferredUpdate = lang.delayedCall(this.onUpdate.bind(this));
+    
+    var _self = this;
+    sender.on("change", function(e) {
+        var data = e.data;
+        if (data[0].start) {
+            doc.applyDeltas(data);
+        } else {
+            for (var i = 0; i < data.length; i += 2) {
+                var d, err; 
+                if (Array.isArray(data[i+1])) {
+                    d = {action: "insert", start: data[i], lines: data[i+1]};
+                } else {
+                    d = {action: "remove", start: data[i], end: data[i+1]};
+                }
+                
+                if ((d.action == "insert" ? d.start : d.end).row >= doc.$lines.length) {
+                    err = new Error("Invalid delta");
+                    err.data = {
+                        path: _self.$path,
+                        linesLength: doc.$lines.length,
+                        start: d.start,
+                        end: d.end
+                    };
+                    throw err;
+                }
+
+                doc.applyDelta(d, true);
+            }
+        }
+        if (_self.$timeout)
+            return deferredUpdate.schedule(_self.$timeout);
+        _self.onUpdate();
+    });
+};
+
+(function() {
+    
+    this.$timeout = 500;
+    
+    this.setTimeout = function(timeout) {
+        this.$timeout = timeout;
+    };
+    
+    this.setValue = function(value) {
+        this.doc.setValue(value);
+        this.deferredUpdate.schedule(this.$timeout);
+    };
+    
+    this.getValue = function(callbackId) {
+        this.sender.callback(this.doc.getValue(), callbackId);
+    };
+    
+    this.onUpdate = function() {
+    };
+    
+    this.isPending = function() {
+        return this.deferredUpdate.isPending();
+    };
+    
+}).call(Mirror.prototype);
+
+});
+
+ace.define("ace/mode/php/php",[], function (require, exports, module) {
+
+	var PHP = {Constants: {}};
+
+	PHP.Constants.T_THROW = 317
+	PHP.Constants.T_INCLUDE = 272
+	PHP.Constants.T_INCLUDE_ONCE = 273
+	PHP.Constants.T_EVAL = 274
+	PHP.Constants.T_REQUIRE = 275
+	PHP.Constants.T_REQUIRE_ONCE = 276
+	PHP.Constants.T_LOGICAL_OR = 277
+	PHP.Constants.T_LOGICAL_XOR = 278
+	PHP.Constants.T_LOGICAL_AND = 279
+	PHP.Constants.T_PRINT = 280
+	PHP.Constants.T_YIELD = 281
+	PHP.Constants.T_DOUBLE_ARROW = 386
+	PHP.Constants.T_YIELD_FROM = 282
+	PHP.Constants.T_PLUS_EQUAL = 352
+	PHP.Constants.T_MINUS_EQUAL = 353
+	PHP.Constants.T_MUL_EQUAL = 354
+	PHP.Constants.T_DIV_EQUAL = 355
+	PHP.Constants.T_CONCAT_EQUAL = 356
+	PHP.Constants.T_MOD_EQUAL = 357
+	PHP.Constants.T_AND_EQUAL = 358
+	PHP.Constants.T_OR_EQUAL = 359
+	PHP.Constants.T_XOR_EQUAL = 360
+	PHP.Constants.T_SL_EQUAL = 361
+	PHP.Constants.T_SR_EQUAL = 362
+	PHP.Constants.T_POW_EQUAL = 402
+	PHP.Constants.T_COALESCE_EQUAL = 363
+	PHP.Constants.T_COALESCE = 400
+	PHP.Constants.T_BOOLEAN_OR = 364
+	PHP.Constants.T_BOOLEAN_AND = 365
+	PHP.Constants.T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG = 404
+	PHP.Constants.T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = 403
+	PHP.Constants.T_IS_EQUAL = 366
+	PHP.Constants.T_IS_NOT_EQUAL = 367
+	PHP.Constants.T_IS_IDENTICAL = 368
+	PHP.Constants.T_IS_NOT_IDENTICAL = 369
+	PHP.Constants.T_SPACESHIP = 372
+	PHP.Constants.T_IS_SMALLER_OR_EQUAL = 370
+	PHP.Constants.T_IS_GREATER_OR_EQUAL = 371
+	PHP.Constants.T_SL = 373
+	PHP.Constants.T_SR = 374
+	PHP.Constants.T_INSTANCEOF = 283
+	PHP.Constants.T_INC = 375
+	PHP.Constants.T_DEC = 376
+	PHP.Constants.T_INT_CAST = 377
+	PHP.Constants.T_DOUBLE_CAST = 378
+	PHP.Constants.T_STRING_CAST = 379
+	PHP.Constants.T_ARRAY_CAST = 380
+	PHP.Constants.T_OBJECT_CAST = 381
+	PHP.Constants.T_BOOL_CAST = 382
+	PHP.Constants.T_UNSET_CAST = 383
+	PHP.Constants.T_POW = 401
+	PHP.Constants.T_NEW = 284
+	PHP.Constants.T_CLONE = 285
+	PHP.Constants.T_EXIT = 286
+	PHP.Constants.T_IF = 287
+	PHP.Constants.T_ELSEIF = 288
+	PHP.Constants.T_ELSE = 289
+	PHP.Constants.T_ENDIF = 290
+	PHP.Constants.T_LNUMBER = 260
+	PHP.Constants.T_DNUMBER = 261
+	PHP.Constants.T_STRING = 262
+	PHP.Constants.T_STRING_VARNAME = 270
+	PHP.Constants.T_VARIABLE = 266
+	PHP.Constants.T_NUM_STRING = 271
+	PHP.Constants.T_INLINE_HTML = 267
+	PHP.Constants.T_ENCAPSED_AND_WHITESPACE = 268
+	PHP.Constants.T_CONSTANT_ENCAPSED_STRING = 269
+	PHP.Constants.T_ECHO = 291
+	PHP.Constants.T_DO = 292
+	PHP.Constants.T_WHILE = 293
+	PHP.Constants.T_ENDWHILE = 294
+	PHP.Constants.T_FOR = 295
+	PHP.Constants.T_ENDFOR = 296
+	PHP.Constants.T_FOREACH = 297
+	PHP.Constants.T_ENDFOREACH = 298
+	PHP.Constants.T_DECLARE = 299
+	PHP.Constants.T_ENDDECLARE = 300
+	PHP.Constants.T_AS = 301
+	PHP.Constants.T_SWITCH = 302
+	PHP.Constants.T_MATCH = 306
+	PHP.Constants.T_ENDSWITCH = 303
+	PHP.Constants.T_CASE = 304
+	PHP.Constants.T_DEFAULT = 305
+	PHP.Constants.T_BREAK = 307
+	PHP.Constants.T_CONTINUE = 308
+	PHP.Constants.T_GOTO = 309
+	PHP.Constants.T_FUNCTION = 310
+	PHP.Constants.T_FN = 311
+	PHP.Constants.T_CONST = 312
+	PHP.Constants.T_RETURN = 313
+	PHP.Constants.T_TRY = 314
+	PHP.Constants.T_CATCH = 315
+	PHP.Constants.T_FINALLY = 316
+	PHP.Constants.T_THROW = 317
+	PHP.Constants.T_USE = 318
+	PHP.Constants.T_INSTEADOF = 319
+	PHP.Constants.T_GLOBAL = 320
+	PHP.Constants.T_STATIC = 321
+	PHP.Constants.T_ABSTRACT = 322
+	PHP.Constants.T_FINAL = 323
+	PHP.Constants.T_PRIVATE = 324
+	PHP.Constants.T_PROTECTED = 325
+	PHP.Constants.T_PUBLIC = 326
+	PHP.Constants.T_READONLY = 327
+	PHP.Constants.T_VAR = 328
+	PHP.Constants.T_UNSET = 329
+	PHP.Constants.T_ISSET = 330
+	PHP.Constants.T_EMPTY = 331
+	PHP.Constants.T_HALT_COMPILER = 332
+	PHP.Constants.T_CLASS = 333
+	PHP.Constants.T_TRAIT = 334
+	PHP.Constants.T_INTERFACE = 335
+	PHP.Constants.T_ENUM = 336
+	PHP.Constants.T_EXTENDS = 337
+	PHP.Constants.T_IMPLEMENTS = 338
+	PHP.Constants.T_OBJECT_OPERATOR = 384
+	PHP.Constants.T_NULLSAFE_OBJECT_OPERATOR = 385
+	PHP.Constants.T_DOUBLE_ARROW = 386
+	PHP.Constants.T_LIST = 340
+	PHP.Constants.T_ARRAY = 341
+	PHP.Constants.T_CALLABLE = 342
+	PHP.Constants.T_CLASS_C = 346
+	PHP.Constants.T_TRAIT_C = 347
+	PHP.Constants.T_METHOD_C = 348
+	PHP.Constants.T_FUNC_C = 349
+	PHP.Constants.T_LINE = 343
+	PHP.Constants.T_FILE = 344
+	PHP.Constants.T_START_HEREDOC = 393
+	PHP.Constants.T_END_HEREDOC = 394
+	PHP.Constants.T_DOLLAR_OPEN_CURLY_BRACES = 395
+	PHP.Constants.T_CURLY_OPEN = 396
+	PHP.Constants.T_PAAMAYIM_NEKUDOTAYIM = 397
+	PHP.Constants.T_NAMESPACE = 339
+	PHP.Constants.T_NS_C = 350
+	PHP.Constants.T_DIR = 345
+	PHP.Constants.T_NS_SEPARATOR = 398
+	PHP.Constants.T_ELLIPSIS = 399
+	PHP.Constants.T_NAME_FULLY_QUALIFIED = 263
+	PHP.Constants.T_NAME_QUALIFIED = 265
+	PHP.Constants.T_NAME_RELATIVE = 264
+	PHP.Constants.T_ATTRIBUTE = 351
+	PHP.Constants.T_ENUM = 336
+	PHP.Constants.T_BAD_CHARACTER = 405
+	PHP.Constants.T_COMMENT = 387
+	PHP.Constants.T_DOC_COMMENT = 388
+	PHP.Constants.T_OPEN_TAG = 389
+	PHP.Constants.T_OPEN_TAG_WITH_ECHO = 390
+	PHP.Constants.T_CLOSE_TAG = 391
+	PHP.Constants.T_WHITESPACE = 392
+
+	PHP.Lexer = function (src, ini) {
+		var heredoc, heredocEndAllowed,
+
+			stateStack = ['INITIAL'], stackPos = 0,
+			swapState = function (state) {
+				stateStack[stackPos] = state;
+			},
+			pushState = function (state) {
+				stateStack[++stackPos] = state;
+			},
+			popState = function () {
+				--stackPos;
+			},
+
+			shortOpenTag = ini === undefined || /^(on|true|1)$/i.test(ini.short_open_tag),
+			openTag = shortOpenTag
+				? /^(\<\?php(?:\r\n|[ \t\r\n])|<\?|\<script language\=('|")?php('|")?\>)/i
+				: /^(\<\?php(?:\r\n|[ \t\r\n])|\<script language\=('|")?php('|")?\>)/i,
+			inlineHtml = shortOpenTag
+				? /[^<]*(?:<(?!\?|script language\=('|")?php('|")?\>)[^<]*)*/i
+				: /[^<]*(?:<(?!\?=|\?php[ \t\r\n]|script language\=('|")?php('|")?\>)[^<]*)*/i,
+			labelRegexPart = '[a-zA-Z_\\x7f-\\uffff][a-zA-Z0-9_\\x7f-\\uffff]*',
+			stringRegexPart = function (quote) {
+				return '[^' + quote + '\\\\${]*(?:(?:\\\\[\\s\\S]|\\$(?!\\{|[a-zA-Z_\\x7f-\\uffff])|\\{(?!\\$))[^' + quote + '\\\\${]*)*';
+			},
+
+			sharedStringTokens = [
+				{
+					value: PHP.Constants.T_VARIABLE,
+					re: new RegExp('^\\$' + labelRegexPart + '(?=\\[)'),
+					func: function () {
+						pushState('VAR_OFFSET');
+					}
+				},
+				{
+					value: PHP.Constants.T_VARIABLE,
+					re: new RegExp('^\\$' + labelRegexPart + '(?=->' + labelRegexPart + ')'),
+					func: function () {
+						pushState('LOOKING_FOR_PROPERTY');
+					}
+				},
+				{
+					value: PHP.Constants.T_DOLLAR_OPEN_CURLY_BRACES,
+					re: new RegExp('^\\$\\{(?=' + labelRegexPart + '[\\[}])'),
+					func: function () {
+						pushState('LOOKING_FOR_VARNAME');
+					}
+				},
+				{
+					value: PHP.Constants.T_VARIABLE,
+					re: new RegExp('^\\$' + labelRegexPart)
+				},
+				{
+					value: PHP.Constants.T_DOLLAR_OPEN_CURLY_BRACES,
+					re: /^\$\{/,
+					func: function () {
+						pushState('IN_SCRIPTING');
+					}
+				},
+				{
+					value: PHP.Constants.T_CURLY_OPEN,
+					re: /^\{(?=\$)/,
+					func: function () {
+						pushState('IN_SCRIPTING');
+					}
+				}
+			],
+			data = {
+				'INITIAL': [
+					{
+						value: PHP.Constants.T_OPEN_TAG_WITH_ECHO,
+						re: /^<\?=/i,
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_OPEN_TAG,
+						re: openTag,
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_INLINE_HTML,
+						re: inlineHtml
+					},
+				],
+				'IN_SCRIPTING': [
+					{
+						value: PHP.Constants.T_WHITESPACE,
+						re: /^[ \n\r\t]+/
+					},
+					{
+						value: PHP.Constants.T_ABSTRACT,
+						re: /^abstract\b/i
+					},
+					{
+						value: PHP.Constants.T_LOGICAL_AND,
+						re: /^and\b/i
+					},
+					{
+						value: PHP.Constants.T_ARRAY,
+						re: /^array\b/i
+					},
+					{
+						value: PHP.Constants.T_AS,
+						re: /^as\b/i
+					},
+					{
+						value: PHP.Constants.T_BREAK,
+						re: /^break\b/i
+					},
+					{
+						value: PHP.Constants.T_CALLABLE,
+						re: /^callable\b/i
+					},
+					{
+						value: PHP.Constants.T_CASE,
+						re: /^case\b/i
+					},
+					{
+						value: PHP.Constants.T_CATCH,
+						re: /^catch\b/i
+					},
+					{
+						value: PHP.Constants.T_CLASS,
+						re: /^class\b/i,
+					},
+					{
+						value: PHP.Constants.T_CLONE,
+						re: /^clone\b/i
+					},
+					{
+						value: PHP.Constants.T_CONST,
+						re: /^const\b/i
+					},
+					{
+						value: PHP.Constants.T_CONTINUE,
+						re: /^continue\b/i
+					},
+					{
+						value: PHP.Constants.T_DECLARE,
+						re: /^declare\b/i
+					},
+					{
+						value: PHP.Constants.T_DEFAULT,
+						re: /^default\b/i
+					},
+					{
+						value: PHP.Constants.T_DO,
+						re: /^do\b/i
+					},
+					{
+						value: PHP.Constants.T_ECHO,
+						re: /^echo\b/i
+					},
+					{
+						value: PHP.Constants.T_ELSE,
+						re: /^else\b/i
+					},
+					{
+						value: PHP.Constants.T_ELSEIF,
+						re: /^elseif\b/i
+					},
+					{
+						value: PHP.Constants.T_ENUM,
+						re: /^enum\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDDECLARE,
+						re: /^enddeclare\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDFOR,
+						re: /^endfor\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDFOREACH,
+						re: /^endforeach\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDIF,
+						re: /^endif\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDSWITCH,
+						re: /^endswitch\b/i
+					},
+					{
+						value: PHP.Constants.T_ENDWHILE,
+						re: /^endwhile\b/i
+					},
+					{
+						value: PHP.Constants.T_ENUM,
+						re: /^enum\b/i
+					},
+					{
+						value: PHP.Constants.T_EMPTY,
+						re: /^empty\b/i
+					},
+					{
+						value: PHP.Constants.T_EVAL,
+						re: /^eval\b/i
+					},
+					{
+						value: PHP.Constants.T_EXIT,
+						re: /^(?:exit|die)\b/i
+					},
+					{
+						value: PHP.Constants.T_EXTENDS,
+						re: /^extends\b/i
+					},
+					{
+						value: PHP.Constants.T_FINAL,
+						re: /^final\b/i
+					},
+					{
+						value: PHP.Constants.T_FINALLY,
+						re: /^finally\b/i
+					},
+					{
+						value: PHP.Constants.T_FN,
+						re: /^fn\b/i
+					},
+					{
+						value: PHP.Constants.T_FOR,
+						re: /^for\b/i
+					},
+					{
+						value: PHP.Constants.T_FOREACH,
+						re: /^foreach\b/i
+					},
+					{
+						value: PHP.Constants.T_FUNCTION,
+						re: /^function\b/i
+					},
+					{
+						value: PHP.Constants.T_GLOBAL,
+						re: /^global\b/i
+					},
+					{
+						value: PHP.Constants.T_GOTO,
+						re: /^goto\b/i
+					},
+					{
+						value: PHP.Constants.T_IF,
+						re: /^if\b/i
+					},
+					{
+						value: PHP.Constants.T_IMPLEMENTS,
+						re: /^implements\b/i
+					},
+					{
+						value: PHP.Constants.T_INCLUDE,
+						re: /^include\b/i
+					},
+					{
+						value: PHP.Constants.T_INCLUDE_ONCE,
+						re: /^include_once\b/i
+					},
+					{
+						value: PHP.Constants.T_INSTANCEOF,
+						re: /^instanceof\b/i
+					},
+					{
+						value: PHP.Constants.T_INSTEADOF,
+						re: /^insteadof\b/i
+					},
+					{
+						value: PHP.Constants.T_INTERFACE,
+						re: /^interface\b/i
+					},
+					{
+						value: PHP.Constants.T_ISSET,
+						re: /^isset\b/i
+					},
+					{
+						value: PHP.Constants.T_LIST,
+						re: /^list\b/i
+					},
+					{
+						value: PHP.Constants.T_MATCH,
+						re: /^match\b/i
+					},
+					{
+						value: PHP.Constants.T_NEW,
+						re: /^new\b/i
+					},
+					{
+						value: PHP.Constants.T_LOGICAL_OR,
+						re: /^or\b/i
+					},
+					{
+						value: PHP.Constants.T_PRINT,
+						re: /^print\b/i
+					},
+					{
+						value: PHP.Constants.T_PRIVATE,
+						re: /^private\b/i
+					},
+					{
+						value: PHP.Constants.T_PROTECTED,
+						re: /^protected\b/i
+					},
+					{
+						value: PHP.Constants.T_PUBLIC,
+						re: /^public\b/i
+					},
+					{
+						value: PHP.Constants.T_READONLY,
+						re: /^readonly\b/i
+					},
+					{
+						value: PHP.Constants.T_REQUIRE,
+						re: /^require\b/i
+					},
+					{
+						value: PHP.Constants.T_REQUIRE_ONCE,
+						re: /^require_once\b/i
+					},
+					{
+						value: PHP.Constants.T_STATIC,
+						re: /^static\b/i
+					},
+					{
+						value: PHP.Constants.T_SWITCH,
+						re: /^switch\b/i
+					},
+					{
+						value: PHP.Constants.T_THROW,
+						re: /^throw\b/i
+					},
+					{
+						value: PHP.Constants.T_TRAIT,
+						re: /^trait\b/i,
+					},
+					{
+						value: PHP.Constants.T_TRY,
+						re: /^try\b/i
+					},
+					{
+						value: PHP.Constants.T_UNSET,
+						re: /^unset\b/i
+					},
+					{
+						value: PHP.Constants.T_USE,
+						re: /^use\b/i
+					},
+					{
+						value: PHP.Constants.T_VAR,
+						re: /^var\b/i
+					},
+					{
+						value: PHP.Constants.T_WHILE,
+						re: /^while\b/i
+					},
+					{
+						value: PHP.Constants.T_LOGICAL_XOR,
+						re: /^xor\b/i
+					},
+					{
+						value: PHP.Constants.T_YIELD_FROM,
+						re: /^yield\s+from\b/i
+					},
+					{
+						value: PHP.Constants.T_YIELD,
+						re: /^yield\b/i
+					},
+					{
+						value: PHP.Constants.T_RETURN,
+						re: /^return\b/i
+					},
+					{
+						value: PHP.Constants.T_METHOD_C,
+						re: /^__METHOD__\b/i
+					},
+					{
+						value: PHP.Constants.T_LINE,
+						re: /^__LINE__\b/i
+					},
+					{
+						value: PHP.Constants.T_FILE,
+						re: /^__FILE__\b/i
+					},
+					{
+						value: PHP.Constants.T_FUNC_C,
+						re: /^__FUNCTION__\b/i
+					},
+					{
+						value: PHP.Constants.T_NS_C,
+						re: /^__NAMESPACE__\b/i
+					},
+					{
+						value: PHP.Constants.T_TRAIT_C,
+						re: /^__TRAIT__\b/i
+					},
+					{
+						value: PHP.Constants.T_DIR,
+						re: /^__DIR__\b/i
+					},
+					{
+						value: PHP.Constants.T_CLASS_C,
+						re: /^__CLASS__\b/i
+					},
+					{
+						value: PHP.Constants.T_AND_EQUAL,
+						re: /^&=/
+					},
+					{
+						value: PHP.Constants.T_ARRAY_CAST,
+						re: /^\([ \t]*array[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_BOOL_CAST,
+						re: /^\([ \t]*(?:bool|boolean)[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_DOUBLE_CAST,
+						re: /^\([ \t]*(?:real|float|double)[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_INT_CAST,
+						re: /^\([ \t]*(?:int|integer)[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_OBJECT_CAST,
+						re: /^\([ \t]*object[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_STRING_CAST,
+						re: /^\([ \t]*(?:binary|string)[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_UNSET_CAST,
+						re: /^\([ \t]*unset[ \t]*\)/i
+					},
+					{
+						value: PHP.Constants.T_BOOLEAN_AND,
+						re: /^&&/
+					},
+					{
+						value: PHP.Constants.T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+						re: /^&(?=[$])/
+					},
+					{
+						value: PHP.Constants.T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG,
+						re: /^(&)(?=[^\$|^&])/
+					},
+					{
+						value: PHP.Constants.T_BOOLEAN_OR,
+						re: /^\|\|/
+					},
+					{
+						value: PHP.Constants.T_CLOSE_TAG,
+						re: /^(?:\?>|<\/script>)(\r\n|\r|\n)?/i,
+						func: function () {
+							swapState('INITIAL');
+						}
+					},
+					{
+						value: PHP.Constants.T_DOUBLE_ARROW,
+						re: /^=>/
+					},
+					{
+						value: PHP.Constants.T_PAAMAYIM_NEKUDOTAYIM,
+						re: /^::/
+					},
+					{
+						value: PHP.Constants.T_INC,
+						re: /^\+\+/
+					},
+					{
+						value: PHP.Constants.T_DEC,
+						re: /^--/
+					},
+					{
+						value: PHP.Constants.T_CONCAT_EQUAL,
+						re: /^\.=/
+					},
+					{
+						value: PHP.Constants.T_DIV_EQUAL,
+						re: /^\/=/
+					},
+					{
+						value: PHP.Constants.T_XOR_EQUAL,
+						re: /^\^=/
+					},
+					{
+						value: PHP.Constants.T_MUL_EQUAL,
+						re: /^\*=/
+					},
+					{
+						value: PHP.Constants.T_MOD_EQUAL,
+						re: /^%=/
+					},
+					{
+						value: PHP.Constants.T_SL_EQUAL,
+						re: /^<<=/
+					},
+					{
+						value: PHP.Constants.T_START_HEREDOC,
+						re: new RegExp('^[bB]?<<<[ \\t]*\'(' + labelRegexPart + ')\'(?:\\r\\n|\\r|\\n)'),
+						func: function (result) {
+							heredoc = result[1];
+							swapState('NOWDOC');
+						}
+					},
+					{
+						value: PHP.Constants.T_START_HEREDOC,
+						re: new RegExp('^[bB]?<<<[ \\t]*("?)(' + labelRegexPart + ')\\1(?:\\r\\n|\\r|\\n)'),
+						func: function (result) {
+							heredoc = result[2];
+							heredocEndAllowed = true;
+							swapState('HEREDOC');
+						}
+					},
+					{
+						value: PHP.Constants.T_SL,
+						re: /^<</
+					},
+					{
+						value: PHP.Constants.T_SPACESHIP,
+						re: /^<=>/
+					},
+					{
+						value: PHP.Constants.T_IS_SMALLER_OR_EQUAL,
+						re: /^<=/
+					},
+					{
+						value: PHP.Constants.T_SR_EQUAL,
+						re: /^>>=/
+					},
+					{
+						value: PHP.Constants.T_SR,
+						re: /^>>/
+					},
+					{
+						value: PHP.Constants.T_IS_GREATER_OR_EQUAL,
+						re: /^>=/
+					},
+					{
+						value: PHP.Constants.T_OR_EQUAL,
+						re: /^\|=/
+					},
+					{
+						value: PHP.Constants.T_PLUS_EQUAL,
+						re: /^\+=/
+					},
+					{
+						value: PHP.Constants.T_MINUS_EQUAL,
+						re: /^-=/
+					},
+					{
+						value: PHP.Constants.T_OBJECT_OPERATOR,
+						re: new RegExp('^->(?=[ \n\r\t]*' + labelRegexPart + ')'),
+						func: function () {
+							pushState('LOOKING_FOR_PROPERTY');
+						}
+					},
+					{
+						value: PHP.Constants.T_OBJECT_OPERATOR,
+						re: /^->/i
+					},
+					{
+						value: PHP.Constants.T_ELLIPSIS,
+						re: /^\.\.\./
+					},
+					{
+						value: PHP.Constants.T_POW_EQUAL,
+						re: /^\*\*=/
+					},
+					{
+						value: PHP.Constants.T_POW,
+						re: /^\*\*/
+					},
+					{
+						value: PHP.Constants.T_COALESCE_EQUAL,
+						re: /^\?\?=/
+					},
+					{
+						value: PHP.Constants.T_COALESCE,
+						re: /^\?\?/
+					},
+					{
+						value: PHP.Constants.T_NULLSAFE_OBJECT_OPERATOR,
+						re: /^\?->/
+					},
+					{
+						value: PHP.Constants.T_NAME_FULLY_QUALIFIED,
+						re: /^\\\w+(?:\\\w+)*/
+					},
+					{
+						value: PHP.Constants.T_NAME_QUALIFIED,
+						re: /^\w+\\\w+(?:\\\w+)*/
+					},
+					{
+						value: PHP.Constants.T_NAME_RELATIVE,
+						re: /^namespace\\\w+(?:\\\w+)*/
+					},
+					{
+						value: PHP.Constants.T_NAMESPACE,
+						re: /^namespace\b/i
+					},
+					{
+						value: PHP.Constants.T_ATTRIBUTE,
+						re: /^#\[([\S\s]*?)]/
+					},
+					{
+						value: PHP.Constants.T_COMMENT,
+						re: /^\/\*([\S\s]*?)(?:\*\/|$)/
+					},
+					{
+						value: PHP.Constants.T_COMMENT,
+						re: /^(?:\/\/|#)[^\r\n?]*(?:\?(?!>)[^\r\n?]*)*(?:\r\n|\r|\n)?/
+					},
+					{
+						value: PHP.Constants.T_IS_IDENTICAL,
+						re: /^===/
+					},
+					{
+						value: PHP.Constants.T_IS_EQUAL,
+						re: /^==/
+					},
+					{
+						value: PHP.Constants.T_IS_NOT_IDENTICAL,
+						re: /^!==/
+					},
+					{
+						value: PHP.Constants.T_IS_NOT_EQUAL,
+						re: /^(!=|<>)/
+					},
+					{
+						value: PHP.Constants.T_DNUMBER,
+						re: /^(?:[0-9]+\.[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?/
+					},
+					{
+						value: PHP.Constants.T_DNUMBER,
+						re: /^[0-9]+[eE][+-]?[0-9]+/
+					},
+					{
+						value: PHP.Constants.T_LNUMBER,
+						re: /^(?:0x[0-9A-F]+|0b[01]+|[0-9]+)/i
+					},
+					{
+						value: PHP.Constants.T_VARIABLE,
+						re: new RegExp('^\\$' + labelRegexPart)
+					},
+					{
+						value: PHP.Constants.T_CONSTANT_ENCAPSED_STRING,
+						re: /^[bB]?'[^'\\]*(?:\\[\s\S][^'\\]*)*'/,
+					},
+					{
+						value: PHP.Constants.T_CONSTANT_ENCAPSED_STRING,
+						re: new RegExp('^[bB]?"' + stringRegexPart('"') + '"')
+					},
+					{
+						value: -1,
+						re: /^[bB]?"/,
+						func: function () {
+							swapState('DOUBLE_QUOTES');
+						}
+					},
+					{
+						value: -1,
+						re: /^`/,
+						func: function () {
+							swapState('BACKTICKS');
+						}
+					},
+					{
+						value: PHP.Constants.T_NS_SEPARATOR,
+						re: /^\\/
+					},
+					{
+						value: PHP.Constants.T_STRING,
+						re: /^[a-zA-Z_\x7f-\uffff][a-zA-Z0-9_\x7f-\uffff]*/
+					},
+					{
+						value: -1,
+						re: /^\{/,
+						func: function () {
+							pushState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: -1,
+						re: /^\}/,
+						func: function () {
+							if (stackPos > 0) {
+								popState();
+							}
+						}
+					},
+					{
+						value: -1,
+						re: /^[\[\];:?()!.,><=+-/*|&@^%"'$~]/
+					}
+				],
+				'DOUBLE_QUOTES': sharedStringTokens.concat([
+					{
+						value: -1,
+						re: /^"/,
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_ENCAPSED_AND_WHITESPACE,
+						re: new RegExp('^' + stringRegexPart('"'))
+					}
+				]),
+				'BACKTICKS': sharedStringTokens.concat([
+					{
+						value: -1,
+						re: /^`/,
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_ENCAPSED_AND_WHITESPACE,
+						re: new RegExp('^' + stringRegexPart('`'))
+					}
+				]),
+				'VAR_OFFSET': [
+					{
+						value: -1,
+						re: /^\]/,
+						func: function () {
+							popState();
+						}
+					},
+					{
+						value: PHP.Constants.T_NUM_STRING,
+						re: /^(?:0x[0-9A-F]+|0b[01]+|[0-9]+)/i
+					},
+					{
+						value: PHP.Constants.T_VARIABLE,
+						re: new RegExp('^\\$' + labelRegexPart)
+					},
+					{
+						value: PHP.Constants.T_STRING,
+						re: new RegExp('^' + labelRegexPart)
+					},
+					{
+						value: -1,
+						re: /^[;:,.\[()|^&+-/*=%!~$<>?@{}"`]/
+					}
+				],
+				'LOOKING_FOR_PROPERTY': [
+					{
+						value: PHP.Constants.T_OBJECT_OPERATOR,
+						re: /^->/
+					},
+					{
+						value: PHP.Constants.T_STRING,
+						re: new RegExp('^' + labelRegexPart),
+						func: function () {
+							popState();
+						}
+					},
+					{
+						value: PHP.Constants.T_WHITESPACE,
+						re: /^[ \n\r\t]+/
+					}
+				],
+				'LOOKING_FOR_VARNAME': [
+					{
+						value: PHP.Constants.T_STRING_VARNAME,
+						re: new RegExp('^' + labelRegexPart + '(?=[\\[}])'),
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					}
+				],
+				'NOWDOC': [
+					{
+						value: PHP.Constants.T_END_HEREDOC,
+						matchFunc: function (src) {
+							var re = new RegExp('^' + heredoc + '(?=;?[\\r\\n])');
+							if (src.match(re)) {
+								return [src.substr(0, heredoc.length)];
+							} else {
+								return null;
+							}
+						},
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_ENCAPSED_AND_WHITESPACE,
+						matchFunc: function (src) {
+							var re = new RegExp('[\\r\\n]' + heredoc + '(?=;?[\\r\\n])');
+							var result = re.exec(src);
+							var end = result ? result.index + 1 : src.length;
+							return [src.substring(0, end)];
+						}
+					}
+				],
+				'HEREDOC': sharedStringTokens.concat([
+					{
+						value: PHP.Constants.T_END_HEREDOC,
+						matchFunc: function (src) {
+							if (!heredocEndAllowed) {
+								return null;
+							}
+							var re = new RegExp('^' + heredoc + '(?=;?[\\r\\n])');
+							if (src.match(re)) {
+								return [src.substr(0, heredoc.length)];
+							} else {
+								return null;
+							}
+						},
+						func: function () {
+							swapState('IN_SCRIPTING');
+						}
+					},
+					{
+						value: PHP.Constants.T_ENCAPSED_AND_WHITESPACE,
+						matchFunc: function (src) {
+							var end = src.length;
+							var re = new RegExp('^' + stringRegexPart(''));
+							var result = re.exec(src);
+							if (result) {
+								end = result[0].length;
+							}
+							re = new RegExp('([\\r\\n])' + heredoc + '(?=;?[\\r\\n])');
+							result = re.exec(src.substring(0, end));
+							if (result) {
+								end = result.index + 1;
+								heredocEndAllowed = true;
+							} else {
+								heredocEndAllowed = false;
+							}
+							if (end == 0) {
+								return null;
+							}
+							return [src.substring(0, end)];
+						}
+					}
+				])
+			};
+
+		var results = [],
+			line = 1,
+			cancel = true;
+
+		if (src === null) {
+			return results;
+		}
+
+		if (typeof src !== "string") {
+			src = src.toString();
+		}
+
+		while (src.length > 0 && cancel === true) {
+			var state = stateStack[stackPos];
+			var tokens = data[state];
+			cancel = tokens.some(function (token) {
+				var result = token.matchFunc !== undefined
+					? token.matchFunc(src)
+					: src.match(token.re);
+				if (result !== null) {
+					if (result[0].length == 0) {
+						throw new Error("empty match");
+					}
+
+					if (token.func !== undefined) {
+						token.func(result);
+					}
+
+					if (token.value === -1) {
+						results.push(result[0]);
+					} else {
+						var resultString = result[0];
+						results.push([
+							parseInt(token.value, 10),
+							resultString,
+							line
+						]);
+						line += resultString.split('\n').length - 1;
+					}
+
+					src = src.substring(result[0].length);
+
+					return true;
+				}
+				return false;
+			});
+		}
+
+		return results;
+	};
+
+
+	PHP.Parser = function (preprocessedTokens, evaluate) {
+
+		var yybase = this.yybase,
+			yydefault = this.yydefault,
+			yycheck = this.yycheck,
+			yyaction = this.yyaction,
+			yylen = this.yylen,
+			yygbase = this.yygbase,
+			yygcheck = this.yygcheck,
+			yyp = this.yyp,
+			yygoto = this.yygoto,
+			yylhs = this.yylhs,
+			terminals = this.terminals,
+			translate = this.translate,
+			yygdefault = this.yygdefault;
+
+
+		this.pos = -1;
+		this.line = 1;
+
+		this.tokenMap = this.createTokenMap();
+
+		this.dropTokens = {};
+		this.dropTokens[PHP.Constants.T_WHITESPACE] = 1;
+		this.dropTokens[PHP.Constants.T_OPEN_TAG] = 1;
+		var tokens = [];
+		preprocessedTokens.forEach(function (token, index) {
+			if (typeof token === "object" && token[0] === PHP.Constants.T_OPEN_TAG_WITH_ECHO) {
+				tokens.push([
+					PHP.Constants.T_OPEN_TAG,
+					token[1],
+					token[2]
+				]);
+				tokens.push([
+					PHP.Constants.T_ECHO,
+					token[1],
+					token[2]
+				]);
+			} else {
+				tokens.push(token);
+			}
+		});
+		this.tokens = tokens;
+		var tokenId = this.TOKEN_NONE;
+		this.startAttributes = {
+			'startLine': 1
+		};
+
+		this.endAttributes = {};
+		var attributeStack = [this.startAttributes];
+		var state = 0;
+		var stateStack = [state];
+		this.yyastk = [];
+		this.stackPos = 0;
+
+		var yyn;
+
+		var origTokenId;
+
+
+		for (; ;) {
+
+			if (yybase[state] === 0) {
+				yyn = yydefault[state];
+			} else {
+				if (tokenId === this.TOKEN_NONE) {
+					origTokenId = this.getNextToken();
+					tokenId = (origTokenId >= 0 && origTokenId < this.TOKEN_MAP_SIZE) ? translate[origTokenId] : this.TOKEN_INVALID;
+
+					attributeStack[this.stackPos] = this.startAttributes;
+				}
+
+				if (((yyn = yybase[state] + tokenId) >= 0
+						&& yyn < this.YYLAST && yycheck[yyn] === tokenId
+						|| (state < this.YY2TBLSTATE
+							&& (yyn = yybase[state + this.YYNLSTATES] + tokenId) >= 0
+							&& yyn < this.YYLAST
+							&& yycheck[yyn] === tokenId))
+					&& (yyn = yyaction[yyn]) !== this.YYDEFAULT) {
+					if (yyn > 0) {
+						++this.stackPos;
+
+						stateStack[this.stackPos] = state = yyn;
+						this.yyastk[this.stackPos] = this.tokenValue;
+						attributeStack[this.stackPos] = this.startAttributes;
+						tokenId = this.TOKEN_NONE;
+
+						if (yyn < this.YYNLSTATES)
+							continue;
+						yyn -= this.YYNLSTATES;
+					} else {
+						yyn = -yyn;
+					}
+				} else {
+					yyn = yydefault[state];
+				}
+			}
+
+			for (; ;) {
+
+				if (yyn === 0) {
+					return this.yyval;
+				} else if (yyn !== this.YYUNEXPECTED) {
+					for (var attr in this.endAttributes) {
+						attributeStack[this.stackPos - yylen[yyn]][attr] = this.endAttributes[attr];
+					}
+					this.stackPos -= yylen[yyn];
+					yyn = yylhs[yyn];
+					if ((yyp = yygbase[yyn] + stateStack[this.stackPos]) >= 0
+						&& yyp < this.YYGLAST
+						&& yygcheck[yyp] === yyn) {
+						state = yygoto[yyp];
+					} else {
+						state = yygdefault[yyn];
+					}
+
+					++this.stackPos;
+
+					stateStack[this.stackPos] = state;
+					this.yyastk[this.stackPos] = this.yyval;
+					attributeStack[this.stackPos] = this.startAttributes;
+				} else {
+					if (evaluate !== true) {
+
+						var expected = [];
+
+						for (var i = 0; i < this.TOKEN_MAP_SIZE; ++i) {
+							if ((yyn = yybase[state] + i) >= 0 && yyn < this.YYLAST && yycheck[yyn] == i
+								|| state < this.YY2TBLSTATE
+								&& (yyn = yybase[state + this.YYNLSTATES] + i)
+								&& yyn < this.YYLAST && yycheck[yyn] == i
+							) {
+								if (yyaction[yyn] != this.YYUNEXPECTED) {
+									if (expected.length == 4) {
+										expected = [];
+										break;
+									}
+
+									expected.push(this.terminals[i]);
+								}
+							}
+						}
+
+						var expectedString = '';
+						if (expected.length) {
+							expectedString = ', expecting ' + expected.join(' or ');
+						}
+						throw new PHP.ParseError('syntax error, unexpected ' + terminals[tokenId] + expectedString, this.startAttributes['startLine']);
+					} else {
+						return this.startAttributes['startLine'];
+					}
+
+				}
+
+				if (state < this.YYNLSTATES)
+					break;
+				yyn = state - this.YYNLSTATES;
+			}
+		}
+	};
+
+	PHP.ParseError = function (msg, line) {
+		this.message = msg;
+		this.line = line;
+	};
+
+	PHP.Parser.prototype.getNextToken = function () {
+
+		this.startAttributes = {};
+		this.endAttributes = {};
+
+		var token,
+			tmp;
+
+		while (this.tokens[++this.pos] !== undefined) {
+			token = this.tokens[this.pos];
+
+			if (typeof token === "string") {
+				this.startAttributes['startLine'] = this.line;
+				this.endAttributes['endLine'] = this.line;
+				if ('b"' === token) {
+					this.tokenValue = 'b"';
+					return '"'.charCodeAt(0);
+				} else {
+					this.tokenValue = token;
+					return token.charCodeAt(0);
+				}
+			} else {
+
+
+				this.line += ((tmp = token[1].match(/\n/g)) === null) ? 0 : tmp.length;
+
+				if (PHP.Constants.T_COMMENT === token[0]) {
+
+					if (!Array.isArray(this.startAttributes['comments'])) {
+						this.startAttributes['comments'] = [];
+					}
+
+					this.startAttributes['comments'].push({
+						type: "comment",
+						comment: token[1],
+						line: token[2]
+					});
+
+				}
+				else if (PHP.Constants.T_ATTRIBUTE === token[0]) {
+					this.tokenValue = token[1];
+					this.startAttributes['startLine'] = token[2];
+					this.endAttributes['endLine'] = this.line;
+				} else if (PHP.Constants.T_DOC_COMMENT === token[0]) {
+					this.startAttributes['comments'].push(new PHPParser_Comment_Doc(token[1], token[2]));
+				} else if (this.dropTokens[token[0]] === undefined) {
+					this.tokenValue = token[1];
+					this.startAttributes['startLine'] = token[2];
+					this.endAttributes['endLine'] = this.line;
+
+					return this.tokenMap[token[0]];
+				}
+			}
+		}
+
+		this.startAttributes['startLine'] = this.line;
+		return 0;
+	};
+
+	PHP.Parser.prototype.tokenName = function (token) {
+		var constants = ["T_THROW","T_INCLUDE","T_INCLUDE_ONCE","T_EVAL","T_REQUIRE","T_REQUIRE_ONCE","T_LOGICAL_OR","T_LOGICAL_XOR","T_LOGICAL_AND","T_PRINT","T_YIELD","T_DOUBLE_ARROW","T_YIELD_FROM","T_PLUS_EQUAL","T_MINUS_EQUAL","T_MUL_EQUAL","T_DIV_EQUAL","T_CONCAT_EQUAL","T_MOD_EQUAL","T_AND_EQUAL","T_OR_EQUAL","T_XOR_EQUAL","T_SL_EQUAL","T_SR_EQUAL","T_POW_EQUAL","T_COALESCE_EQUAL","T_COALESCE","T_BOOLEAN_OR","T_BOOLEAN_AND","T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG","T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG","T_IS_EQUAL","T_IS_NOT_EQUAL","T_IS_IDENTICAL","T_IS_NOT_IDENTICAL","T_SPACESHIP","T_IS_SMALLER_OR_EQUAL","T_IS_GREATER_OR_EQUAL","T_SL","T_SR","T_INSTANCEOF","T_INC","T_DEC","T_INT_CAST","T_DOUBLE_CAST","T_STRING_CAST","T_ARRAY_CAST","T_OBJECT_CAST","T_BOOL_CAST","T_UNSET_CAST","T_POW","T_NEW","T_CLONE","T_EXIT","T_IF","T_ELSEIF","T_ELSE","T_ENDIF","T_LNUMBER","T_DNUMBER","T_STRING","T_STRING_VARNAME","T_VARIABLE","T_NUM_STRING","T_INLINE_HTML","T_ENCAPSED_AND_WHITESPACE","T_CONSTANT_ENCAPSED_STRING","T_ECHO","T_DO","T_WHILE","T_ENDWHILE","T_FOR","T_ENDFOR","T_FOREACH","T_ENDFOREACH","T_DECLARE","T_ENDDECLARE","T_AS","T_SWITCH","T_MATCH","T_ENDSWITCH","T_CASE","T_DEFAULT","T_BREAK","T_CONTINUE","T_GOTO","T_FUNCTION","T_FN","T_CONST","T_RETURN","T_TRY","T_CATCH","T_FINALLY","T_THROW","T_USE","T_INSTEADOF","T_GLOBAL","T_STATIC","T_ABSTRACT","T_FINAL","T_PRIVATE","T_PROTECTED","T_PUBLIC","T_READONLY","T_VAR","T_UNSET","T_ISSET","T_EMPTY","T_HALT_COMPILER","T_CLASS","T_TRAIT","T_INTERFACE","T_ENUM","T_EXTENDS","T_IMPLEMENTS","T_OBJECT_OPERATOR","T_NULLSAFE_OBJECT_OPERATOR","T_DOUBLE_ARROW","T_LIST","T_ARRAY","T_CALLABLE","T_CLASS_C","T_TRAIT_C","T_METHOD_C","T_FUNC_C","T_LINE","T_FILE","T_START_HEREDOC","T_END_HEREDOC","T_DOLLAR_OPEN_CURLY_BRACES","T_CURLY_OPEN","T_PAAMAYIM_NEKUDOTAYIM","T_NAMESPACE","T_NS_C","T_DIR","T_NS_SEPARATOR","T_ELLIPSIS","T_NAME_FULLY_QUALIFIED","T_NAME_QUALIFIED","T_NAME_RELATIVE","T_ATTRIBUTE","T_ENUM","T_BAD_CHARACTER","T_COMMENT","T_DOC_COMMENT","T_OPEN_TAG","T_OPEN_TAG_WITH_ECHO","T_CLOSE_TAG","T_WHITESPACE"];
+		var current = "UNKNOWN";
+		constants.some(function (constant) {
+			if (PHP.Constants[constant] === token) {
+				current = constant;
+				return true;
+			} else {
+				return false;
+			}
+		});
+
+		return current;
+	};
+
+	PHP.Parser.prototype.createTokenMap = function () {
+		var tokenMap = {},
+			name,
+			i;
+		for (i = 256; i < 1000; ++i) {
+			if (PHP.Constants.T_OPEN_TAG_WITH_ECHO === i) {
+				tokenMap[i] = PHP.Constants.T_ECHO;
+			} else if (PHP.Constants.T_CLOSE_TAG === i) {
+				tokenMap[i] = 59;
+			} else if ('UNKNOWN' !== (name = this.tokenName(i))) {
+				tokenMap[i] = this[name];
+			}
+		}
+		return tokenMap;
+	};
+
+	PHP.Parser.prototype.TOKEN_NONE    = -1;
+	PHP.Parser.prototype.TOKEN_INVALID = 175;
+
+	PHP.Parser.prototype.TOKEN_MAP_SIZE = 403;
+
+	PHP.Parser.prototype.YYLAST       = 1196;
+	PHP.Parser.prototype.YY2TBLSTATE  = 420;
+	PHP.Parser.prototype.YYGLAST      = 545;
+	PHP.Parser.prototype.YYNLSTATES   = 710;
+	PHP.Parser.prototype.YYUNEXPECTED = 32767;
+	PHP.Parser.prototype.YYDEFAULT    = -32766;
+	PHP.Parser.prototype.YYERRTOK = 256;
+	PHP.Parser.prototype.T_THROW = 257;
+	PHP.Parser.prototype.T_INCLUDE = 258;
+	PHP.Parser.prototype.T_INCLUDE_ONCE = 259;
+	PHP.Parser.prototype.T_EVAL = 260;
+	PHP.Parser.prototype.T_REQUIRE = 261;
+	PHP.Parser.prototype.T_REQUIRE_ONCE = 262;
+	PHP.Parser.prototype.T_LOGICAL_OR = 263;
+	PHP.Parser.prototype.T_LOGICAL_XOR = 264;
+	PHP.Parser.prototype.T_LOGICAL_AND = 265;
+	PHP.Parser.prototype.T_PRINT = 266;
+	PHP.Parser.prototype.T_YIELD = 267;
+	PHP.Parser.prototype.T_DOUBLE_ARROW = 268;
+	PHP.Parser.prototype.T_YIELD_FROM = 269;
+	PHP.Parser.prototype.T_PLUS_EQUAL = 270;
+	PHP.Parser.prototype.T_MINUS_EQUAL = 271;
+	PHP.Parser.prototype.T_MUL_EQUAL = 272;
+	PHP.Parser.prototype.T_DIV_EQUAL = 273;
+	PHP.Parser.prototype.T_CONCAT_EQUAL = 274;
+	PHP.Parser.prototype.T_MOD_EQUAL = 275;
+	PHP.Parser.prototype.T_AND_EQUAL = 276;
+	PHP.Parser.prototype.T_OR_EQUAL = 277;
+	PHP.Parser.prototype.T_XOR_EQUAL = 278;
+	PHP.Parser.prototype.T_SL_EQUAL = 279;
+	PHP.Parser.prototype.T_SR_EQUAL = 280;
+	PHP.Parser.prototype.T_POW_EQUAL = 281;
+	PHP.Parser.prototype.T_COALESCE_EQUAL = 282;
+	PHP.Parser.prototype.T_COALESCE = 283;
+	PHP.Parser.prototype.T_BOOLEAN_OR = 284;
+	PHP.Parser.prototype.T_BOOLEAN_AND = 285;
+	PHP.Parser.prototype.T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG = 286;
+	PHP.Parser.prototype.T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = 287;
+	PHP.Parser.prototype.T_IS_EQUAL = 288;
+	PHP.Parser.prototype.T_IS_NOT_EQUAL = 289;
+	PHP.Parser.prototype.T_IS_IDENTICAL = 290;
+	PHP.Parser.prototype.T_IS_NOT_IDENTICAL = 291;
+	PHP.Parser.prototype.T_SPACESHIP = 292;
+	PHP.Parser.prototype.T_IS_SMALLER_OR_EQUAL = 293;
+	PHP.Parser.prototype.T_IS_GREATER_OR_EQUAL = 294;
+	PHP.Parser.prototype.T_SL = 295;
+	PHP.Parser.prototype.T_SR = 296;
+	PHP.Parser.prototype.T_INSTANCEOF = 297;
+	PHP.Parser.prototype.T_INC = 298;
+	PHP.Parser.prototype.T_DEC = 299;
+	PHP.Parser.prototype.T_INT_CAST = 300;
+	PHP.Parser.prototype.T_DOUBLE_CAST = 301;
+	PHP.Parser.prototype.T_STRING_CAST = 302;
+	PHP.Parser.prototype.T_ARRAY_CAST = 303;
+	PHP.Parser.prototype.T_OBJECT_CAST = 304;
+	PHP.Parser.prototype.T_BOOL_CAST = 305;
+	PHP.Parser.prototype.T_UNSET_CAST = 306;
+	PHP.Parser.prototype.T_POW = 307;
+	PHP.Parser.prototype.T_NEW = 308;
+	PHP.Parser.prototype.T_CLONE = 309;
+	PHP.Parser.prototype.T_EXIT = 310;
+	PHP.Parser.prototype.T_IF = 311;
+	PHP.Parser.prototype.T_ELSEIF = 312;
+	PHP.Parser.prototype.T_ELSE = 313;
+	PHP.Parser.prototype.T_ENDIF = 314;
+	PHP.Parser.prototype.T_LNUMBER = 315;
+	PHP.Parser.prototype.T_DNUMBER = 316;
+	PHP.Parser.prototype.T_STRING = 317;
+	PHP.Parser.prototype.T_STRING_VARNAME = 318;
+	PHP.Parser.prototype.T_VARIABLE = 319;
+	PHP.Parser.prototype.T_NUM_STRING = 320;
+	PHP.Parser.prototype.T_INLINE_HTML = 321;
+	PHP.Parser.prototype.T_ENCAPSED_AND_WHITESPACE = 322;
+	PHP.Parser.prototype.T_CONSTANT_ENCAPSED_STRING = 323;
+	PHP.Parser.prototype.T_ECHO = 324;
+	PHP.Parser.prototype.T_DO = 325;
+	PHP.Parser.prototype.T_WHILE = 326;
+	PHP.Parser.prototype.T_ENDWHILE = 327;
+	PHP.Parser.prototype.T_FOR = 328;
+	PHP.Parser.prototype.T_ENDFOR = 329;
+	PHP.Parser.prototype.T_FOREACH = 330;
+	PHP.Parser.prototype.T_ENDFOREACH = 331;
+	PHP.Parser.prototype.T_DECLARE = 332;
+	PHP.Parser.prototype.T_ENDDECLARE = 333;
+	PHP.Parser.prototype.T_AS = 334;
+	PHP.Parser.prototype.T_SWITCH = 335;
+	PHP.Parser.prototype.T_MATCH = 336;
+	PHP.Parser.prototype.T_ENDSWITCH = 337;
+	PHP.Parser.prototype.T_CASE = 338;
+	PHP.Parser.prototype.T_DEFAULT = 339;
+	PHP.Parser.prototype.T_BREAK = 340;
+	PHP.Parser.prototype.T_CONTINUE = 341;
+	PHP.Parser.prototype.T_GOTO = 342;
+	PHP.Parser.prototype.T_FUNCTION = 343;
+	PHP.Parser.prototype.T_FN = 344;
+	PHP.Parser.prototype.T_CONST = 345;
+	PHP.Parser.prototype.T_RETURN = 346;
+	PHP.Parser.prototype.T_TRY = 347;
+	PHP.Parser.prototype.T_CATCH = 348;
+	PHP.Parser.prototype.T_FINALLY = 349;
+	PHP.Parser.prototype.T_USE = 350;
+	PHP.Parser.prototype.T_INSTEADOF = 351;
+	PHP.Parser.prototype.T_GLOBAL = 352;
+	PHP.Parser.prototype.T_STATIC = 353;
+	PHP.Parser.prototype.T_ABSTRACT = 354;
+	PHP.Parser.prototype.T_FINAL = 355;
+	PHP.Parser.prototype.T_PRIVATE = 356;
+	PHP.Parser.prototype.T_PROTECTED = 357;
+	PHP.Parser.prototype.T_PUBLIC = 358;
+	PHP.Parser.prototype.T_READONLY = 359;
+	PHP.Parser.prototype.T_VAR = 360;
+	PHP.Parser.prototype.T_UNSET = 361;
+	PHP.Parser.prototype.T_ISSET = 362;
+	PHP.Parser.prototype.T_EMPTY = 363;
+	PHP.Parser.prototype.T_HALT_COMPILER = 364;
+	PHP.Parser.prototype.T_CLASS = 365;
+	PHP.Parser.prototype.T_TRAIT = 366;
+	PHP.Parser.prototype.T_INTERFACE = 367;
+	PHP.Parser.prototype.T_ENUM = 368;
+	PHP.Parser.prototype.T_EXTENDS = 369;
+	PHP.Parser.prototype.T_IMPLEMENTS = 370;
+	PHP.Parser.prototype.T_OBJECT_OPERATOR = 371;
+	PHP.Parser.prototype.T_NULLSAFE_OBJECT_OPERATOR = 372;
+	PHP.Parser.prototype.T_LIST = 373;
+	PHP.Parser.prototype.T_ARRAY = 374;
+	PHP.Parser.prototype.T_CALLABLE = 375;
+	PHP.Parser.prototype.T_CLASS_C = 376;
+	PHP.Parser.prototype.T_TRAIT_C = 377;
+	PHP.Parser.prototype.T_METHOD_C = 378;
+	PHP.Parser.prototype.T_FUNC_C = 379;
+	PHP.Parser.prototype.T_LINE = 380;
+	PHP.Parser.prototype.T_FILE = 381;
+	PHP.Parser.prototype.T_START_HEREDOC = 382;
+	PHP.Parser.prototype.T_END_HEREDOC = 383;
+	PHP.Parser.prototype.T_DOLLAR_OPEN_CURLY_BRACES = 384;
+	PHP.Parser.prototype.T_CURLY_OPEN = 385;
+	PHP.Parser.prototype.T_PAAMAYIM_NEKUDOTAYIM = 386;
+	PHP.Parser.prototype.T_NAMESPACE = 387;
+	PHP.Parser.prototype.T_NS_C = 388;
+	PHP.Parser.prototype.T_DIR = 389;
+	PHP.Parser.prototype.T_NS_SEPARATOR = 390;
+	PHP.Parser.prototype.T_ELLIPSIS = 391;
+	PHP.Parser.prototype.T_NAME_FULLY_QUALIFIED = 392;
+	PHP.Parser.prototype.T_NAME_QUALIFIED = 393;
+	PHP.Parser.prototype.T_NAME_RELATIVE = 394;
+	PHP.Parser.prototype.T_ATTRIBUTE = 395;
+	PHP.Parser.prototype.T_BAD_CHARACTER = 396;
+	PHP.Parser.prototype.T_COMMENT = 397;
+	PHP.Parser.prototype.T_DOC_COMMENT = 398;
+	PHP.Parser.prototype.T_OPEN_TAG = 399;
+	PHP.Parser.prototype.T_OPEN_TAG_WITH_ECHO = 400;
+	PHP.Parser.prototype.T_CLOSE_TAG = 401;
+	PHP.Parser.prototype.T_WHITESPACE = 402;
+	PHP.Parser.prototype.terminals = [
+		"EOF",
+		"error",
+		"T_THROW",
+		"T_INCLUDE",
+		"T_INCLUDE_ONCE",
+		"T_EVAL",
+		"T_REQUIRE",
+		"T_REQUIRE_ONCE",
+		"','",
+		"T_LOGICAL_OR",
+		"T_LOGICAL_XOR",
+		"T_LOGICAL_AND",
+		"T_PRINT",
+		"T_YIELD",
+		"T_DOUBLE_ARROW",
+		"T_YIELD_FROM",
+		"'='",
+		"T_PLUS_EQUAL",
+		"T_MINUS_EQUAL",
+		"T_MUL_EQUAL",
+		"T_DIV_EQUAL",
+		"T_CONCAT_EQUAL",
+		"T_MOD_EQUAL",
+		"T_AND_EQUAL",
+		"T_OR_EQUAL",
+		"T_XOR_EQUAL",
+		"T_SL_EQUAL",
+		"T_SR_EQUAL",
+		"T_POW_EQUAL",
+		"T_COALESCE_EQUAL",
+		"'?'",
+		"':'",
+		"T_COALESCE",
+		"T_BOOLEAN_OR",
+		"T_BOOLEAN_AND",
+		"'|'",
+		"'^'",
+		"T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG",
+		"T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG",
+		"T_IS_EQUAL",
+		"T_IS_NOT_EQUAL",
+		"T_IS_IDENTICAL",
+		"T_IS_NOT_IDENTICAL",
+		"T_SPACESHIP",
+		"'<'",
+		"T_IS_SMALLER_OR_EQUAL",
+		"'>'",
+		"T_IS_GREATER_OR_EQUAL",
+		"T_SL",
+		"T_SR",
+		"'+'",
+		"'-'",
+		"'.'",
+		"'*'",
+		"'/'",
+		"'%'",
+		"'!'",
+		"T_INSTANCEOF",
+		"'~'",
+		"T_INC",
+		"T_DEC",
+		"T_INT_CAST",
+		"T_DOUBLE_CAST",
+		"T_STRING_CAST",
+		"T_ARRAY_CAST",
+		"T_OBJECT_CAST",
+		"T_BOOL_CAST",
+		"T_UNSET_CAST",
+		"'@'",
+		"T_POW",
+		"'['",
+		"T_NEW",
+		"T_CLONE",
+		"T_EXIT",
+		"T_IF",
+		"T_ELSEIF",
+		"T_ELSE",
+		"T_ENDIF",
+		"T_LNUMBER",
+		"T_DNUMBER",
+		"T_STRING",
+		"T_STRING_VARNAME",
+		"T_VARIABLE",
+		"T_NUM_STRING",
+		"T_INLINE_HTML",
+		"T_ENCAPSED_AND_WHITESPACE",
+		"T_CONSTANT_ENCAPSED_STRING",
+		"T_ECHO",
+		"T_DO",
+		"T_WHILE",
+		"T_ENDWHILE",
+		"T_FOR",
+		"T_ENDFOR",
+		"T_FOREACH",
+		"T_ENDFOREACH",
+		"T_DECLARE",
+		"T_ENDDECLARE",
+		"T_AS",
+		"T_SWITCH",
+		"T_MATCH",
+		"T_ENDSWITCH",
+		"T_CASE",
+		"T_DEFAULT",
+		"T_BREAK",
+		"T_CONTINUE",
+		"T_GOTO",
+		"T_FUNCTION",
+		"T_FN",
+		"T_CONST",
+		"T_RETURN",
+		"T_TRY",
+		"T_CATCH",
+		"T_FINALLY",
+		"T_USE",
+		"T_INSTEADOF",
+		"T_GLOBAL",
+		"T_STATIC",
+		"T_ABSTRACT",
+		"T_FINAL",
+		"T_PRIVATE",
+		"T_PROTECTED",
+		"T_PUBLIC",
+		"T_READONLY",
+		"T_VAR",
+		"T_UNSET",
+		"T_ISSET",
+		"T_EMPTY",
+		"T_HALT_COMPILER",
+		"T_CLASS",
+		"T_TRAIT",
+		"T_INTERFACE",
+		"T_ENUM",
+		"T_EXTENDS",
+		"T_IMPLEMENTS",
+		"T_OBJECT_OPERATOR",
+		"T_NULLSAFE_OBJECT_OPERATOR",
+		"T_LIST",
+		"T_ARRAY",
+		"T_CALLABLE",
+		"T_CLASS_C",
+		"T_TRAIT_C",
+		"T_METHOD_C",
+		"T_FUNC_C",
+		"T_LINE",
+		"T_FILE",
+		"T_START_HEREDOC",
+		"T_END_HEREDOC",
+		"T_DOLLAR_OPEN_CURLY_BRACES",
+		"T_CURLY_OPEN",
+		"T_PAAMAYIM_NEKUDOTAYIM",
+		"T_NAMESPACE",
+		"T_NS_C",
+		"T_DIR",
+		"T_NS_SEPARATOR",
+		"T_ELLIPSIS",
+		"T_NAME_FULLY_QUALIFIED",
+		"T_NAME_QUALIFIED",
+		"T_NAME_RELATIVE",
+		"T_ATTRIBUTE",
+		"';'",
+		"']'",
+		"'{'",
+		"'}'",
+		"'('",
+		"')'",
+		"'`'",
+		"'\"'",
+		"'$'",
+		"T_BAD_CHARACTER",
+		"T_COMMENT",
+		"T_DOC_COMMENT",
+		"T_OPEN_TAG",
+		"T_OPEN_TAG_WITH_ECHO",
+		"T_CLOSE_TAG",
+		"T_WHITESPACE"
+		, "???"
+	];
+	PHP.Parser.prototype.translate = [
+		0,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,   56,  166,  175,  167,   55,  175,  175,
+		163,  164,   53,   50,    8,   51,   52,   54,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,   31,  159,
+		44,   16,   46,   30,   68,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,   70,  175,  160,   36,  175,  165,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  161,   35,  162,   58,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,  175,  175,  175,  175,
+		175,  175,  175,  175,  175,  175,    1,    2,    3,    4,
+		5,    6,    7,    9,   10,   11,   12,   13,   14,   15,
+		17,   18,   19,   20,   21,   22,   23,   24,   25,   26,
+		27,   28,   29,   32,   33,   34,   37,   38,   39,   40,
+		41,   42,   43,   45,   47,   48,   49,   57,   59,   60,
+		61,   62,   63,   64,   65,   66,   67,   69,   71,   72,
+		73,   74,   75,   76,   77,   78,   79,   80,   81,   82,
+		83,   84,   85,   86,   87,   88,   89,   90,   91,   92,
+		93,   94,   95,   96,   97,   98,   99,  100,  101,  102,
+		103,  104,  105,  106,  107,  108,  109,  110,  111,  112,
+		113,  114,  115,  116,  117,  118,  119,  120,  121,  122,
+		123,  124,  125,  126,  127,  128,  129,  130,  131,  132,
+		133,  134,  135,  136,  137,  138,  139,  140,  141,  142,
+		143,  144,  145,  146,  147,  148,  149,  150,  151,  152,
+		153,  154,  155,  156,  157,  158,  168,  169,  170,  171,
+		172,  173,  174
+	];
+
+	PHP.Parser.prototype.yyaction = [
+		132,  133,  134,  569,  135,  136,    0,  722,  723,  724,
+		137,   37,  834,  911,  835,  469,-32766,-32766,-32766,-32767,
+		-32767,-32767,-32767,  101,  102,  103,  104,  105, 1068, 1069,
+		1070, 1067, 1066, 1065, 1071,  716,  715,-32766,-32766,-32766,
+		-32766,-32766,-32766,-32766,-32766,-32766,-32767,-32767,-32767,-32767,
+		-32767,  545,  546,-32766,-32766,  725,-32766,-32766,-32766,  998,
+		999,  806,  922,  447,  448,  449,  370,  371,    2,  267,
+		138,  396,  729,  730,  731,  732,  414,-32766,  420,-32766,
+		-32766,-32766,-32766,-32766,  990,  733,  734,  735,  736,  737,
+		738,  739,  740,  741,  742,  743,  763,  570,  764,  765,
+		766,  767,  755,  756,  336,  337,  758,  759,  744,  745,
+		746,  748,  749,  750,  346,  790,  791,  792,  793,  794,
+		795,  751,  752,  571,  572,  784,  775,  773,  774,  787,
+		770,  771,  283,  420,  573,  574,  769,  575,  576,  577,
+		578,  579,  580,  598, -575,  470,   14,  798,  772,  581,
+		582, -575,  139,-32766,-32766,-32766,  132,  133,  134,  569,
+		135,  136, 1017,  722,  723,  724,  137,   37, 1060,-32766,
+		-32766,-32766, 1303,  696,-32766, 1304,-32766,-32766,-32766,-32766,
+		-32766,-32766,-32766, 1068, 1069, 1070, 1067, 1066, 1065, 1071,
+		-32766,  716,  715,  372,  371, 1258,-32766,-32766,-32766, -572,
+		106,  107,  108,  414,  270,  891, -572,  240, 1193, 1192,
+		1194,  725,-32766,-32766,-32766, 1046,  109,-32766,-32766,-32766,
+		-32766,  986,  985,  984,  987,  267,  138,  396,  729,  730,
+		731,  732,   12,-32766,  420,-32766,-32766,-32766,-32766,  998,
+		999,  733,  734,  735,  736,  737,  738,  739,  740,  741,
+		742,  743,  763,  570,  764,  765,  766,  767,  755,  756,
+		336,  337,  758,  759,  744,  745,  746,  748,  749,  750,
+		346,  790,  791,  792,  793,  794,  795,  751,  752,  571,
+		572,  784,  775,  773,  774,  787,  770,  771,  881,  321,
+		573,  574,  769,  575,  576,  577,  578,  579,  580,-32766,
+		82,   83,   84, -575,  772,  581,  582, -575,  148,  747,
+		717,  718,  719,  720,  721, 1278,  722,  723,  724,  760,
+		761,   36, 1277,   85,   86,   87,   88,   89,   90,   91,
+		92,   93,   94,   95,   96,   97,   98,   99,  100,  101,
+		102,  103,  104,  105,  106,  107,  108,  996,  270,  150,
+		-32766,-32766,-32766,  455,  456,   81,   34, -264, -572, 1016,
+		109,  320, -572,  893,  725,  682,  803,  128,  998,  999,
+		592,-32766, 1044,-32766,-32766,-32766,  809,  151,  726,  727,
+		728,  729,  730,  731,  732,  -88, 1198,  796,  278, -526,
+		283,-32766,-32766,-32766,  733,  734,  735,  736,  737,  738,
+		739,  740,  741,  742,  743,  763,  786,  764,  765,  766,
+		767,  755,  756,  757,  785,  758,  759,  744,  745,  746,
+		748,  749,  750,  789,  790,  791,  792,  793,  794,  795,
+		751,  752,  753,  754,  784,  775,  773,  774,  787,  770,
+		771,  144,  804,  762,  768,  769,  776,  777,  779,  778,
+		780,  781, -314, -526, -526, -193, -192,  772,  783,  782,
+		49,   50,   51,  500,   52,   53,  239,  807, -526,  -86,
+		54,   55, -111,   56,  996,  253,-32766, -111,  800, -111,
+		-526,  541, -532, -352,  300, -352,  304, -111, -111, -111,
+		-111, -111, -111, -111, -111,  998,  999,  998,  999,  153,
+		-32766,-32766,-32766, 1191,  807,  126,  306, 1293,   57,   58,
+		103,  104,  105, -111,   59, 1218,   60,  246,  247,   61,
+		62,   63,   64,   65,   66,   67,   68, -525,   27,  268,
+		69,  436,  501, -328,  808,  -86, 1224, 1225,  502, 1189,
+		807, 1198, 1230,  293, 1222,   41,   24,  503,   74,  504,
+		953,  505,  320,  506,  802,  154,  507,  508,  279,  684,
+		280,   43,   44,  437,  367,  366,  891,   45,  509,   35,
+		249,  -16, -566,  358,  332,  318, -566, 1198, 1193, 1192,
+		1194, -527,  510,  511,  512,  333, -524, 1274,   48,  716,
+		715, -525, -525,  334,  513,  514,  807, 1212, 1213, 1214,
+		1215, 1209, 1210,  292,  360,  284, -525,  285, -314, 1216,
+		1211, -193, -192, 1193, 1192, 1194,  293,  891, -525,  364,
+		-531,   70,  807,  316,  317,  320,   31,  110,  111,  112,
+		113,  114,  115,  116,  117,  118,  119,  120,  121,  122,
+		-153, -153, -153,  638,   25, -527, -527,  687,  379,  881,
+		-524, -524,  296,  297,  891, -153,  432, -153,  807, -153,
+		-527, -153,  716,  715,  433, -524,  798,  363, -111, 1105,
+		1107,  365, -527,  434,  891,  140,  435, -524,  954,  127,
+		-524,  320, -111, -111,  688,  813,  381, -529,   11,  834,
+		155,  835,  867, -111, -111, -111, -111,   47,  293,-32766,
+		881,  654,  655,   74,  689, 1191, 1045,  320,  708,  149,
+		399,  157,-32766,-32766,-32766,   32,-32766,  -79,-32766,  123,
+		-32766,  716,  715,-32766,  893,  891,  682, -153,-32766,-32766,
+		-32766,  716,  715,  891,-32766,-32766,  124,  881,  129,   74,
+		-32766,  411,  130,  320, -524, -524,  143,  141,  -75,-32766,
+		158, -529, -529,  320,   27,  691,  159,  881,  160, -524,
+		161,  294,  295,  698,  368,  369,  807,  -73,-32766,  -72,
+		1222, -524,  373,  374, 1191,  893,  -71,  682, -529,   73,
+		-70,-32766,-32766,-32766,  -69,-32766,  -68,-32766,  125,-32766,
+		630,  631,-32766,  -67,  -66,  -47,  -51,-32766,-32766,-32766,
+		-18,  147,  271,-32766,-32766,  277,  697,  700,  881,-32766,
+		411,  890,  893,  146,  682,  282,  881,  907,-32766,  281,
+		513,  514,  286, 1212, 1213, 1214, 1215, 1209, 1210,  326,
+		131,  145,  939,  287,  682, 1216, 1211,  109,  270,-32766,
+		798,  807,-32766,  662,  639, 1191,  657,   72,  675, 1075,
+		317,  320,-32766,-32766,-32766, 1305,-32766,  301,-32766,  628,
+		-32766,  431,  543,-32766,-32766,  923,  555,  924,-32766,-32766,
+		-32766, 1229,  549,-32766,-32766,-32766,   -4,  891, -490, 1191,
+		-32766,  411,  644,  893,  299,  682,-32766,-32766,-32766,-32766,
+		-32766,  893,-32766,  682,-32766,   13, 1231,-32766,  452,  480,
+		645,  909,-32766,-32766,-32766,-32766,  658, -480,-32766,-32766,
+		0, 1191,    0,    0,-32766,  411,    0,  298,-32766,-32766,
+		-32766,  305,-32766,-32766,-32766,    0,-32766,    0,  806,-32766,
+		0,    0,    0,  475,-32766,-32766,-32766,-32766,    0,    7,
+		-32766,-32766,   16, 1191,  561,  596,-32766,  411, 1219,  891,
+		-32766,-32766,-32766,  362,-32766,-32766,-32766,  818,-32766, -267,
+		881,-32766,   39,  293,    0,    0,-32766,-32766,-32766,   40,
+		705,  706,-32766,-32766,  872,  963,  940,  947,-32766,  411,
+		937,  948,  365,  870,  427,  891,  935,-32766, 1049,  291,
+		1244, 1052, 1053, -111, -111, 1050, 1051, 1057, -560, 1262,
+		1296,  633,    0,  826, -111, -111, -111, -111,   33,  315,
+		-32766,  361,  683,  686,  690,  692, 1191,  693,  694,  695,
+		699,  685,  320,-32766,-32766,-32766,    9,-32766,  702,-32766,
+		868,-32766,  881, 1300,-32766,  893, 1302,  682,   -4,-32766,
+		-32766,-32766,  829,  828,  837,-32766,-32766,  916, -242, -242,
+		-242,-32766,  411,  955,  365,   27,  836, 1301,  915,  917,
+		-32766,  914, 1177,  900,  910, -111, -111,  807,  881,  898,
+		945, 1222,  946, 1299, 1256,  867, -111, -111, -111, -111,
+		1245, 1263, 1269, 1272, -241, -241, -241, -558, -532, -531,
+		365, -530,    1,   28,   29,   38,   42,   46,   71,    0,
+		75, -111, -111,   76,   77,   78,   79,  893,   80,  682,
+		-242,  867, -111, -111, -111, -111,  142,  152,  156,  245,
+		322,  347,  514,  348, 1212, 1213, 1214, 1215, 1209, 1210,
+		349,  350,  351,  352,  353,  354, 1216, 1211,  355,  356,
+		357,  359,  428,  893, -265,  682, -241, -264,   72,    0,
+		18,  317,  320,   19,   20,   21,   23,  398,  471,  472,
+		479,  482,  483,  484,  485,  489,  490,  491,  498,  669,
+		1202, 1145, 1220, 1019, 1018, 1181, -269, -103,   17,   22,
+		26,  290,  397,  589,  593,  620,  674, 1149, 1197, 1146,
+		1275,    0, -494, 1162,    0, 1223
+	];
+
+	PHP.Parser.prototype.yycheck = [
+		2,    3,    4,    5,    6,    7,    0,    9,   10,   11,
+		12,   13,  106,    1,  108,   31,    9,   10,   11,   44,
+		45,   46,   47,   48,   49,   50,   51,   52,  116,  117,
+		118,  119,  120,  121,  122,   37,   38,   30,  116,   32,
+		33,   34,   35,   36,   37,   38,   39,   40,   41,   42,
+		43,  117,  118,    9,   10,   57,    9,   10,   11,  137,
+		138,  155,  128,  129,  130,  131,  106,  107,    8,   71,
+		72,   73,   74,   75,   76,   77,  116,   30,   80,   32,
+		33,   34,   35,   36,    1,   87,   88,   89,   90,   91,
+		92,   93,   94,   95,   96,   97,   98,   99,  100,  101,
+		102,  103,  104,  105,  106,  107,  108,  109,  110,  111,
+		112,  113,  114,  115,  116,  117,  118,  119,  120,  121,
+		122,  123,  124,  125,  126,  127,  128,  129,  130,  131,
+		132,  133,   30,   80,  136,  137,  138,  139,  140,  141,
+		142,  143,  144,   51,    1,  161,  101,   80,  150,  151,
+		152,    8,  154,    9,   10,   11,    2,    3,    4,    5,
+		6,    7,  164,    9,   10,   11,   12,   13,  123,    9,
+		10,   11,   80,  161,   30,   83,   32,   33,   34,   35,
+		36,   37,   38,  116,  117,  118,  119,  120,  121,  122,
+		30,   37,   38,  106,  107,    1,    9,   10,   11,    1,
+		53,   54,   55,  116,   57,    1,    8,   14,  155,  156,
+		157,   57,    9,   10,   11,  162,   69,   30,  116,   32,
+		33,  119,  120,  121,  122,   71,   72,   73,   74,   75,
+		76,   77,    8,   30,   80,   32,   33,   34,   35,  137,
+		138,   87,   88,   89,   90,   91,   92,   93,   94,   95,
+		96,   97,   98,   99,  100,  101,  102,  103,  104,  105,
+		106,  107,  108,  109,  110,  111,  112,  113,  114,  115,
+		116,  117,  118,  119,  120,  121,  122,  123,  124,  125,
+		126,  127,  128,  129,  130,  131,  132,  133,   84,   70,
+		136,  137,  138,  139,  140,  141,  142,  143,  144,    9,
+		9,   10,   11,  160,  150,  151,  152,  164,  154,    2,
+		3,    4,    5,    6,    7,    1,    9,   10,   11,   12,
+		13,   30,    8,   32,   33,   34,   35,   36,   37,   38,
+		39,   40,   41,   42,   43,   44,   45,   46,   47,   48,
+		49,   50,   51,   52,   53,   54,   55,  116,   57,   14,
+		9,   10,   11,  134,  135,  161,    8,  164,  160,    1,
+		69,  167,  164,  159,   57,  161,   80,    8,  137,  138,
+		1,   30,    1,   32,   33,   34,    1,   14,   71,   72,
+		73,   74,   75,   76,   77,   31,    1,   80,   30,   70,
+		30,    9,   10,   11,   87,   88,   89,   90,   91,   92,
+		93,   94,   95,   96,   97,   98,   99,  100,  101,  102,
+		103,  104,  105,  106,  107,  108,  109,  110,  111,  112,
+		113,  114,  115,  116,  117,  118,  119,  120,  121,  122,
+		123,  124,  125,  126,  127,  128,  129,  130,  131,  132,
+		133,    8,  156,  136,  137,  138,  139,  140,  141,  142,
+		143,  144,    8,  134,  135,    8,    8,  150,  151,  152,
+		2,    3,    4,    5,    6,    7,   97,   82,  149,   31,
+		12,   13,  101,   15,  116,    8,  116,  106,   80,  108,
+		161,   85,  163,  106,  113,  108,    8,  116,  117,  118,
+		119,  120,  121,  122,  123,  137,  138,  137,  138,   14,
+		9,   10,   11,   80,   82,   14,    8,   85,   50,   51,
+		50,   51,   52,  128,   56,    1,   58,   59,   60,   61,
+		62,   63,   64,   65,   66,   67,   68,   70,   70,   71,
+		72,   73,   74,  162,  159,   97,   78,   79,   80,  116,
+		82,    1,  146,  158,   86,   87,   88,   89,  163,   91,
+		31,   93,  167,   95,  156,   14,   98,   99,   35,  161,
+		37,  103,  104,  105,  106,  107,    1,  109,  110,  147,
+		148,   31,  160,  115,  116,    8,  164,    1,  155,  156,
+		157,   70,  124,  125,  126,    8,   70,    1,   70,   37,
+		38,  134,  135,    8,  136,  137,   82,  139,  140,  141,
+		142,  143,  144,  145,    8,   35,  149,   37,  164,  151,
+		152,  164,  164,  155,  156,  157,  158,    1,  161,    8,
+		163,  163,   82,  165,  166,  167,   16,   17,   18,   19,
+		20,   21,   22,   23,   24,   25,   26,   27,   28,   29,
+		75,   76,   77,   75,   76,  134,  135,   31,    8,   84,
+		134,  135,  134,  135,    1,   90,    8,   92,   82,   94,
+		149,   96,   37,   38,    8,  149,   80,  149,  128,   59,
+		60,  106,  161,    8,    1,  161,    8,  161,  159,  161,
+		70,  167,  117,  118,   31,    8,  106,   70,  108,  106,
+		14,  108,  127,  128,  129,  130,  131,   70,  158,   74,
+		84,   75,   76,  163,   31,   80,  159,  167,  161,  101,
+		102,   14,   87,   88,   89,   14,   91,   31,   93,   16,
+		95,   37,   38,   98,  159,    1,  161,  162,  103,  104,
+		105,   37,   38,    1,  109,  110,   16,   84,   16,  163,
+		115,  116,   16,  167,  134,  135,   16,  161,   31,  124,
+		16,  134,  135,  167,   70,   31,   16,   84,   16,  149,
+		16,  134,  135,   31,  106,  107,   82,   31,   74,   31,
+		86,  161,  106,  107,   80,  159,   31,  161,  161,  154,
+		31,   87,   88,   89,   31,   91,   31,   93,  161,   95,
+		111,  112,   98,   31,   31,   31,   31,  103,  104,  105,
+		31,   31,   31,  109,  110,   31,   31,   31,   84,  115,
+		116,   31,  159,   31,  161,   37,   84,   38,  124,   35,
+		136,  137,   35,  139,  140,  141,  142,  143,  144,   35,
+		31,   70,  159,   37,  161,  151,  152,   69,   57,   74,
+		80,   82,   85,   77,   90,   80,   94,  163,   92,   82,
+		166,  167,   87,   88,   89,   83,   91,  114,   93,  113,
+		95,  128,   85,   98,  116,  128,  153,  128,  103,  104,
+		105,  146,   89,   74,  109,  110,    0,    1,  149,   80,
+		115,  116,   96,  159,  133,  161,   87,   88,   89,  124,
+		91,  159,   93,  161,   95,   97,  146,   98,   97,   97,
+		100,  154,  103,  104,  105,   74,  100,  149,  109,  110,
+		-1,   80,   -1,   -1,  115,  116,   -1,  132,   87,   88,
+		89,  132,   91,  124,   93,   -1,   95,   -1,  155,   98,
+		-1,   -1,   -1,  102,  103,  104,  105,   74,   -1,  149,
+		109,  110,  149,   80,   81,  153,  115,  116,  160,    1,
+		87,   88,   89,  149,   91,  124,   93,  160,   95,  164,
+		84,   98,  159,  158,   -1,   -1,  103,  104,  105,  159,
+		159,  159,  109,  110,  159,  159,  159,  159,  115,  116,
+		159,  159,  106,  159,  108,    1,  159,  124,  159,  113,
+		160,  159,  159,  117,  118,  159,  159,  159,  163,  160,
+		160,  160,   -1,  127,  128,  129,  130,  131,  161,  161,
+		74,  161,  161,  161,  161,  161,   80,  161,  161,  161,
+		161,  161,  167,   87,   88,   89,  150,   91,  162,   93,
+		162,   95,   84,  162,   98,  159,  162,  161,  162,  103,
+		104,  105,  162,  162,  162,  109,  110,  162,  100,  101,
+		102,  115,  116,  162,  106,   70,  162,  162,  162,  162,
+		124,  162,  162,  162,  162,  117,  118,   82,   84,  162,
+		162,   86,  162,  162,  162,  127,  128,  129,  130,  131,
+		162,  162,  162,  162,  100,  101,  102,  163,  163,  163,
+		106,  163,  163,  163,  163,  163,  163,  163,  163,   -1,
+		163,  117,  118,  163,  163,  163,  163,  159,  163,  161,
+		162,  127,  128,  129,  130,  131,  163,  163,  163,  163,
+		163,  163,  137,  163,  139,  140,  141,  142,  143,  144,
+		163,  163,  163,  163,  163,  163,  151,  152,  163,  163,
+		163,  163,  163,  159,  164,  161,  162,  164,  163,   -1,
+		164,  166,  167,  164,  164,  164,  164,  164,  164,  164,
+		164,  164,  164,  164,  164,  164,  164,  164,  164,  164,
+		164,  164,  164,  164,  164,  164,  164,  164,  164,  164,
+		164,  164,  164,  164,  164,  164,  164,  164,  164,  164,
+		164,   -1,  165,  165,   -1,  166
+	];
+
+	PHP.Parser.prototype.yybase = [
+		0,   -2,  154,  565,  876,  948,  984,  514,   53,  398,
+		837,  307,  307,   67,  307,  307,  307,  653,  724,  724,
+		732,  724,  616,  673,  204,  204,  204,  625,  625,  625,
+		625,  694,  694,  831,  831,  863,  799,  765,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  936,  936,  936,  936,  936,  936,  936,  936,
+		936,  936,  375,  519,  369,  701, 1017, 1023, 1019, 1024,
+		1015, 1014, 1018, 1020, 1025,  911,  912,  782,  918,  919,
+		920,  921, 1021,  841, 1016, 1022,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  290,  491,   44,  382,  382,  382,  382,  382,
+		382,  382,  382,  382,  382,  382,  382,  382,  382,  382,
+		382,  382,  382,  382,  382,  160,  160,  160,  187,  684,
+		684,  341,  203,  610,   47,  985,  985,  985,  985,  985,
+		985,  985,  985,  985,  985,  144,  144,    7,    7,    7,
+		7,    7,  371,  -25,  -25,  -25,  -25,  540,  385,  102,
+		576,  358,   45,  377,  460,  460,  360,  231,  231,  231,
+		231,  231,  231,  -78,  -78,  -78,  -78,  -78,  -66,  319,
+		457,  -94,  396,  423,  586,  586,  586,  586,  423,  423,
+		423,  423,  750, 1029,  423,  423,  423,  511,  516,  516,
+		518,  147,  147,  147,  516,  583,  777,  422,  583,  422,
+		194,   92,  748,  -40,   87,  412,  748,  617,  627,  198,
+		143,  773,  658,  773, 1013,  757,  764,  717,  838,  860,
+		1026,  800,  908,  806,  910,  219,  686, 1012, 1012, 1012,
+		1012, 1012, 1012, 1012, 1012, 1012, 1012, 1012,  855,  552,
+		1013,  286,  855,  855,  855,  552,  552,  552,  552,  552,
+		552,  552,  552,  552,  552,  679,  286,  568,  626,  286,
+		794,  552,  375,  758,  375,  375,  375,  375,  958,  375,
+		375,  375,  375,  375,  375,  970,  769,  -16,  375,  519,
+		12,   12,  547,   83,   12,   12,   12,   12,  375,  375,
+		375,  658,  781,  713,  666,  792,  448,  781,  781,  781,
+		438,  444,  193,  447,  570,  523,  580,  760,  760,  767,
+		929,  929,  760,  759,  760,  767,  934,  760,  929,  805,
+		359,  648,  577,  611,  656,  929,  478,  760,  760,  760,
+		760,  665,  760,  467,  433,  760,  760,  785,  774,  789,
+		60,  929,  929,  929,  789,  596,  751,  751,  751,  811,
+		812,  746,  771,  567,  498,  677,  348,  779,  771,  771,
+		760,  640,  746,  771,  746,  771,  747,  771,  771,  771,
+		746,  771,  759,  585,  771,  734,  668,  224,  771,    6,
+		935,  937,  354,  940,  932,  941,  979,  942,  943,  851,
+		956,  933,  945,  931,  930,  780,  703,  720,  790,  729,
+		928,  768,  768,  768,  925,  768,  768,  768,  768,  768,
+		768,  768,  768,  703,  788,  804,  733,  783,  960,  722,
+		726,  725,  868, 1027, 1028,  737,  739,  958, 1006,  953,
+		803,  730,  992,  967,  866,  848,  968,  969,  993, 1007,
+		1008,  871,  761,  874,  880,  797,  971,  852,  768,  935,
+		943,  933,  945,  931,  930,  763,  762,  753,  755,  749,
+		745,  736,  738,  770, 1009,  924,  835,  830,  970,  926,
+		703,  839,  986,  847,  994,  995,  850,  801,  772,  840,
+		881,  972,  975,  976,  853, 1010,  810,  989,  795,  996,
+		802,  882,  997,  998,  999, 1000,  885,  854,  856,  857,
+		815,  754,  980,  786,  891,  335,  787,  796,  978,  363,
+		957,  858,  894,  895, 1001, 1002, 1003,  896,  954,  816,
+		990,  752,  991,  983,  817,  818,  485,  784,  778,  541,
+		676,  897,  899,  900,  955,  775,  766,  821,  822, 1011,
+		901,  697,  824,  740,  902, 1005,  742,  744,  756,  859,
+		793,  743,  798,  977,  776,  827,  907,  829,  832,  833,
+		1004,  836,    0,    0,    0,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+		0,  458,  458,  458,  458,  458,  458,  307,  307,  307,
+		307,    0,    0,  307,    0,    0,    0,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  458,  458,  458,  458,  458,  458,  458,  458,
+		458,  458,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+		0,    0,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,  291,  291,  291,  291,
+		291,  291,  291,  291,  291,  291,  291,  291,  291,  423,
+		423,  291,  291,    0,  291,  423,  423,  423,  423,  423,
+		423,  423,  423,  423,  423,  291,  291,  291,  291,  291,
+		291,  291,  805,  147,  147,  147,  147,  423,  423,  423,
+		423,  423,  -88,  -88,  147,  147,  423,  423,  423,  423,
+		423,  423,  423,  423,  423,  423,  423,  423,    0,    0,
+		0,  286,  422,    0,  759,  759,  759,  759,    0,    0,
+		0,    0,  422,  422,    0,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,  286,  422,    0,  286,    0,
+		759,  759,  423,  805,  805,  314,  423,    0,    0,    0,
+		0,  286,  759,  286,  552,  422,  552,  552,   12,  375,
+		314,  608,  608,  608,  608,    0,  658,  805,  805,  805,
+		805,  805,  805,  805,  805,  805,  805,  805,  759,    0,
+		805,    0,  759,  759,  759,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+		759,    0,    0,  929,    0,    0,    0,    0,  760,    0,
+		0,    0,    0,    0,    0,  760,  934,    0,    0,    0,
+		0,    0,    0,  759,    0,    0,    0,    0,    0,    0,
+		0,    0,  768,  801,    0,  801,    0,  768,  768,  768
+	];
+
+	PHP.Parser.prototype.yydefault = [
+		3,32767,  103,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,  101,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,  578,  578,  578,
+		578,32767,32767,  246,  103,32767,32767,  454,  372,  372,
+		372,32767,32767,  522,  522,  522,  522,  522,  522,32767,
+		32767,32767,32767,32767,32767,  454,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,  101,32767,
+		32767,32767,   37,    7,    8,   10,   11,   50,   17,  310,
+		32767,32767,32767,32767,  103,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,  571,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,  458,  437,  438,  440,
+		441,  371,  523,  577,  313,  574,  370,  146,  325,  315,
+		234,  316,  250,  459,  251,  460,  463,  464,  211,  279,
+		367,  150,  401,  455,  403,  453,  457,  402,  377,  382,
+		383,  384,  385,  386,  387,  388,  389,  390,  391,  392,
+		393,  394,  375,  376,  456,  434,  433,  432,  399,32767,
+		32767,  400,  404,  374,  407,32767,32767,32767,32767,32767,
+		32767,32767,32767,  103,32767,  405,  406,  423,  424,  421,
+		422,  425,32767,  426,  427,  428,  429,32767,32767,  302,
+		32767,32767,  351,  349,  414,  415,  302,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,  516,
+		431,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,  103,32767,  101,  518,  396,  398,
+		486,  409,  410,  408,  378,32767,  493,32767,  103,  495,
+		32767,32767,32767,  112,32767,32767,32767,  517,32767,  524,
+		524,32767,  479,  101,  194,32767,  194,  194,32767,32767,
+		32767,32767,32767,32767,32767,  585,  479,  111,  111,  111,
+		111,  111,  111,  111,  111,  111,  111,  111,32767,  194,
+		111,32767,32767,32767,  101,  194,  194,  194,  194,  194,
+		194,  194,  194,  194,  194,  189,32767,  260,  262,  103,
+		539,  194,32767,  498,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,  491,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,  479,  419,  139,32767,  139,  524,  411,  412,  413,
+		481,  524,  524,  524,  298,  281,32767,32767,32767,32767,
+		496,  496,  101,  101,  101,  101,  491,32767,32767,  112,
+		100,  100,  100,  100,  100,  104,  102,32767,32767,32767,
+		32767,  100,32767,  102,  102,32767,32767,  217,  208,  215,
+		102,32767,  543,  544,  215,  102,  219,  219,  219,  239,
+		239,  470,  304,  102,  100,  102,  102,  196,  304,  304,
+		32767,  102,  470,  304,  470,  304,  198,  304,  304,  304,
+		470,  304,32767,  102,  304,  210,  100,  100,  304,32767,
+		32767,32767,  481,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,  511,32767,  528,
+		541,  417,  418,  420,  526,  442,  443,  444,  445,  446,
+		447,  448,  450,  573,32767,  485,32767,32767,32767,32767,
+		324,  583,32767,  583,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,  584,32767,  524,32767,32767,32767,32767,  416,    9,
+		76,   43,   44,   52,   58,  502,  503,  504,  505,  499,
+		500,  506,  501,32767,32767,  507,  549,32767,32767,  525,
+		576,32767,32767,32767,32767,32767,32767,  139,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,  511,32767,
+		137,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,  524,32767,32767,32767,  300,  301,32767,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,  524,32767,32767,32767,  283,  284,32767,
+		32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,32767,  278,32767,32767,  366,32767,32767,32767,
+		32767,  345,32767,32767,32767,32767,32767,32767,32767,32767,
+		32767,32767,  152,  152,    3,    3,  327,  152,  152,  152,
+		327,  152,  327,  327,  327,  152,  152,  152,  152,  152,
+		152,  272,  184,  254,  257,  239,  239,  152,  337,  152
+	];
+
+	PHP.Parser.prototype.yygoto = [
+		194,  194,  670,  422,  643,  463, 1264, 1265, 1022,  416,
+		308,  309,  329,  563,  314,  421,  330,  423,  622,  801,
+		678,  637,  586,  651,  652,  653,  165,  165,  165,  165,
+		218,  195,  191,  191,  175,  177,  213,  191,  191,  191,
+		191,  191,  192,  192,  192,  192,  192,  192,  186,  187,
+		188,  189,  190,  215,  213,  216,  521,  522,  412,  523,
+		525,  526,  527,  528,  529,  530,  531,  532, 1091,  166,
+		167,  168,  193,  169,  170,  171,  164,  172,  173,  174,
+		176,  212,  214,  217,  235,  238,  241,  242,  244,  255,
+		256,  257,  258,  259,  260,  261,  263,  264,  265,  266,
+		274,  275,  311,  312,  313,  417,  418,  419,  568,  219,
+		220,  221,  222,  223,  224,  225,  226,  227,  228,  229,
+		230,  231,  232,  233,  178,  234,  179,  196,  197,  198,
+		236,  186,  187,  188,  189,  190,  215, 1091,  199,  180,
+		181,  182,  200,  196,  183,  237,  201,  199,  163,  202,
+		203,  184,  204,  205,  206,  185,  207,  208,  209,  210,
+		211,  323,  323,  323,  323,  827,  608,  608,  824,  547,
+		538,  342, 1221, 1221, 1221, 1221, 1221, 1221, 1221, 1221,
+		1221, 1221, 1239, 1239,  288,  288,  288,  288, 1239, 1239,
+		1239, 1239, 1239, 1239, 1239, 1239, 1239, 1239,  388,  538,
+		547,  556,  557,  395,  566,  588,  602,  603,  832,  825,
+		880,  875,  876,  889,   15,  833,  877,  830,  878,  879,
+		831,  799,  251,  251,  883,  919,  992, 1000, 1004, 1001,
+		1005, 1237, 1237,  938, 1043, 1039, 1040, 1237, 1237, 1237,
+		1237, 1237, 1237, 1237, 1237, 1237, 1237,  858,  248,  248,
+		248,  248,  250,  252,  533,  533,  533,  533,  487,  590,
+		488, 1190, 1190,  997, 1190,  997,  494, 1290, 1290,  560,
+		997,  997,  997,  997,  997,  997,  997,  997,  997,  997,
+		997,  997, 1261, 1261, 1290, 1261,  340, 1190,  930,  402,
+		677, 1279, 1190, 1190, 1190, 1190,  959,  345, 1190, 1190,
+		1190, 1271, 1271, 1271, 1271,  606,  640,  345,  345, 1273,
+		1273, 1273, 1273,  820,  820,  805,  896,  884,  840,  885,
+		897,  345,  345,    5,  345,    6, 1306,  384,  535,  535,
+		559,  535,  415,  852,  597, 1257,  839,  540,  524,  524,
+		345, 1289, 1289,  642,  524,  524,  524,  524,  524,  524,
+		524,  524,  524,  524,  445,  805, 1140,  805, 1289,  932,
+		932,  932,  932, 1063, 1064,  445,  926,  933,  386,  390,
+		548,  587,  591, 1030, 1292,  331,  554, 1259, 1259, 1030,
+		704,  621,  623,  823,  641, 1250,  319,  303,  660,  664,
+		973,  668,  676,  969,  429,  553,  962,  936,  936,  934,
+		936,  703,  601,  537,  971,  966,  343,  344,  663,  817,
+		595,  609,  612,  613,  614,  615,  634,  635,  636,  680,
+		439, 1186,  845,  454,  454,  439,  439, 1266, 1267,  820,
+		901, 1079,  454,  394,  539,  551, 1183,  605,  540,  539,
+		842,  551,  978,  272,  387,  618,  619,  981,  536,  536,
+		844,  707,  646,  957,  567,  457,  458,  459,  838,  850,
+		254,  254, 1297, 1298,  400,  401,  976,  976,  464,  649,
+		1182,  650, 1028,  404,  405,  406, 1187,  661,  424, 1032,
+		407,  564,  600,  815,  338,  424,  854,  848,  853,  841,
+		1027, 1031, 1009, 1002, 1006, 1003, 1007, 1185,  941, 1188,
+		1247, 1248,  943,    0, 1074,  439,  439,  439,  439,  439,
+		439,  439,  439,  439,  439,  439,    0,  468,  439,  585,
+		1056,  931,  681,  667,  667,    0,  495,  673, 1054, 1171,
+		912,    0,    0, 1172, 1175,  913, 1176,    0,    0,    0,
+		0,    0,    0, 1072,  857
+	];
+
+	PHP.Parser.prototype.yygcheck = [
+		42,   42,   72,   65,   65,  166,  166,  166,  119,   65,
+		65,   65,   65,   65,   65,   65,   65,   65,   65,    7,
+		9,   84,  122,   84,   84,   84,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   23,   23,   23,   23,   15,  104,  104,   26,   75,
+		75,   93,  104,  104,  104,  104,  104,  104,  104,  104,
+		104,  104,  160,  160,   24,   24,   24,   24,  160,  160,
+		160,  160,  160,  160,  160,  160,  160,  160,   75,   75,
+		75,   75,   75,   75,   75,   75,   75,   75,   15,   27,
+		15,   15,   15,   15,   75,   15,   15,   15,   15,   15,
+		15,    6,    5,    5,   15,   87,   87,   87,   87,   87,
+		87,  161,  161,   49,   15,   15,   15,  161,  161,  161,
+		161,  161,  161,  161,  161,  161,  161,   45,    5,    5,
+		5,    5,    5,    5,  103,  103,  103,  103,  147,  103,
+		147,   72,   72,   72,   72,   72,  147,  173,  173,  162,
+		72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
+		72,   72,  122,  122,  173,  122,  169,   72,   89,   89,
+		89,  171,   72,   72,   72,   72,   99,   14,   72,   72,
+		72,    9,    9,    9,    9,   55,   55,   14,   14,  122,
+		122,  122,  122,   22,   22,   12,   72,   64,   35,   64,
+		72,   14,   14,   46,   14,   46,   14,   61,   19,   19,
+		100,   19,   13,   35,   13,  122,   35,   14,  163,  163,
+		14,  172,  172,   63,  163,  163,  163,  163,  163,  163,
+		163,  163,  163,  163,   19,   12,  143,   12,  172,   19,
+		19,   19,   19,  136,  136,   19,   19,   19,   58,   58,
+		58,   58,   58,  122,  172,   29,   48,  122,  122,  122,
+		48,   48,   48,   25,   48,   14,  159,  159,   48,   48,
+		48,   48,   48,   48,  109,    9,   25,   25,   25,   25,
+		25,   25,    9,   25,   25,   25,   93,   93,   14,   18,
+		79,   79,   79,   79,   79,   79,   79,   79,   79,   79,
+		23,   20,   39,  141,  141,   23,   23,  168,  168,   22,
+		17,   17,  141,   28,    9,    9,  152,   17,   14,    9,
+		37,    9,   17,   24,    9,   83,   83,  106,   24,   24,
+		17,   95,   17,   17,    9,    9,    9,    9,   17,    9,
+		5,    5,    9,    9,   80,   80,  103,  103,  149,   80,
+		17,   80,  121,   80,   80,   80,   20,   80,  113,  124,
+		80,    2,    2,   20,   80,  113,   41,    9,   16,   16,
+		16,   16,  113,  113,  113,  113,  113,   14,   16,   20,
+		20,   20,   92,   -1,  139,   23,   23,   23,   23,   23,
+		23,   23,   23,   23,   23,   23,   -1,   82,   23,    8,
+		8,   16,    8,    8,    8,   -1,    8,    8,    8,   78,
+		78,   -1,   -1,   78,   78,   78,   78,   -1,   -1,   -1,
+		-1,   -1,   -1,   16,   16
+	];
+
+	PHP.Parser.prototype.yygbase = [
+		0,    0, -203,    0,    0,  221,  208,   10,  512,    7,
+		0,    0,   24,    1,    5, -174,   47,  -23,  105,   61,
+		38,    0,  -10,  158,  181,  379,  164,  205,  102,   84,
+		0,    0,    0,    0,    0,  -43,    0,  107,    0,  104,
+		0,   54,   -1,    0,    0,  235, -384,    0, -307,  210,
+		0,    0,    0,    0,    0,  266,    0,    0,  324,    0,
+		0,  286,    0,  103,  298, -236,    0,    0,    0,    0,
+		0,    0,   -6,    0,    0, -167,    0,    0,  129,   62,
+		-14,    0,   53,  -22, -669,    0,    0,  -52,    0,  -11,
+		0,    0,   68, -299,    0,   52,    0,    0,    0,  262,
+		288,    0,    0,  227,  -73,    0,   87,    0,    0,  118,
+		0,    0,    0,  209,    0,    0,    0,    0,    0,    6,
+		0,  108,   15,    0,   46,    0,    0,    0,    0,    0,
+		0,    0,    0,    0,    0,    0,   91,    0,    0,   69,
+		0,  390,    0,   86,    0,    0,    0, -224,    0,   37,
+		0,    0,   77,    0,    0,    0,    0,    0,    0,   70,
+		-57,   -8,  241,   99,    0,    0, -290,    0,   65,  257,
+		0,  261,   39,  -35,    0,    0
+	];
+
+	PHP.Parser.prototype.yygdefault = [
+		-32768,  499,  711,    4,  712,  905,  788,  797,  583,  515,
+		679,  339,  610,  413, 1255,  882, 1078,  565,  816, 1199,
+		1207,  446,  819,  324,  701,  864,  865,  866,  391,  376,
+		382,  389,  632,  611,  481,  851,  442,  843,  473,  846,
+		441,  855,  162,  410,  497,  859,    3,  861,  542,  892,
+		377,  869,  378,  656,  871,  550,  873,  874,  385,  392,
+		393, 1083,  558,  607,  886,  243,  552,  887,  375,  888,
+		895,  380,  383,  665,  453,  492,  486,  403, 1058,  594,
+		629,  450,  467,  617,  616,  604,  466,  425,  408,  928,
+		474,  451,  942,  341,  950,  709, 1090,  624,  476,  958,
+		625,  965,  968,  516,  517,  465,  980,  269,  983,  477,
+		1015,  647,  648,  995,  626,  627, 1013,  460,  584, 1021,
+		443, 1029, 1243,  444, 1033,  262, 1036,  276,  409,  426,
+		1041, 1042,    8, 1048,  671,  672,   10,  273,  496, 1073,
+		666,  440, 1089,  430, 1159, 1161,  544,  478, 1179, 1178,
+		659,  493, 1184, 1246,  438,  518,  461,  310,  519,  302,
+		327,  307,  534,  289,  328,  520,  462, 1252, 1260,  325,
+		30, 1280, 1291,  335,  562,  599
+	];
+
+	PHP.Parser.prototype.yylhs = [
+		0,    1,    3,    3,    2,    5,    5,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+		6,    6,    6,    6,    6,    6,    6,    6,    7,    7,
+		7,    7,    7,    7,    7,    7,    8,    8,    9,   10,
+		11,   11,   11,   12,   12,   13,   13,   14,   15,   15,
+		16,   16,   17,   17,   18,   18,   21,   21,   22,   23,
+		23,   24,   24,    4,    4,    4,    4,    4,    4,    4,
+		4,    4,    4,    4,   29,   29,   30,   30,   32,   34,
+		34,   28,   36,   36,   33,   38,   38,   35,   35,   37,
+		37,   39,   39,   31,   40,   40,   41,   43,   44,   44,
+		45,   46,   46,   48,   47,   47,   47,   47,   49,   49,
+		49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
+		49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
+		49,   49,   25,   25,   68,   68,   71,   71,   70,   69,
+		69,   62,   74,   74,   75,   75,   76,   76,   77,   77,
+		78,   78,   26,   26,   27,   27,   27,   27,   86,   86,
+		88,   88,   81,   81,   81,   82,   82,   85,   85,   83,
+		83,   89,   90,   90,   56,   56,   64,   64,   67,   67,
+		67,   66,   91,   91,   92,   57,   57,   57,   57,   93,
+		93,   94,   94,   95,   95,   96,   97,   97,   98,   98,
+		99,   99,   54,   54,   50,   50,  101,   52,   52,  102,
+		51,   51,   53,   53,   63,   63,   63,   63,   79,   79,
+		105,  105,  107,  107,  108,  108,  108,  108,  106,  106,
+		106,  110,  110,  110,  110,   87,   87,  113,  113,  113,
+		111,  111,  114,  114,  112,  112,  115,  115,  116,  116,
+		116,  116,  109,  109,   80,   80,   80,   20,   20,   20,
+		118,  117,  117,  119,  119,  119,  119,   59,  120,  120,
+		121,   60,  123,  123,  124,  124,  125,  125,   84,  126,
+		126,  126,  126,  126,  126,  131,  131,  132,  132,  133,
+		133,  133,  133,  133,  134,  135,  135,  130,  130,  127,
+		127,  129,  129,  137,  137,  136,  136,  136,  136,  136,
+		136,  136,  128,  138,  138,  140,  139,  139,   61,  100,
+		141,  141,   55,   55,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+		42,   42,   42,   42,   42,   42,   42,  148,  142,  142,
+		147,  147,  150,  151,  151,  152,  153,  153,  153,   19,
+		19,   72,   72,   72,   72,  143,  143,  143,  143,  155,
+		155,  144,  144,  146,  146,  146,  149,  149,  160,  160,
+		160,  160,  160,  160,  160,  160,  160,  161,  161,  104,
+		163,  163,  163,  163,  145,  145,  145,  145,  145,  145,
+		145,  145,   58,   58,  158,  158,  158,  158,  164,  164,
+		154,  154,  154,  165,  165,  165,  165,  165,  165,   73,
+		73,   65,   65,   65,   65,  122,  122,  122,  122,  168,
+		167,  157,  157,  157,  157,  157,  157,  157,  156,  156,
+		156,  166,  166,  166,  166,  103,  162,  170,  170,  169,
+		169,  171,  171,  171,  171,  171,  171,  171,  171,  159,
+		159,  159,  159,  173,  174,  172,  172,  172,  172,  172,
+		172,  172,  172,  175,  175,  175,  175
+	];
+
+	PHP.Parser.prototype.yylen = [
+		1,    1,    2,    0,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+		0,    1,    0,    1,    1,    2,    1,    3,    4,    1,
+		2,    0,    1,    1,    1,    1,    1,    3,    5,    4,
+		3,    4,    2,    3,    1,    1,    7,    6,    2,    3,
+		1,    2,    3,    1,    2,    3,    1,    1,    3,    1,
+		3,    1,    2,    2,    3,    1,    3,    2,    3,    1,
+		3,    2,    0,    1,    1,    1,    1,    1,    3,    7,
+		10,    5,    7,    9,    5,    3,    3,    3,    3,    3,
+		3,    1,    2,    5,    7,    9,    6,    5,    6,    3,
+		2,    1,    1,    1,    0,    2,    1,    3,    8,    0,
+		4,    2,    1,    3,    0,    1,    0,    1,    0,    1,
+		3,    1,    8,    9,    8,    7,    6,    8,    0,    2,
+		0,    2,    1,    2,    2,    0,    2,    0,    2,    0,
+		2,    2,    1,    3,    1,    4,    1,    4,    1,    1,
+		4,    2,    1,    3,    3,    3,    4,    4,    5,    0,
+		2,    4,    3,    1,    1,    7,    0,    2,    1,    3,
+		3,    4,    1,    4,    0,    2,    5,    0,    2,    6,
+		0,    2,    0,    3,    1,    2,    1,    1,    2,    0,
+		1,    3,    0,    2,    1,    1,    1,    1,    6,    8,
+		6,    1,    2,    1,    1,    1,    1,    1,    1,    1,
+		3,    3,    3,    3,    3,    3,    3,    3,    1,    2,
+		1,    1,    0,    1,    0,    2,    2,    2,    4,    3,
+		1,    1,    3,    1,    2,    2,    3,    2,    3,    1,
+		1,    2,    3,    1,    1,    3,    2,    0,    1,    5,
+		5,   10,    3,    5,    1,    1,    3,    0,    2,    4,
+		5,    4,    4,    4,    3,    1,    1,    1,    1,    1,
+		1,    0,    1,    1,    2,    1,    1,    1,    1,    1,
+		1,    1,    2,    1,    3,    1,    1,    3,    2,    2,
+		3,    1,    0,    1,    1,    3,    3,    3,    4,    1,
+		1,    2,    3,    3,    3,    3,    3,    3,    3,    3,
+		3,    3,    3,    3,    3,    2,    2,    2,    2,    3,
+		3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+		3,    3,    3,    3,    3,    3,    3,    2,    2,    2,
+		2,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+		3,    3,    5,    4,    3,    4,    4,    2,    2,    4,
+		2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
+		2,    1,    3,    2,    1,    2,    4,    2,    2,    8,
+		9,    8,    9,    9,   10,    9,   10,    8,    3,    2,
+		0,    4,    2,    1,    3,    2,    2,    2,    4,    1,
+		1,    1,    1,    1,    1,    1,    1,    3,    1,    1,
+		1,    0,    3,    0,    1,    1,    0,    1,    1,    1,
+		1,    1,    1,    1,    1,    1,    1,    3,    3,    3,
+		4,    1,    1,    3,    1,    1,    1,    1,    1,    3,
+		2,    3,    0,    1,    1,    3,    1,    1,    1,    1,
+		1,    3,    1,    1,    4,    4,    1,    4,    4,    0,
+		1,    1,    1,    3,    3,    1,    4,    2,    2,    1,
+		3,    1,    4,    4,    3,    3,    3,    3,    1,    3,
+		1,    1,    3,    1,    1,    4,    1,    1,    1,    3,
+		1,    1,    2,    1,    3,    4,    3,    2,    0,    2,
+		2,    1,    2,    1,    1,    1,    4,    3,    3,    3,
+		3,    6,    3,    1,    1,    2,    1
+	];
+
+
+
+	exports.PHP = PHP;
+});
+
+ace.define("ace/mode/php_worker",[], function(require, exports, module) {
+"use strict";
+
+var oop = require("../lib/oop");
+var Mirror = require("../worker/mirror").Mirror;
+var PHP = require("./php/php").PHP;
+
+var PhpWorker = exports.PhpWorker = function(sender) {
+    Mirror.call(this, sender);
+    this.setTimeout(500);
+};
+
+oop.inherits(PhpWorker, Mirror);
+
+(function() {
+    this.setOptions = function(opts) {
+        this.inlinePhp = opts && opts.inline;
+    };
+    
+    this.onUpdate = function() {
+        var value = this.doc.getValue();
+        var errors = [];
+        if (this.inlinePhp)
+            value = "<?" + value + "?>";
+
+        var tokens = PHP.Lexer(value, {short_open_tag: 1});
+        try {
+            new PHP.Parser(tokens);
+        } catch(e) {
+            errors.push({
+                row: e.line - 1,
+                column: null,
+                text: e.message.charAt(0).toUpperCase() + e.message.substring(1),
+                type: "error"
+            });
+        }
+
+        this.sender.emit("annotate", errors);
+    };
+
+}).call(PhpWorker.prototype);
+
+});

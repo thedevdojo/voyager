@@ -1,12 +1,11 @@
 // Theme
-import 'tinymce/themes/modern/theme';
+import 'tinymce/themes/silver/theme';
 
   // Plugins
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/code';
 import 'tinymce/plugins/table';
-import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/lists';
 
 $(document).ready(function(){
