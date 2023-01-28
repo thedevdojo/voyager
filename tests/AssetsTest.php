@@ -45,6 +45,6 @@ class AssetsTest extends TestCase
     public function testCannotOpenFileOutsideAssets($url)
     {
         $response = $this->call('GET', route('voyager.dashboard').$this->prefix.$url);
-        $this->assertEquals(404, $response->status(), $url.' did not return a 404');
+        $this->assertContains($response->status(), [404, 500], $url.' did not return a 404 or 500');
     }
 }

@@ -1,29 +1,9 @@
-ace.define("ace/snippets/rst",["require","exports","module"], function(require, exports, module) {
-"use strict";
+ace.define("ace/snippets/rst.snippets",["require","exports","module"], function(require, exports, module){module.exports = "# rst\n\nsnippet :\n\t:${1:field name}: ${2:field body}\nsnippet *\n\t*${1:Emphasis}*\nsnippet **\n\t**${1:Strong emphasis}**\nsnippet _\n\t\\`${1:hyperlink-name}\\`_\n\t.. _\\`$1\\`: ${2:link-block}\nsnippet =\n\t${1:Title}\n\t=====${2:=}\n\t${3}\nsnippet -\n\t${1:Title}\n\t-----${2:-}\n\t${3}\nsnippet cont:\n\t.. contents::\n\t\n";
 
-exports.snippetText = "# rst\n\
-\n\
-snippet :\n\
-	:${1:field name}: ${2:field body}\n\
-snippet *\n\
-	*${1:Emphasis}*\n\
-snippet **\n\
-	**${1:Strong emphasis}**\n\
-snippet _\n\
-	\\`${1:hyperlink-name}\\`_\n\
-	.. _\\`$1\\`: ${2:link-block}\n\
-snippet =\n\
-	${1:Title}\n\
-	=====${2:=}\n\
-	${3}\n\
-snippet -\n\
-	${1:Title}\n\
-	-----${2:-}\n\
-	${3}\n\
-snippet cont:\n\
-	.. contents::\n\
-	\n\
-";
+});
+
+ace.define("ace/snippets/rst",["require","exports","module","ace/snippets/rst.snippets"], function(require, exports, module){"use strict";
+exports.snippetText = require("./rst.snippets");
 exports.scope = "rst";
 
 });                (function() {

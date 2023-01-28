@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help' => 'ဆိုက်အတွင်း ၎င်းတို့ကိုခေါ်ဆိုခြင်းဖြင့် ဆက်တင်များကို မည်သည့်နေရာတွင်မဆို ရယူနိုင်ပါသည်။',
+    'save' => 'ဆက်တင်များကို သိမ်းဆည်းပါ။',
+    'new' => 'ဆက်တင်အသစ်',
+    'help_name' => 'အမည် သတ်မှတ်ခြင်း ဥပမာ- စီမံခန့်ခွဲသူ ခေါင်းစဉ်',
+    'help_key' => 'သော့သတ်မှတ်ခြင်း ဥပမာ- admin_title',
+    'help_option' => '(optional, the same options as for the corresponding formfield apply)',
+    'add_new' => 'ဆက်တင်အသစ်များထည့်ပါ။',
+    'delete_question' => ':setting ဆက်တင်ကို ဖျက်လိုသည်မှာ သေချာပါသလား။',
+    'delete_confirm' => 'ဟုတ်ကဲ့၊ ဤဆက်တင်ကို ဖယ်ရှားပါ။',
+    'successfully_created' => 'ဆက်တင်တစ်ခုကို ဖန်တီးနိုင်ခဲ့တယ်။',
+    'successfully_saved' => 'ဆက်တင်များကို သိမ်းဆည်းနိုင်ခဲ့သည်။',
+    'successfully_deleted' => 'ဆက်တင်များကို ဖျက်နိုင်ခဲ့သည်။',
+    'already_at_top' => 'အပေါ်ဆုံးမှာရှိပြီးသားပါ',
+    'already_at_bottom' => 'အောက်ဆုံးမှာရှိပြီးသားပါ',
+    'key_already_exists' => ':key သော့ ရှိနှင့်ပြီးသား',
+    'moved_order_up' => ':name အပေါ်ကိုရွှေ့လိုက်သည်',
+    'moved_order_down' => ':name အောက်ကိုရွှေ့လိုက်သည်',
+    'successfully_removed' => ':name ဒီဟာကိုအောင်မြင်စွာဖျက်လိုက်ပါပြီ',
+    'group_general' => 'အထွေထွေ',
+    'group_admin' => 'စီမံခန့်ခွဲသူ',
+    'group_site' => 'Site',
+    'group' => 'အဖွဲ့',
+    'help_group' => 'ဤဆက်တင်ကို အောက်ပါအဖွဲ့များသို့ သတ်မှတ်ပေးပါ။',
+];

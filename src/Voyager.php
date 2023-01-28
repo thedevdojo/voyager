@@ -122,6 +122,10 @@ class Voyager
 
     public function formField($row, $dataType, $dataTypeContent)
     {
+        if (!isset($this->formFields[$row->type])) {
+            throw new \Exception(__('Missing field type: ' . $row->type), 500);
+        }
+
         $formField = $this->formFields[$row->type];
 
         return $formField->handle($row, $dataType, $dataTypeContent);

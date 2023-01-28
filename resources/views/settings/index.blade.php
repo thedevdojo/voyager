@@ -273,6 +273,8 @@
                                         <textarea class="form-control" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "rich_text_box")
                                         <textarea class="form-control richTextBox" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
+                                    @elseif($setting->type == "markdown_editor")
+                                        <textarea class="form-control easymde" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "code_editor")
                                         <?php $options = json_decode($setting->details); ?>
                                         <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</div>
@@ -383,6 +385,7 @@
                             <option value="text">{{ __('voyager::form.type_textbox') }}</option>
                             <option value="text_area">{{ __('voyager::form.type_textarea') }}</option>
                             <option value="rich_text_box">{{ __('voyager::form.type_richtextbox') }}</option>
+                            <option value="markdown_editor">{{ __('voyager::form.type_markdowneditor') }}</option>
                             <option value="code_editor">{{ __('voyager::form.type_codeeditor') }}</option>
                             <option value="checkbox">{{ __('voyager::form.type_checkbox') }}</option>
                             <option value="radio_btn">{{ __('voyager::form.type_radiobutton') }}</option>
@@ -500,12 +503,10 @@
     });
     $(".group_select_new").val('').trigger('change');
     </script>
-    <iframe id="form_target" name="form_target" style="display:none"></iframe>
-    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
-        {{ csrf_field() }}
-        <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
-        <input type="hidden" name="type_slug" id="type_slug" value="settings">
-    </form>
+    <div style="display:none">
+        <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
+        <input type="hidden" id="upload_type_slug" value="settings">
+    </div>
 
     <script>
         var options_editor = ace.edit('options_editor');

@@ -27,10 +27,8 @@ class AbstractActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__.'/../../database/factories');
-
         $this->userDataType = Voyager::model('DataType')->where('name', 'users')->first();
-        $this->user = factory(User::class)->create();
+        $this->user = \TCG\Voyager\Models\User::factory()->create();
     }
 
     /**
@@ -93,7 +91,7 @@ class AbstractActionTest extends TestCase
                  'id'      => 'delete-5',
              ]));
 
-        $this->assertEquals('class="class1 class2"data-id="5"id="delete-5"', $stub->convertAttributesToHtml());
+        $this->assertEquals('class="class1 class2" data-id="5" id="delete-5"', $stub->convertAttributesToHtml());
     }
 
     /**

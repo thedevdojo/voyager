@@ -23,7 +23,9 @@
                             @foreach ($results as $result)
                             <li class="dd-item" data-id="{{ $result->getKey() }}">
                                 <div class="dd-handle" style="height:inherit">
-                                    @if (isset($dataRow->details->view))
+                                    @if (isset($dataRow->details->view_order))
+                                        @include($dataRow->details->view_order, ['row' => $dataRow, 'dataType' => $dataType, 'dataTypeContent' => $result, 'view' => 'order', 'content' => $result->{$display_column}])
+                                    @elseif (isset($dataRow->details->view))
                                         @include($dataRow->details->view, ['row' => $dataRow, 'dataType' => $dataType, 'dataTypeContent' => $result, 'content' => $result->{$display_column}, 'action' => 'order'])
                                     @elseif($dataRow->type == 'image')
                                         <span>

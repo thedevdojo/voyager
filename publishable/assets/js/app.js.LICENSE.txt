@@ -5,13 +5,13 @@
   */
 
 /*!
- * Cropper.js v1.5.11
+ * Cropper.js v1.5.12
  * https://fengyuanchen.github.io/cropperjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2021-02-17T11:53:27.572Z
+ * Date: 2021-06-12T08:00:17.411Z
  */
 
 /*!
@@ -38,13 +38,13 @@
  */
 
 /*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.7.13
+ * (c) 2014-2022 Evan You
  * Released under the MIT License.
  */
 
 /*!
- * jQuery JavaScript Library v3.6.0
+ * jQuery JavaScript Library v3.6.1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -54,12 +54,12 @@
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2021-03-02T17:08Z
+ * Date: 2022-08-26T17:52Z
  */
 
 /*!
- * perfect-scrollbar v1.5.0
- * Copyright 2020 Hyunje Jun, MDBootstrap and Contributors
+ * perfect-scrollbar v1.5.3
+ * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
  * Licensed under MIT
  */
 
@@ -74,15 +74,6 @@
 /*! DataTables 1.10.18
  * ©2008-2018 SpryMedia Ltd - datatables.net/license
  */
-
-/**
-  * bootstrap-switch - Turn checkboxes and radio buttons into toggle switches.
-  *
-  * @version v3.3.5
-  * @homepage https://bttstrp.github.io/bootstrap-switch
-  * @author Mattia Larentis <mattia@larentis.eu> (http://larentis.eu)
-  * @license MIT
-  */
 
 //! moment.js
 

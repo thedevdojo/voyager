@@ -49,7 +49,9 @@
                         </div>
 
                         <div class="panel-body" style="padding-top:0;">
-                            @if (isset($row->details->view))
+                            @if (isset($row->details->view_read))
+                                @include($row->details->view_read, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'view' => 'read', 'options' => $row->details])
+                            @elseif (isset($row->details->view))
                                 @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => 'read', 'view' => 'read', 'options' => $row->details])
                             @elseif($row->type == "image")
                                 <img class="img-responsive"

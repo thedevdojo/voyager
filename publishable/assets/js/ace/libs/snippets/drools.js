@@ -1,26 +1,9 @@
-ace.define("ace/snippets/drools",["require","exports","module"], function(require, exports, module) {
-"use strict";
+ace.define("ace/snippets/drools.snippets",["require","exports","module"], function(require, exports, module){module.exports = "\nsnippet rule\n\trule \"${1?:rule_name}\"\n\twhen\n\t\t${2:// when...} \n\tthen\n\t\t${3:// then...}\n\tend\n\nsnippet query\n\tquery ${1?:query_name}\n\t\t${2:// find} \n\tend\n\t\nsnippet declare\n\tdeclare ${1?:type_name}\n\t\t${2:// attributes} \n\tend\n\n";
 
-exports.snippetText = "\n\
-snippet rule\n\
-	rule \"${1?:rule_name}\"\n\
-	when\n\
-		${2:// when...} \n\
-	then\n\
-		${3:// then...}\n\
-	end\n\
-\n\
-snippet query\n\
-	query ${1?:query_name}\n\
-		${2:// find} \n\
-	end\n\
-	\n\
-snippet declare\n\
-	declare ${1?:type_name}\n\
-		${2:// attributes} \n\
-	end\n\
-\n\
-";
+});
+
+ace.define("ace/snippets/drools",["require","exports","module","ace/snippets/drools.snippets"], function(require, exports, module){"use strict";
+exports.snippetText = require("./drools.snippets");
 exports.scope = "drools";
 
 });                (function() {

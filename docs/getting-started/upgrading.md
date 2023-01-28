@@ -1,37 +1,19 @@
 # Upgrading
 
-## Upgrading 1.4 to 1.5
+## Upgrading 1.5 to 1.6
 
 ### Update your Composer.json
 
 To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration of your composer.json to:
 
-`tcg/voyager": "1.5.*`
+`tcg/voyager": "1.6.*`
 
 And then run `composer update`
 
-### Removed hooks
+### Check your TinyMCE configuration
 
-Version 1.5 removes the hooks functionality.  
-If you use any hooks, either skip this release or convert them to regular composer packages.  
-Another way is to disable ssl verification in your `composer.json`: 
-
-```
-"repositories": {
-    "hooks": {
-        "type": "composer",
-        "url": "https://larapack.io",
-        "options": {
-            "ssl": {
-                "verify_peer": false
-            }
-        }
-    }
-}
-```
-
-
-If you do not use any hooks, you don't have to take any actions!
+TinyMCE was updated to version 6 and with that, a lot of configurations have changed.  
+If there are any errors in the console and you changed the TinyMCE configuration, make sure you are using the latest options and values from their docs.
 
 ### Troubleshooting
 

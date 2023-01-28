@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-2">
                                         <select id="filter" name="filter">
-                                            <option value="contains" @if($search->filter == "contains") selected @endif>contains</option>
+                                            <option value="contains" @if($search->filter == "contains") selected @endif>{{ __('voyager::generic.contains') }}</option>
                                             <option value="equals" @if($search->filter == "equals") selected @endif>=</option>
                                         </select>
                                     </div>
@@ -119,7 +119,9 @@
                                             }
                                             @endphp
                                             <td>
-                                                @if (isset($row->details->view))
+                                                @if (isset($row->details->view_browse))
+                                                    @include($row->details->view_browse, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'view' => 'browse', 'options' => $row->details])
+                                                @elseif (isset($row->details->view))
                                                     @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'action' => 'browse', 'view' => 'browse', 'options' => $row->details])
                                                 @elseif($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
@@ -194,7 +196,7 @@
                                                         @endforeach
                                                     @else
                                                         <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($data->{$row->field}) }}" target="_blank">
-                                                            Download
+                                                            {{ __('voyager::generic.download') }}
                                                         </a>
                                                     @endif
                                                 @elseif($row->type == 'rich_text_box')
