@@ -1,7 +1,11 @@
 {
     "name": "tcg/voyager",
     "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
-    "keywords": ["laravel", "admin", "panel"],
+    "keywords": [
+        "laravel",
+        "admin",
+        "panel"
+    ],
     "license": "MIT",
     "homepage": "https://voyager.devdojo.com/",
     "support": {
@@ -16,10 +20,10 @@
     ],
     "require": {
         "php": "^7.3|^7.4|^8.0",
-        "illuminate/support": "~8.0|~9.0",
+        "illuminate/support": "~8.0|~9.0|^10.0",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5|^3.1",
-        "larapack/doctrine-support": "~0.1.4",
+        "larapack/doctrine-support": "~0.1.4|^0.1",
         "laravel/ui": ">=1.0",
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "~1.1|~2.0|~3.0",
@@ -28,7 +32,7 @@
     "require-dev": {
         "phpunit/phpcov": ">=6.0",
         "phpunit/phpunit": ">=8.0",
-        "laravel/framework": "~8.0|~9.0",
+        "laravel/framework": "~8.0|~9.0|^10.0",
         "orchestra/testbench": ">=4.0",
         "laravel/browser-kit-testing": ">=6.1.0",
         "orchestra/testbench-browser-kit": ">=4.0"
