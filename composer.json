@@ -28,7 +28,7 @@
     "require-dev": {
         "phpunit/phpcov": ">=6.0",
         "phpunit/phpunit": ">=8.0",
-        "laravel/framework": "~8.0|~9.0",
+        "laravel/framework": "~8.0|~9.0|~10.0",
         "orchestra/testbench": ">=4.0",
         "laravel/browser-kit-testing": ">=6.1.0",
         "orchestra/testbench-browser-kit": ">=4.0"
