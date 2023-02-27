@@ -58,6 +58,10 @@ jobs:
       - name: Show laravel version
         run: composer show laravel/framework
 
+      # Generate vendor symlink
+      - name: Generate vendor symlink
+        run: ./vendor/bin/testbench
+
       # Install NPM dependencies
       - name: Install Dependencies
         run: npm install
