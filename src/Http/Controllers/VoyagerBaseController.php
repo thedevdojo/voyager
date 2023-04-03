@@ -88,10 +88,7 @@ class VoyagerBaseController extends Controller
 
                 $searchField = $dataType->name.'.'.$search->key;
                 if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
-                    $query->whereIn(
-                        $searchField,
-                        $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
-                    );
+                    $query->whereRelation($row->relation, $row->field, $search_filter, $search_value);
                 } else {
                     if ($dataType->browseRows->pluck('field')->contains($search->key)) {
                         $query->where($searchField, $search_filter, $search_value);
@@ -974,8 +971,8 @@ class VoyagerBaseController extends Controller
 
     protected function findSearchableRelationshipRow($relationshipRows, $searchKey)
     {
-        return $relationshipRows->filter(function ($item) use ($searchKey) {
-            if ($item->details->column != $searchKey) {
+        $row = $relationshipRows->filter(function ($item) use ($searchKey) {
+            if ($item->field != $searchKey) {
                 return false;
             }
             if ($item->details->type != 'belongsTo') {
@@ -984,6 +981,10 @@ class VoyagerBaseController extends Controller
 
             return !$this->relationIsUsingAccessorAsLabel($item->details);
         })->first();
+        
+        $relation = $row->details->relation ?? \Str::camel(class_basename(app($row->details->model)));
+
+        return (object) ['relation' => $relation, 'field' => $row->details->label];
     }
 
     protected function getSortableColumns($rows)
