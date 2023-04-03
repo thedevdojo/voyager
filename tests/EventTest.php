@@ -289,6 +289,7 @@ class EventTest extends TestCase
             ]),
         ]);
 
+
         Event::assertDispatched(TableUpdated::class);
     }
 

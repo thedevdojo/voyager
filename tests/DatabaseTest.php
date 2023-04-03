@@ -36,7 +36,9 @@ class DatabaseTest extends TestCase
             'notnull' => true,
         ]);
 
+
         $newTable->setPrimaryKey(['id'], 'primary');
+
 
         $this->table = $newTable->toArray();
 
