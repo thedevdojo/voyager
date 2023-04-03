@@ -16,9 +16,7 @@ abstract class Column
         $type->tableName = $tableName;
 
         $options = array_diff_key($column, ['name' => $name, 'composite' => $column['composite'] ?? null, 'oldName' => $column['oldName'] ?? null, 'null' => $column['null'] ?? null, 'extra' => $column['extra'] ?? null, 'type' => $type]);
-        if (isset($column['null'])) {
-            $options['notnull'] = $column['null'] === 'NO';
-        }
+
         return new DoctrineColumn($name, $type, $options);
     }
 
