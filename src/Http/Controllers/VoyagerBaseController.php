@@ -47,13 +47,6 @@ class VoyagerBaseController extends Controller
 
         $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
 
-        $searchNames = [];
-        if ($dataType->server_side) {
-            $searchNames = $dataType->browseRows->mapWithKeys(function ($row) {
-                return [$row['field'] => $row->getTranslatedAttribute('display_name')];
-            });
-        }
-
         $orderBy = $request->get('order_by', $dataType->order_column);
         $sortOrder = $request->get('sort_order', $dataType->order_direction);
         $usesSoftDeletes = false;
@@ -126,6 +119,13 @@ class VoyagerBaseController extends Controller
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
             $model = false;
+        }
+        
+        $searchNames = [];
+        if ($dataType->server_side) {
+            $searchNames = $dataType->browseRows->mapWithKeys(function ($row) {
+                return [$row['field'] => $row->getTranslatedAttribute('display_name')];
+            });
         }
 
         // Check if BREAD is Translatable
