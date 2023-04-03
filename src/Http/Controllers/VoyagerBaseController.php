@@ -981,6 +981,8 @@ class VoyagerBaseController extends Controller
 
             return !$this->relationIsUsingAccessorAsLabel($item->details);
         })->first();
+
+        if(!$row) return $row;
         
         $relation = $row->details->relation ?? \Str::camel(class_basename(app($row->details->model)));
 
