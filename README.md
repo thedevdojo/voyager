@@ -20,8 +20,6 @@ Video Tutorial Here: https://voyager.devdojo.com/academy/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
-View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
-
 <hr>
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 8 and newer!
