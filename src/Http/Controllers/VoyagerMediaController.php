@@ -240,8 +240,10 @@ class VoyagerMediaController extends Controller
             }
 
             if (!$request->has('filename') || $request->get('filename') == 'null') {
-                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
-                    $name = get_file_name($name);
+                if (!$details->preserveFileUploadName) {
+                    while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                        $name = get_file_name($name);
+                    }
                 }
             } else {
                 $name = str_replace('{uid}', Auth::user()->getKey(), $request->get('filename'));
