@@ -38,7 +38,6 @@
                     @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
                     @endif
-
                     @foreach($query as $relationshipData)
                         <option value="{{ $relationshipData->{$options->key} }}" @if(old($options->column, $dataTypeContent->{$options->column}) == $relationshipData->{$options->key}) selected="selected" @endif>{{ $relationshipData->{$options->label} }}</option>
                     @endforeach
@@ -144,6 +143,7 @@
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
+                            
                                 <li>{{ $selected_value }}</li>
                             @endforeach
                         </ul>

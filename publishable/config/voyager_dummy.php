@@ -42,7 +42,7 @@ return [
     */
 
     'models' => [
-        //'namespace' => 'App\\Models\\',
+        'namespace' => 'App\\Models\\',
     ],
 
     /*

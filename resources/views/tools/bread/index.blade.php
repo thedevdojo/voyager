@@ -28,12 +28,12 @@
                     <tr>
                         <td>
                             <p class="name">
-                                <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
+                                <a  style="font-weight: 800; font-size:20px; text-decoration:none;" href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
                                    data-name="{{ $table->prefix.$table->name }}" class="desctable">
                                    {{ $table->name }}
                                 </a>
-                                <i class="voyager-data"
-                                   style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
+                                {{-- <i class="voyager-data"
+                                   style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i> --}}
                             </p>
                         </td>
 

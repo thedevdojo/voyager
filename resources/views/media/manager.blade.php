@@ -845,6 +845,7 @@
             if (this.allowUpload && !dropzone.hasClass('dz-clickable')) {
                 dropzone.dropzone({
                     timeout: 180000,
+                    maxFilesize: 1000,
                     url: '{{ route('voyager.media.upload') }}',
                     previewsContainer: "#uploadPreview",
                     totaluploadprogress: function(uploadProgress, totalBytes, totalBytesSent) {

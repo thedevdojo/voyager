@@ -1,21 +1,24 @@
 <?php
 
-namespace TCG\Voyager\FormFields;
+namespace App\VoyagerFormFields;
 
 use App\Models\Chercheur;
+use TCG\Voyager\FormFields\AbstractHandler;
 
-class SelectDropdownHandler extends AbstractHandler
+class ChercheurDropdown extends AbstractHandler
 {
-    protected $codename = 'select_dropdown';
+    protected $codename = 'chercheur_dropdown';
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
+        $options->options = Chercheur::pluck('nom');
 
-        return view('voyager::formfields.select_dropdown', [
+        return view('voyager::formfields.chercheur_dropdown', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,
             'dataTypeContent' => $dataTypeContent,
         ]);
     }
+
 }

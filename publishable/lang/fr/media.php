@@ -14,7 +14,6 @@ return [
     'error_deleting_folder'  => 'Désolé, quelque chose n\'a pas fonctionné lors de la suppression du dossier, veuillez vérifier les permissions',
     'error_may_exist'        => 'Un fichier ou un dossier avec ce nom existe déjà. Choisissez un autre nom ou supprimez le fichier/dossier existant.',
     'error_moving'           => 'Désolé, il y a un problème pour déplacer ce fichier/dossier, veuillez vérifier les permissions',
-    'error_renaming_ext'     => 'L\'extension du fichier ne peut être modifiée !',
     'error_uploading'        => 'Échec du téléchargement : une erreur inconnue s\'est produite !',
     'files'                  => '1 fichier|:count fichiers',
     'files_more'             => 'Et :count de plus',
@@ -28,6 +27,7 @@ return [
     'loading'                => 'CHARGEMENT DES FICHIERS MULTIMEDIA',
     'max_files_select'       => 'Vous ne pouvez sélectionner qu\'un fichier|Vous ne pouvez sélectionner qu\'un maximum de :count fichiers',
     'min_files_select'       => 'Vous devez sélectionner au moins un fichier|Vous devez sélectionner au moins :count fichiers',
+
     'move_file_folder'       => 'Déplacer fichier/dossier',
     'new_file_folder'        => 'Nouveau nom de fichier/dossier',
     'new_folder_name'        => 'Nouveau nom de dossier',

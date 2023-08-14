@@ -7,6 +7,7 @@ import 'tinymce/plugins/image';
 import 'tinymce/plugins/code';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/lists';
+import 'tinymce/plugins/media';
 
 $(document).ready(function(){
 

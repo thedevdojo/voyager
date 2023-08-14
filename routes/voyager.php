@@ -6,6 +6,7 @@ use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
 use TCG\Voyager\Events\RoutingAfter;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
