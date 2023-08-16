@@ -97,6 +97,17 @@ class VoyagerBaseController extends Controller
                         $query->where($searchField, $search_filter, $search_value);
                     }
                 }
+                if (is_field_translatable($model, $search->key)) {
+                    $query->whereIn(
+                        'id',
+                        Voyager::model('Translation')->where([
+                            ['table_name', $model->getTable()],
+                            ['column_name', $search->key],
+                            ['value', $search_filter, $search_value]
+                        ])->pluck('foreign_key')->toArray(),
+                        'or'
+                    );
+                }
             }
 
             $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
