@@ -5,7 +5,7 @@ if (!function_exists('is_field_translatable')) {
      * Check if a Field is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model      $model
-     * @param Illuminate\Database\Eloquent\Collection $row
+     * @param mixed Illuminate\Database\Eloquent\Collection | string $row
      */
     function is_field_translatable($model, $row)
     {
@@ -13,9 +13,11 @@ if (!function_exists('is_field_translatable')) {
             return;
         }
 
+        $field = is_string($row) ? $row : $row->field;
+
         return $model->translatable()
             && method_exists($model, 'getTranslatableAttributes')
-            && in_array($row->field, $model->getTranslatableAttributes());
+            && in_array($field, $model->getTranslatableAttributes());
     }
 }
 
