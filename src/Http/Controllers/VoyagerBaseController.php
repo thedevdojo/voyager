@@ -44,8 +44,12 @@ class VoyagerBaseController extends Controller
         $this->authorize('browse', app($dataType->model_name));
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
-
-        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
+        $search = (object) [
+            'value' => $request->get('s'),
+            'key' => $request->get('key'),
+            'filter' => $request->get('filter'),
+            'include_translations' => $request->get('include_translations')
+        ];
 
         $searchNames = [];
         if ($dataType->server_side) {
@@ -97,7 +101,7 @@ class VoyagerBaseController extends Controller
                         $query->where($searchField, $search_filter, $search_value);
                     }
                 }
-                if (is_field_translatable($model, $search->key)) {
+                if (is_field_translatable($model, $search->key) && $search->include_translations == 'yes') {
                     $query->whereIn(
                         'id',
                         Voyager::model('Translation')->where([
@@ -505,7 +509,7 @@ class VoyagerBaseController extends Controller
         }
 
         $affected = 0;
-        
+
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
