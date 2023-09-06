@@ -31,6 +31,7 @@ use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Seed;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
+
 class VoyagerServiceProvider extends ServiceProvider
 {
     /**
