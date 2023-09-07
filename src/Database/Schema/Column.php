@@ -15,7 +15,7 @@ abstract class Column
         $type = ($type instanceof DoctrineType) ? $type : DoctrineType::getType(trim($type['name']));
         $type->tableName = $tableName;
 
-        $options = array_diff_key($column, ['name' => $name, 'type' => $type]);
+        $options = array_diff_key($column, ['name' => $name, 'composite' => $column['composite'] ?? null, 'oldName' => $column['oldName'] ?? null, 'null' => $column['null'] ?? null, 'extra' => $column['extra'] ?? null, 'type' => $type]);
 
         return new DoctrineColumn($name, $type, $options);
     }

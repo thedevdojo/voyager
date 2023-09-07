@@ -62,7 +62,7 @@ abstract class SchemaManager
 
         $indexes = static::manager()->listTableIndexes($tableName);
 
-        return new Table($tableName, $columns, $indexes, $foreignKeys, false, []);
+        return new Table($tableName, $columns, $indexes, [], $foreignKeys, []);
     }
 
     /**
