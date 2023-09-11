@@ -51,8 +51,19 @@ class VoyagerMediaController extends Controller
         }
 
         $dir = $this->directory.$folder;
-
-        $files = [];
+        
+        // Save the configuration value "show directory first" to a variable.
+        $show_directory_first = config('voyager.media.show_directory_first');    
+        // Create a multidimensional array with 2 indexes 'dir' and 'files' to handle media for directories need to be shown first
+        if($show_directory_first)   {
+            $files = [
+                'dir' => [],
+                'files' => []
+                ];    
+        }  else{
+            $files = [];
+        }  
+        
         if (class_exists(\League\Flysystem\Plugin\ListWith::class)) {
             $storage = Storage::disk($this->filesystem)->addPlugin(new \League\Flysystem\Plugin\ListWith());
             $storageItems = $storage->listWith(['mimetype'], $dir);
@@ -62,8 +73,8 @@ class VoyagerMediaController extends Controller
         }
 
         foreach ($storageItems as $item) {
-            if ($item['type'] == 'dir') {
-                $files[] = [
+            if ($item['type'] == 'dir') {                                
+                $media_item = [               
                     'name'          => $item['basename'] ?? basename($item['path']),
                     'type'          => 'folder',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
@@ -71,6 +82,12 @@ class VoyagerMediaController extends Controller
                     'items'         => '',
                     'last_modified' => '',
                 ];
+                // Put directory data into the 'dir' index to show directories first.
+                if($show_directory_first)   { 
+                    $files['dir'][] = $media_item;
+                }else{
+                    $files[] = $media_item;
+                }
             } else {
                 if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
                     continue;
@@ -83,8 +100,8 @@ class VoyagerMediaController extends Controller
                 $mime = 'file';
                 if (class_exists(\League\MimeTypeDetection\ExtensionMimeTypeDetector::class)) {
                     $mime = (new \League\MimeTypeDetection\ExtensionMimeTypeDetector())->detectMimeTypeFromFile($item['path']);
-                }
-                $files[] = [
+                }                
+                $media_item = [               
                     'name'          => $item['basename'] ?? basename($item['path']),
                     'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
                     'type'          => $item['mimetype'] ?? $mime,
@@ -94,9 +111,18 @@ class VoyagerMediaController extends Controller
                     'last_modified' => $item['timestamp'] ?? $item->lastModified(),
                     'thumbnails'    => [],
                 ];
+                // Put files data into 'files' index to show directories first.
+                if($show_directory_first)   { 
+                    $files['files'][] = $media_item;
+                }else{
+                    $files[] = $media_item;
+                }
             }
-        }
-
+        } 
+        // Merge the arrays with the indexes 'dir' and 'files' into a single array to show directories first.
+        if($show_directory_first)   { 
+            $files = array_merge($files['dir'], $files['files']);  
+        }      
         foreach ($files as $key => $file) {
             foreach ($thumbnails as $thumbnail) {
                 if ($file['type'] != 'folder' && Str::startsWith($thumbnail['filename'], $file['filename'])) {

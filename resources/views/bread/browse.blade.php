@@ -1,7 +1,19 @@
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.viewing').' '.$dataType->getTranslatedAttribute('display_name_plural'))
-
+@section('css')
+    <style>
+        .search-include-translations{
+            position: absolute;
+            z-index: 4;
+            top: 1px;
+            right: 41px;
+            padding: 1px;
+            background: white;
+            margin-top: 5px;
+        }
+    </style>
+@stop
 @section('page_header')
     <div class="container-fluid">
         <h1 class="page-title">
@@ -45,6 +57,12 @@
                     <div class="panel-body">
                         @if ($isServerSide)
                             <form method="get" class="form-search">
+                                @if (isset($isModelTranslatable) && $isModelTranslatable)
+                                    <span class="search-include-translations">
+                                        <input type="checkbox" value="yes" name="include_translations" id="include_translations" @if(isset($search->include_translations) && $search->include_translations == 'yes') checked="checked" @endif>
+                                        <label for="include_translations"> {{ __('voyager::generic.include_translations') }}</label>
+                                    </span>
+                                @endif
                                 <div id="search-input">
                                     <div class="col-2">
                                         <select id="search_key" name="key">
@@ -68,6 +86,7 @@
                                         </span>
                                     </div>
                                 </div>
+
                                 @if (Request::has('sort_order') && Request::has('order_by'))
                                     <input type="hidden" name="sort_order" value="{{ Request::get('sort_order') }}">
                                     <input type="hidden" name="order_by" value="{{ Request::get('order_by') }}">

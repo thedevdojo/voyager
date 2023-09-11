@@ -111,4 +111,5 @@ return [
     'yes'                    => 'Yes',
     'yes_please'             => 'Yes, Please',
     'contains'               => 'contains',
+    'include_translations'   => 'Include Translations',
 ];
