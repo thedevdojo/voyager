@@ -10,8 +10,11 @@ class TableChanged
 
     public $name;
 
-    public function __construct($name)
+    public $changeType;
+
+    public function __construct($name, $changeType)
     {
         $this->name = $name;
+        $this->changeType = $changeType;
     }
 }
