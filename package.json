@@ -13,7 +13,7 @@
     "bootstrap-sass": "^3.4.3",
     "cross-env": "^7.0.3",
     "laravel-mix": "^6.0.49",
-    "postcss": "^8.4.18",
+    "postcss": "^8.4.31",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "vue-loader": "^15.9.7",
