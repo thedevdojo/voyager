@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddPolicyNameToDataTypesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +29,4 @@ class AddPolicyNameToDataTypesTable extends Migration
             $table->dropColumn('policy_name');
         });
     }
-}
+};
