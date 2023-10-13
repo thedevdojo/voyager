@@ -50,7 +50,7 @@ class VoyagerMediaController extends Controller
             $folder = '';
         }
 
-        $dir = $this->directory.$folder;
+        $dir = $this->directory . $folder;
 
         $files = [];
         if (class_exists(\League\Flysystem\Plugin\ListWith::class)) {
@@ -86,7 +86,7 @@ class VoyagerMediaController extends Controller
                 }
                 $files[] = [
                     'name'          => $item['basename'] ?? basename($item['path']),
-                    'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
+                    'filename'      => $item['filename'] ?? basename($item['path'], '.' . pathinfo($item['path'])['extension']),
                     'type'          => $item['mimetype'] ?? $mime,
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
@@ -100,7 +100,7 @@ class VoyagerMediaController extends Controller
         foreach ($files as $key => $file) {
             foreach ($thumbnails as $thumbnail) {
                 if ($file['type'] != 'folder' && Str::startsWith($thumbnail['filename'], $file['filename'])) {
-                    $thumbnail['thumb_name'] = str_replace($file['filename'].'-', '', $thumbnail['filename']);
+                    $thumbnail['thumb_name'] = str_replace($file['filename'] . '-', '', $thumbnail['filename']);
                     $thumbnail['path'] = Storage::disk($this->filesystem)->url($thumbnail['path']);
                     $files[$key]['thumbnails'][] = $thumbnail;
                 }
@@ -140,7 +140,7 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         foreach ($request->get('files') as $file) {
-            $file_path = $path.$file['name'];
+            $file_path = $path . $file['name'];
             if ($file['type'] == 'folder') {
                 if (!Storage::disk($this->filesystem)->deleteDirectory($file_path)) {
                     $error = __('voyager::media.error_deleting_folder');
@@ -171,8 +171,8 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         foreach ($request->get('files') as $file) {
-            $old_path = $path.$file['name'];
-            $new_path = $dest.$file['name'];
+            $old_path = $path . $file['name'];
+            $new_path = $dest . $file['name'];
 
             try {
                 Storage::disk($this->filesystem)->move($old_path, $new_path);
@@ -193,12 +193,13 @@ class VoyagerMediaController extends Controller
         $this->authorize('browse_media');
 
         $folderLocation = $request->folder_location;
+        $fileType = $request->file_type;
         $filename = $request->filename;
         $newFilename = $request->new_filename;
         $success = false;
         $error = false;
 
-        if (pathinfo($filename)['extension'] !== pathinfo($newFilename)['extension']) {
+        if ($fileType !== "folder" && pathinfo($filename)['extension'] !== pathinfo($newFilename)['extension']) {
             $error = __('voyager::media.error_renaming_ext');
         } else {
             if (is_array($folderLocation)) {
@@ -227,7 +228,7 @@ class VoyagerMediaController extends Controller
         $this->authorize('browse_media');
 
         $extension = $request->file->getClientOriginalExtension();
-        $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
+        $name = Str::replaceLast('.' . $extension, '', $request->file->getClientOriginalName());
         $details = json_decode($request->get('details') ?? '{}');
         $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
 
@@ -240,7 +241,7 @@ class VoyagerMediaController extends Controller
             }
 
             if (!$request->has('filename') || $request->get('filename') == 'null') {
-                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/') . $name . '.' . $extension, $this->filesystem)) {
                     $name = get_file_name($name);
                 }
             } else {
@@ -257,7 +258,7 @@ class VoyagerMediaController extends Controller
                 }
             }
 
-            $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
+            $file = $request->file->storeAs($request->upload_path, $name . '.' . $extension, $this->filesystem);
             $file = preg_replace('#/+#', '/', $file);
 
             $imageMimeTypes = [
@@ -272,7 +273,7 @@ class VoyagerMediaController extends Controller
                 $image = Image::make($content);
 
                 if ($request->file->getClientOriginalExtension() == 'gif') {
-                    copy($request->file->getRealPath(), $realPath.$file);
+                    copy($request->file->getRealPath(), $realPath . $file);
                 } else {
                     $image = $image->orientate();
                     // Generate thumbnails
@@ -316,7 +317,7 @@ class VoyagerMediaController extends Controller
                             ) {
                                 $thumbnail = $this->addWatermarkToImage($thumbnail, $details->watermark);
                             }
-                            $thumbnail_file = $request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension;
+                            $thumbnail_file = $request->upload_path . $name . '-' . ($thumbnail_data->name ?? 'thumbnail') . '.' . $extension;
                             Storage::disk($this->filesystem)->put($thumbnail_file, $thumbnail->encode($extension, ($details->quality ?? 90))->encoded);
                         }
                     }
@@ -354,16 +355,16 @@ class VoyagerMediaController extends Controller
         $width = $request->get('width');
 
         $realPath = Storage::disk($this->filesystem)->path('/');
-        $originImagePath = $request->upload_path.'/'.$request->originImageName;
+        $originImagePath = $request->upload_path . '/' . $request->originImageName;
         $originImagePath = preg_replace('#/+#', '/', $originImagePath);
 
         try {
             if ($createMode) {
                 // create a new image with the cpopped data
                 $fileNameParts = explode('.', $request->originImageName);
-                array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
+                array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_' . time());
                 $newImageName = implode('.', $fileNameParts);
-                $destImagePath = preg_replace('#/+#', '/', $request->upload_path.'/'.$newImageName);
+                $destImagePath = preg_replace('#/+#', '/', $request->upload_path . '/' . $newImageName);
             } else {
                 // override the original image
                 $destImagePath = $originImagePath;
