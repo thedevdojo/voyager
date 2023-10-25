@@ -116,7 +116,8 @@
                                             @php
                                             if ($data->{$row->field.'_browse'}) {
                                                 $data->{$row->field} = $data->{$row->field.'_browse'};
-                                            }
+                                            } 
+                                            $data->{$row->field} = cleanText($data->{$row->field});
                                             @endphp
                                             <td>
                                                 @if (isset($row->details->view_browse))

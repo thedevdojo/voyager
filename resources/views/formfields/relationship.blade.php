@@ -15,7 +15,7 @@
                 @endphp
 
                 @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
+                     <p>{{ cleanText($query->{$options->label}) }}</p>
                 @else
                     <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
@@ -57,7 +57,7 @@
             @endphp
 
             @if(isset($query))
-                <p>{{ $query->{$options->label} }}</p>
+                 <p>{{ cleanText($query->{$options->label}) }}</p>
             @else
                 <p>{{ __('voyager::generic.no_results') }}</p>
             @endif
@@ -83,7 +83,7 @@
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        <p>{{ $string_values }}</p>
+                        <p>{{ cleanText($string_values) }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
@@ -136,7 +136,7 @@
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        <p>{{ $string_values }}</p>
+                        <p>{{ cleanText($string_values) }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
