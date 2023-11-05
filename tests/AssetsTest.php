@@ -23,7 +23,7 @@ class AssetsTest extends TestCase
         $this->assertEquals(200, $response->status(), $url.' did not return a 200');
     }
 
-    public function urlProvider()
+    public static function urlProvider()
     {
         return [
             [
