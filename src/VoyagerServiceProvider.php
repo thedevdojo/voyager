@@ -249,8 +249,8 @@ class VoyagerServiceProvider extends ServiceProvider
             'voyager_avatar' => [
                 "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
-            'seeds' => [
-                "{$publishablePath}/database/seeds/" => database_path(Seed::getFolderName()),
+            'seeders' => [
+                "{$publishablePath}/database/seeders/" => database_path('seeders'),
             ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
