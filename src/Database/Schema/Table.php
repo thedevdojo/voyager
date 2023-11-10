@@ -35,7 +35,7 @@ class Table extends DoctrineTable
 
         $options = $table['options'];
 
-        return new self($name, $columns, $indexes, $foreignKeys, false, $options);
+        return new self($name, $columns, $indexes, [], $foreignKeys, $options);
     }
 
     public function getColumnsIndexes($columns, $sort = false)

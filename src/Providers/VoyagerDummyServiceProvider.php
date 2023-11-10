@@ -30,8 +30,8 @@ class VoyagerDummyServiceProvider extends ServiceProvider
         $publishablePath = dirname(__DIR__).'/../publishable';
 
         $publishable = [
-            'dummy_seeds' => [
-                "{$publishablePath}/database/dummy_seeds/" => database_path(Seed::getFolderName()),
+            'dummy_seeders' => [
+                "{$publishablePath}/database/dummy_seeders/" => database_path('seeders'),
             ],
             'dummy_content' => [
                 "{$publishablePath}/dummy_content/" => storage_path('app/public'),

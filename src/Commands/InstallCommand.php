@@ -7,7 +7,6 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
-use TCG\Voyager\Seed;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
@@ -47,7 +46,6 @@ class InstallCommand extends Command
         $this->composer = $composer;
         $this->composer->setWorkingPath(base_path());
 
-        $this->seedFolder = Seed::getFolderName();
     }
 
     protected function getOptions()
@@ -89,7 +87,7 @@ class InstallCommand extends Command
         $this->info('Publishing the Voyager assets, database, and config files');
 
         // Publish only relevant resources on install
-        $tags = ['seeds'];
+        $tags = ['seeders'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
 
@@ -125,25 +123,14 @@ class InstallCommand extends Command
 
         if ($this->option('with-dummy')) {
             $this->info('Publishing dummy content');
-            $tags = ['dummy_seeds', 'dummy_content', 'dummy_config', 'dummy_migrations'];
+            $tags = ['dummy_seeders', 'dummy_content', 'dummy_config', 'dummy_migrations'];
             $this->call('vendor:publish', ['--provider' => VoyagerDummyServiceProvider::class, '--tag' => $tags]);
-
-            $this->addNamespaceIfNeeded(
-                collect($filesystem->files("{$publishablePath}/database/dummy_seeds/")),
-                $filesystem
-            );
         } else {
             $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
         }
 
-        $this->addNamespaceIfNeeded(
-            collect($filesystem->files("{$publishablePath}/database/seeds/")),
-            $filesystem
-        );
-
         $this->info('Dumping the autoloaded files and reloading all new files');
         $this->composer->dumpAutoloads();
-        require_once base_path('vendor/autoload.php');
 
         $this->info('Seeding data into the database');
         $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder', '--force' => $this->option('force')]);
@@ -162,21 +149,4 @@ class InstallCommand extends Command
         $this->info('Successfully installed Voyager! Enjoy');
     }
 
-    private function addNamespaceIfNeeded($seeds, Filesystem $filesystem)
-    {
-        if ($this->seedFolder != 'seeders') {
-            return;
-        }
-
-        $seeds->each(function ($file) use ($filesystem) {
-            $path = database_path('seeders').'/'.$file->getFilename();
-            $stub = str_replace(
-                ["<?php\n\nuse", "<?php".PHP_EOL.PHP_EOL."use"],
-                "<?php".PHP_EOL.PHP_EOL."namespace Database\\Seeders;".PHP_EOL.PHP_EOL."use",
-                $filesystem->get($path)
-            );
-
-            $filesystem->put($path, $stub);
-        });
-    }
 }
