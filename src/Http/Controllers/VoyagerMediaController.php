@@ -73,7 +73,7 @@ class VoyagerMediaController extends Controller
                 ];
             } else {
                 $pathinfo = pathinfo($item['path']);
-                if (empty($pathinfo['path']) && !config('voyager.hidden_files')) {
+                if (empty($pathinfo['filename']) && !config('voyager.hidden_files')) {
                     continue;
                 }
                 // Its a thumbnail and thumbnails should be hidden
