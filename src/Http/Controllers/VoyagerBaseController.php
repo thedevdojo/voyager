@@ -185,6 +185,9 @@ class VoyagerBaseController extends Controller
             $view = "voyager::$slug.browse";
         }
 
+        // Modify dataTypeContent collection with HTML tags stripped from string attributes
+        $dataTypeContent = $this->stripTagsFromCollection($dataTypeContent);
+
         return Voyager::view($view, compact(
             'actions',
             'dataType',
@@ -264,6 +267,9 @@ class VoyagerBaseController extends Controller
         if (view()->exists("voyager::$slug.read")) {
             $view = "voyager::$slug.read";
         }
+
+        // Modify dataTypeContent collection with HTML tags stripped from string attributes
+        $dataTypeContent = $this->stripTagsFromObject($dataTypeContent);
 
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'isSoftDeleted'));
     }
@@ -831,6 +837,9 @@ class VoyagerBaseController extends Controller
             $view = "voyager::$slug.order";
         }
 
+        // Modify results collection with HTML tags stripped from string attributes
+        $results = $this->stripTagsFromCollection($results);
+
         return Voyager::view($view, compact(
             'dataType',
             'display_column',
@@ -957,7 +966,8 @@ class VoyagerBaseController extends Controller
                 foreach ($relationshipOptions as $relationshipOption) {
                     $results[] = [
                         'id'   => $relationshipOption->{$options->key},
-                        'text' => $relationshipOption->{$options->label},
+                        // Strip tags and entity codes for relation texts
+                        'text' => strip_tags(html_entity_decode($relationshipOption->{$options->label})),
                     ];
                 }
 
