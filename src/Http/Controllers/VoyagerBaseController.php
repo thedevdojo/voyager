@@ -16,6 +16,7 @@ use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class VoyagerBaseController extends Controller
 {
@@ -1030,5 +1031,26 @@ class VoyagerBaseController extends Controller
             }
             return $item;
         });
+    }
+
+    /**
+     * Strip HTML tags from string attributes of an object.
+     *
+     * @param mixed $object The object whose attributes need HTML tags stripped.
+     * @return mixed The modified object with HTML tags stripped from string attributes.
+     */
+    private function stripTagsFromObject(Model $model)
+    {
+        // Get the object's attributes
+        $attributes = $model->getAttributes();
+        // Loop through each attribute
+        foreach ($attributes as $key => $value) {
+            // Check if the value is a string
+            if (is_string($value)) {
+                // Strip HTML tags from the value
+                $model->$key = strip_tags(html_entity_decode($value));
+            }
+        }
+        return $model;
     }
 }
