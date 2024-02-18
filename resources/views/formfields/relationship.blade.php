@@ -13,9 +13,9 @@
                     $model = app($options->model);
                     $query = $model::where($options->key,$relationshipData->{$options->column})->first();
                 @endphp
-
+                
                 @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
+                    <p>{{ strip_tags(html_entity_decode($query->{$options->label})) }}</p>
                 @else
                     <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
@@ -40,7 +40,7 @@
                     @endif
 
                     @foreach($query as $relationshipData)
-                        <option value="{{ $relationshipData->{$options->key} }}" @if(old($options->column, $dataTypeContent->{$options->column}) == $relationshipData->{$options->key}) selected="selected" @endif>{{ $relationshipData->{$options->label} }}</option>
+                        <option value="{{ $relationshipData->{$options->key} }}" @if(old($options->column, $dataTypeContent->{$options->column}) == $relationshipData->{$options->key}) selected="selected" @endif>{{ strip_tags(html_entity_decode($relationshipData->{$options->label})) }}</option>
                     @endforeach
                 </select>
 
@@ -57,7 +57,7 @@
             @endphp
 
             @if(isset($query))
-                <p>{{ $query->{$options->label} }}</p>
+                <p>{{ strip_tags(html_entity_decode($query->{$options->label})) }}</p>
             @else
                 <p>{{ __('voyager::generic.no_results') }}</p>
             @endif
@@ -83,7 +83,7 @@
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        <p>{{ $string_values }}</p>
+                        <p>{{ strip_tags(html_entity_decode($string_values)) }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
@@ -136,7 +136,7 @@
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        <p>{{ $string_values }}</p>
+                        <p>{{ strip_tags(html_entity_decode($string_values)) }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
