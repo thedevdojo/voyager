@@ -115,6 +115,10 @@
                 </div>
             </div>
 
+            @if ($dataTypeContent->email_verified_at)
+                <input type="hidden" name="email_verified_at" value="{{ $dataTypeContent->email_verified_at }}">
+            @endif
+
             <button type="submit" class="btn btn-primary pull-right save">
                 {{ __('voyager::generic.save') }}
             </button>
