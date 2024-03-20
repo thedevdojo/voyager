@@ -18,13 +18,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.3, 7.4, 8.0, 8.1]
-        laravel: ['8.*', '9.*']
+        php: [7.3, 7.4, 8.0, 8.1, 8.2]
+        laravel: ['8.*', '9.*', '10.*']
         exclude:
+          - php: 8.2
+            laravel: 8.*
           - php: 7.3
             laravel: 9.*
           - php: 7.4
             laravel: 9.*
+          - php: 8.2
+            laravel: 9.*
+          - php: 7.3
+            laravel: 10.*
+          - php: 7.4
+            laravel: 10.*
+          - php: 8.0
+            laravel: 10.*
 
     name: 'PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}'
 
@@ -52,6 +62,10 @@ jobs:
       - name: Show laravel version
         run: composer show laravel/framework
 
+      # Generate vendor symlink
+      - name: Generate vendor symlink
+        run: ./vendor/bin/testbench
+
       # Install NPM dependencies
       - name: Install Dependencies
         run: npm install
@@ -62,4 +76,5 @@ jobs:
 
       # Run phpunit tests
       - name: Run tests
-        run: ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit --no-coverage
+

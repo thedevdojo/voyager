@@ -2146,6 +2146,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     left: 50%;
     border-right: 1px solid #efefef;
     border-bottom: 1px solid #efefef;
+    margin-bottom:5px;
 }
 
 .breadcrumb li:last-child .arrow{
@@ -2154,6 +2155,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .breadcrumb li:first-child .arrow{
   margin-left:-5px;
+  margin-bottom:5px;
 }
 
 .breadcrumb li{
