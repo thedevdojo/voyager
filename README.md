@@ -43,7 +43,7 @@ composer require tcg/voyager
 > If you are installing this on Laravel 10, we are working on getting a permanent release available; however, you can still use this with Larvel 10 by requiring the following:
 
 ```bash
-composer require tcg/voyager dev-1.6-l10
+composer require tcg/voyager 1.7
 ```
 
 ### 2. Add the DB Credentials & APP_URL
