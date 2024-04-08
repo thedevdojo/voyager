@@ -44,7 +44,7 @@ class File extends BaseType
      */
     protected function generatePath()
     {
-        return $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+        return $this->slug.DIRECTORY_SEPARATOR;
     }
 
     /**
