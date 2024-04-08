@@ -48,7 +48,7 @@ class MultipleImage extends BaseType
             $resize_quality = intval($this->options->quality ?? 75);
 
             $filename = Str::random(20);
-            $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+            $path = $this->slug.DIRECTORY_SEPARATOR;
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
