@@ -1,16 +1,15 @@
 <?php
 
 return [
-    'field_password_keep'          => 'Leave empty to keep the same',
-    'field_select_dd_relationship' => 'Make sure to setup the appropriate relationship in the :method method of the :class class.',
-    'type_checkbox'                => 'Check Box',
-    'type_codeeditor'              => 'Code Editor',
-    'type_file'                    => 'File',
-    'type_image'                   => 'Image',
-    'type_radiobutton'             => 'Radio Button',
-    'type_richtextbox'             => 'Rich Textbox',
-    'type_selectdropdown'          => 'Select Dropdown',
-    'type_textarea'                => 'Text Area',
-    'type_textbox'                 => 'Text Box',
-    'type_markdowneditor'          => 'Markdown Editor',
+    'field_password_keep'          => '留空以保持不變',
+    'field_select_dd_relationship' => '確保在 :class 類的 :method 方法中設置適當的關系。',
+    'type_checkbox'                => '複選框',
+    'type_codeeditor'              => '程式碼編輯器',
+    'type_file'                    => '文件',
+    'type_image'                   => '圖像',
+    'type_radiobutton'             => '單選按鈕',
+    'type_richtextbox'             => '富文本框',
+    'type_selectdropdown'          => '選擇下拉',
+    'type_textarea'                => '文本區域',
+    'type_textbox'                 => '文本框',
 ];

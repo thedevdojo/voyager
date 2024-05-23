@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'invalid'           => 'Invalid JSON',
-    'invalid_message'   => 'Seems like you introduced some invalid JSON.',
-    'valid'             => 'Valid JSON',
-    'validation_errors' => 'Validation errors',
+    'invalid'           => 'JSON 無效',
+    'invalid_message'   => '看起來您引入的是一個無效的 JSON',
+    'valid'             => 'JSON 有效',
+    'validation_errors' => '驗證錯誤',
 ];

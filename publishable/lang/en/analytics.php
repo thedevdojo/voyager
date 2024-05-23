@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'by_pageview'            => 'By pageview',
-    'by_sessions'            => 'By sessions',
-    'by_users'               => 'By users',
-    'no_client_id'           => 'To view analytics you\'ll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:',
-    'set_view'               => 'Select a View',
-    'this_vs_last_week'      => 'This Week vs Last Week',
-    'this_vs_last_year'      => 'This Year vs Last Year',
-    'top_browsers'           => 'Top Browsers',
-    'top_countries'          => 'Top Countries',
-    'various_visualizations' => 'Various visualizations',
+    'by_pageview'            => '以 PV',
+    'by_sessions'            => '以 Session',
+    'by_users'               => '以用戶',
+    'no_client_id'           => '若需查看統計數據，您需要先註冊 Google Analytics 並將所提供的網站 Client ID 以金鑰名：<code>google_analytics_client_id</code> 添加到您的 Voyager 設置。在 Google Developer Console 上獲取您的金鑰信息：',
+    'set_view'               => '選擇一個視圖',
+    'this_vs_last_week'      => '本週 VS 上週',
+    'this_vs_last_year'      => '今年 VS 去年',
+    'top_browsers'           => '使用最多的瀏覽器',
+    'top_countries'          => '訪問量最高的國家',
+    'various_visualizations' => '復合圖表',
 ];
