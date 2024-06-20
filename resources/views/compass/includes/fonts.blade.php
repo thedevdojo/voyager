@@ -1654,6 +1654,28 @@
     </li>
 </ul>
 
+@php
+    $response = \Http::get('https://raw.githubusercontent.com/twbs/icons/main/font/bootstrap-icons.json');
+
+    $iconNames = null;
+    if ($response->successful()) {
+        $iconsData = $response->json();
+        $iconNames = array_keys($iconsData);
+    }
+@endphp
+
+@if (isset($iconNames))
+    <h2>Bootstrap Icons List</h2>
+    <ul class="glyphs css-mapping">
+        @foreach ($iconNames as $iconName)
+            <li>
+                <div class="icon bi-{{ $iconName }}"></div>
+                <input type="text" readonly="readonly" value="bi-{{ $iconName }}">
+            </li>
+        @endforeach
+    </ul>
+@endif
+
 <script>
 (function() {
     var glyphs, i, len, ref;
@@ -1663,6 +1685,9 @@
         glyphs = ref[i];
         glyphs.addEventListener('click', function(event) {
             if (event.target.tagName === 'INPUT') {
+                // console.log(event.target.value);
+                navigator.clipboard.writeText(event.target.value);
+                toastr.success("Copy to clipboard!<br>" + event.target.value);
                 return event.target.select();
             }
         });
