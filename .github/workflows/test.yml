@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.3, 7.4, 8.0, 8.1, 8.2]
-        laravel: ['8.*', '9.*', '10.*']
+        laravel: ['8.*', '9.*', '10.*', '11.*']
         exclude:
           - php: 8.2
             laravel: 8.*
@@ -35,6 +35,14 @@ jobs:
             laravel: 10.*
           - php: 8.0
             laravel: 10.*
+          - php: 7.3
+            laravel: 11.*
+          - php: 7.4
+            laravel: 11.*
+          - php: 8.0
+            laravel: 11.*
+          - php: 8.0
+            laravel: 11.*
 
     name: 'PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}'
 
@@ -77,4 +85,3 @@ jobs:
       # Run phpunit tests
       - name: Run tests
         run: ./vendor/bin/phpunit --no-coverage
-
