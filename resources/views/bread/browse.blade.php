@@ -204,6 +204,18 @@
                                                     <div>{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
+                                                @elseif($row->type == 'key_value')
+                                                    @php 
+                                                        $currentKeyValue = isset($data->{$row->field}) ? $data->{$row->field} : '{}';
+                                                        $currentKeyValue = json_decode($currentKeyValue, true);
+                                                    @endphp
+                                                    @if(isset($currentKeyValue) && (count($currentKeyValue)))
+                                                        <ul>
+                                                            @foreach($currentKeyValue as $key => $value)
+                                                                <li>{{ $key }}: {{ $value }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
                                                 @elseif($row->type == 'multiple_images')
                                                     @php $images = json_decode($data->{$row->field}); @endphp
                                                     @if($images)

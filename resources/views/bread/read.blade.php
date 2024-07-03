@@ -56,6 +56,18 @@
                             @elseif($row->type == "image")
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
+                            @elseif($row->type == 'key_value')
+                                @php 
+                                    $currentKeyValue = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field} : '{}';
+                                    $currentKeyValue = json_decode($currentKeyValue, true);
+                                @endphp
+                                @if(isset($currentKeyValue) && (count($currentKeyValue)))
+                                    <ul>
+                                        @foreach($currentKeyValue as $key => $value)
+                                            <li>{{ $key }}: {{ $value }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             @elseif($row->type == 'multiple_images')
                                 @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
