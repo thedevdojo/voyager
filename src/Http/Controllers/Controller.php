@@ -14,6 +14,7 @@ use TCG\Voyager\Http\Controllers\ContentTypes\Checkbox;
 use TCG\Voyager\Http\Controllers\ContentTypes\Coordinates;
 use TCG\Voyager\Http\Controllers\ContentTypes\File;
 use TCG\Voyager\Http\Controllers\ContentTypes\Image as ContentImage;
+use TCG\Voyager\Http\Controllers\ContentTypes\KeyValue;
 use TCG\Voyager\Http\Controllers\ContentTypes\MultipleCheckbox;
 use TCG\Voyager\Http\Controllers\ContentTypes\MultipleImage;
 use TCG\Voyager\Http\Controllers\ContentTypes\Password;
@@ -264,6 +265,9 @@ abstract class Controller extends BaseController
             /********** CHECKBOX TYPE **********/
             case 'checkbox':
                 return (new Checkbox($request, $slug, $row, $options))->handle();
+            /********** KEY VALUE TYPE **********/
+            case 'key_value':
+                return (new KeyValue($request, $slug, $row, $options))->handle();
             /********** MULTIPLE CHECKBOX TYPE **********/
             case 'multiple_checkbox':
                 return (new MultipleCheckbox($request, $slug, $row, $options))->handle();
