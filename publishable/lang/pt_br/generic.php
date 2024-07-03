@@ -95,6 +95,7 @@ return [
     'title'                  => 'Título',
     'type'                   => 'Tipo',
     'restore'                => 'Restaurar',
+    'row'                    => 'Linha',
     'unsigned'               => 'Não assinado',
     'unstick_sidebar'        => 'Descolar a barra lateral',
     'update'                 => 'Atualizar',

@@ -11,7 +11,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('voyager::generic.key') }}</th>
-                        <th>{{ __('voyager::database.field') }}</th>
+                        <th>{{ __('voyager::generic.row') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>

@@ -81,6 +81,7 @@ return [
     'required'               => 'Required',
     'return_to_list'         => 'Return to List',
     'route'                  => 'Route',
+    'row'                    => 'Row',
     'save'                   => 'Save',
     'search'                 => 'Search',
     'select_all'             => 'Select All',

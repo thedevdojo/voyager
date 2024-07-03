@@ -63,6 +63,7 @@ return [
     'required'               => 'Requerido',
     'return_to_list'         => 'Voltar à lista',
     'route'                  => 'Rota',
+    'row'                    => 'Linha',
     'save'                   => 'Guardar',
     'search'                 => 'Procurar',
     'select_all'             => 'Selecione Todos',
