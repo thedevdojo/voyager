@@ -11,7 +11,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('voyager::generic.key') }}</th>
-                        <th>{{ __('voyager::generic.row') }}</th>
+                        <th>{{ __('voyager::generic.value') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>
@@ -34,7 +34,7 @@
                 </tbody>
             </table>
         </div>
-        <button type="button" class="btn btn-success" onclick="keyValueAddRow{{ $row->field }}()">{{ __('voyager::generic.add') }}</button>
+        <button type="button" class="btn btn-success" onclick="keyValueAddRow{{ $row->field }}()">{{ __('voyager::generic.add_row') }}</button>
     </div>
 </div>
 
