@@ -5,7 +5,7 @@
 @endphp
 <div>
     <div id="keyValue-{{ $row->field }}">
-        <input type="hidden" id="key-value-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}" @if($row->required == 1) required @endif>
+        <input type="hidden" id="key-value-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
         <div id="keyValueContainer-{{ $row->field }}">
             <table class="table table-bordered key-value-table">
                 <thead>
