@@ -5,7 +5,7 @@
 @endphp
 <div>
     <div id="simpleList-{{ $row->field }}">
-        <input type="text" id="simple-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
+        <input type="hidden" id="simple-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
         <div id="simpleListContainer-{{ $row->field }}">
             <table class="table table-bordered simple-list-table">
                 <thead>

@@ -90,6 +90,18 @@
                                         {{ __('voyager::generic.none') }}
                                     @endif
                                 @endif
+                            @elseif($row->type == 'simple_list')
+                                @php 
+                                    $currentSimpleList = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field} : '{}';
+                                    $currentSimpleList = json_decode($currentSimpleList, true);
+                                @endphp
+                                @if(isset($currentSimpleList) && (count($currentSimpleList)))
+                                    <ul>
+                                        @foreach($currentSimpleList as $value)
+                                            <li>{{ $value }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
                                 @if ( property_exists($row->details, 'format') && !is_null($dataTypeContent->{$row->field}) )
                                     {{ \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) }}
