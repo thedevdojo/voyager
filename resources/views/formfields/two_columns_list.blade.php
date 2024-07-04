@@ -5,13 +5,13 @@
 @endphp
 <div>
     <div id="twoColumnsList-{{ $row->field }}">
-        <input type="text" id="two-columns-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
+        <input type="hidden" id="two-columns-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
         <div id="twoColumnsListContainer-{{ $row->field }}">
             <table class="table table-bordered two-columns-list-table">
                 <thead>
                     <tr>
-                        <th>{{ __('voyager::generic.first_column') }}</th>
-                        <th>{{ __('voyager::generic.second_column') }}</th>
+                        <th>{{ __('voyager::generic.column_first') }}</th>
+                        <th>{{ __('voyager::generic.column_second') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>
