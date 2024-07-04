@@ -21,6 +21,7 @@ use TCG\Voyager\Http\Controllers\ContentTypes\Relationship;
 use TCG\Voyager\Http\Controllers\ContentTypes\SelectMultiple;
 use TCG\Voyager\Http\Controllers\ContentTypes\Text;
 use TCG\Voyager\Http\Controllers\ContentTypes\Timestamp;
+use TCG\Voyager\Http\Controllers\ContentTypes\TwoColumnsList;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -284,6 +285,9 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 return (new Timestamp($request, $slug, $row, $options))->handle();
+            /********** TWO COLUMNS LIST TYPE **********/
+            case 'two_columns_list':
+                return (new TwoColumnsList($request, $slug, $row, $options))->handle();
             /********** COORDINATES TYPE **********/
             case 'coordinates':
                 return (new Coordinates($request, $slug, $row, $options))->handle();

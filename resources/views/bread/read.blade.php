@@ -126,6 +126,27 @@
                                         {{ __('voyager::generic.download') }}
                                     </a>
                                 @endif
+                            @elseif($row->type == 'two_columns_list')
+                                @php 
+                                    $currentTwoColumnsList = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field} : '{}';
+                                    $currentTwoColumnsList = json_decode($currentTwoColumnsList, true);
+                                @endphp
+                                @if(isset($currentTwoColumnsList) && (count($currentTwoColumnsList)))
+                                    <ul>
+                                        @foreach($currentTwoColumnsList as $values)
+                                            <li>
+                                                @if(isset($values) && (count($values)))
+                                                    <ol>
+                                                        @foreach($values as $value)
+                                                            <li>{{ $value }}</li>
+                                                        @endforeach
+                                                    </ol>
+                                                    <br>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
