@@ -185,6 +185,27 @@
                                                 @elseif($row->type == 'text_area')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <div>{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                @elseif($row->type == 'two_columns_list')
+                                                    @php 
+                                                        $currentTwoColumnsList = isset($data->{$row->field}) ? $data->{$row->field} : '{}';
+                                                        $currentTwoColumnsList = json_decode($currentTwoColumnsList, true);
+                                                    @endphp
+                                                    @if(isset($currentTwoColumnsList) && (count($currentTwoColumnsList)))
+                                                        <ul>
+                                                            @foreach($currentTwoColumnsList as $values)
+                                                                <li>
+                                                                    @if(isset($values) && (count($values)))
+                                                                        <ol>
+                                                                            @foreach($values as $value)
+                                                                                <li>{{ $value }}</li>
+                                                                            @endforeach
+                                                                        </ol>
+                                                                        <br>
+                                                                    @endif
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
                                                 @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     @if(json_decode($data->{$row->field}) !== null)

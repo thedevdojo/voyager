@@ -5,12 +5,13 @@
 @endphp
 <div>
     <div id="twoColumnsList-{{ $row->field }}">
-        <input type="hidden" id="two-columns-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
+        <input type="text" id="two-columns-list-{{ $row->field }}" name="{{ $row->field }}" data-name="{{ $row->display_name }}">
         <div id="twoColumnsListContainer-{{ $row->field }}">
             <table class="table table-bordered two-columns-list-table">
                 <thead>
                     <tr>
-                        <th>{{ __('voyager::generic.element') }}</th>
+                        <th>{{ __('voyager::generic.first_column') }}</th>
+                        <th>{{ __('voyager::generic.second_column') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>
@@ -18,7 +19,8 @@
                     @if(isset($currentTwoColumnsList) && (count($currentTwoColumnsList)))
                         @foreach($currentTwoColumnsList as $value)
                             <tr>
-                                <td contenteditable="true">{{ $value }}</td>
+                                <td contenteditable="true">{{ $value['0'] }}</td>
+                                <td contenteditable="true">{{ $value['1'] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm two-columns-list-move-up-{{ $row->field }}">&uarr;</button>
                                     <button type="button" class="btn btn-warning btn-sm two-columns-list-move-down-{{ $row->field }}">&darr;</button>
@@ -28,6 +30,7 @@
                         @endforeach
                     @else
                         <tr>
+                            <td contenteditable="true"></td>
                             <td contenteditable="true"></td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-sm two-columns-list-move-up-{{ $row->field }}" disabled>&uarr;</button>
@@ -50,13 +53,15 @@
         const newRow = table.insertRow();
         newRow.innerHTML = `
             <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
             <td>
                 <button type="button" class="btn btn-warning btn-sm two-columns-list-move-up-{{ $row->field }}">&uarr;</button>
                 <button type="button" class="btn btn-warning btn-sm two-columns-list-move-down-{{ $row->field }}">&darr;</button>
                 <button type="button" class="btn btn-danger btn-sm two-columns-list-delete-row-{{ $row->field }}">{{ __('voyager::generic.delete') }}</button>
             </td>
         `;
-        attachCellEventListeners{{ $row->field }}(newRow.cells[0]); // Attach event listener to the new value cell
+        attachCellEventListeners{{ $row->field }}(newRow.cells[0]);
+        attachCellEventListeners{{ $row->field }}(newRow.cells[1]); // Attach event listener to the new second column cell
         updateJson{{ $row->field }}(); // Update JSON immediately after adding a row
         updateMoveButtons{{ $row->field }}(); // Update move buttons state
     }
@@ -68,9 +73,10 @@
 
         // Iterate through rows to construct JSON object
         table.querySelectorAll('tr').forEach((row, index) => {
-            const value = row.cells[0].innerText.trim();
-            if (value !== '') {
-                json[index] = value;
+            const column1 = row.cells[0].innerText.trim();
+            const column2 = row.cells[1].innerText.trim();
+            if (column1 !== '' || column2 !== '') {
+                json[index] = { "0": column1, "1": column2 };
             }
         });
 
@@ -131,6 +137,7 @@
     // Attach initial event listeners to existing cells and update move buttons
     document.querySelectorAll('#twoColumnsListContainer-{{ $row->field }} .two-columns-list-table tbody tr').forEach(row => {
         attachCellEventListeners{{ $row->field }}(row.cells[0]);
+        attachCellEventListeners{{ $row->field }}(row.cells[1]); // Attach event listener to the second column cells
     });
     updateMoveButtons{{ $row->field }}();
 
