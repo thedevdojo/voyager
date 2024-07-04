@@ -332,6 +332,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'text_area',
             'time',
             'timestamp',
+            'three_columns_list',
             'hidden',
             'coordinates',
         ];
