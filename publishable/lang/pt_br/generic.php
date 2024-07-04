@@ -25,7 +25,7 @@ return [
     'close'                  => 'Fechar',
     'column'                 => 'Coluna',
     'column_first'           => 'Primeira Coluna',
-    'column_seconf'          => 'Segunda Coluna',
+    'column_second'          => 'Segunda Coluna',
     'column_third'           => 'Terceira Coluna',
     'compass'                => 'Bússola',
     'created_at'             => 'Criado em',
