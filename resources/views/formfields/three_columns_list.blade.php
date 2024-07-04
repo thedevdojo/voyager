@@ -12,6 +12,7 @@
                     <tr>
                         <th>{{ __('voyager::generic.column_first') }}</th>
                         <th>{{ __('voyager::generic.column_second') }}</th>
+                        <th>{{ __('voyager::generic.column_third') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>
@@ -21,6 +22,7 @@
                             <tr>
                                 <td contenteditable="true">{{ $value['0'] }}</td>
                                 <td contenteditable="true">{{ $value['1'] }}</td>
+                                <td contenteditable="true">{{ $value['2'] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm three-columns-list-move-up-{{ $row->field }}">&uarr;</button>
                                     <button type="button" class="btn btn-warning btn-sm three-columns-list-move-down-{{ $row->field }}">&darr;</button>
@@ -30,6 +32,7 @@
                         @endforeach
                     @else
                         <tr>
+                            <td contenteditable="true"></td>
                             <td contenteditable="true"></td>
                             <td contenteditable="true"></td>
                             <td>
@@ -54,6 +57,7 @@
         newRow.innerHTML = `
             <td contenteditable="true"></td>
             <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
             <td>
                 <button type="button" class="btn btn-warning btn-sm three-columns-list-move-up-{{ $row->field }}">&uarr;</button>
                 <button type="button" class="btn btn-warning btn-sm three-columns-list-move-down-{{ $row->field }}">&darr;</button>
@@ -61,7 +65,8 @@
             </td>
         `;
         attachCellEventListeners{{ $row->field }}(newRow.cells[0]);
-        attachCellEventListeners{{ $row->field }}(newRow.cells[1]); // Attach event listener to the new second column cell
+        attachCellEventListeners{{ $row->field }}(newRow.cells[1]);
+        attachCellEventListeners{{ $row->field }}(newRow.cells[2]);
         updateJson{{ $row->field }}(); // Update JSON immediately after adding a row
         updateMoveButtons{{ $row->field }}(); // Update move buttons state
     }
@@ -75,8 +80,9 @@
         table.querySelectorAll('tr').forEach((row, index) => {
             const column1 = row.cells[0].innerText.trim();
             const column2 = row.cells[1].innerText.trim();
-            if (column1 !== '' || column2 !== '') {
-                json[index] = { "0": column1, "1": column2 };
+            const column3 = row.cells[2].innerText.trim();
+            if (column1 !== '' || column2 !== '' || column3 !== '') {
+                json[index] = { "0": column1, "1": column2, "2": column3 };
             }
         });
 
@@ -137,7 +143,8 @@
     // Attach initial event listeners to existing cells and update move buttons
     document.querySelectorAll('#threeColumnsListContainer-{{ $row->field }} .three-columns-list-table tbody tr').forEach(row => {
         attachCellEventListeners{{ $row->field }}(row.cells[0]);
-        attachCellEventListeners{{ $row->field }}(row.cells[1]); // Attach event listener to the second column cells
+        attachCellEventListeners{{ $row->field }}(row.cells[1]);
+        attachCellEventListeners{{ $row->field }}(row.cells[2]);
     });
     updateMoveButtons{{ $row->field }}();
 
