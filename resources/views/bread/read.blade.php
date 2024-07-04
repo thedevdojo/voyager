@@ -126,6 +126,27 @@
                                         {{ __('voyager::generic.download') }}
                                     </a>
                                 @endif
+                            @elseif($row->type == 'three_columns_list')
+                                @php 
+                                    $currentThreeColumnsList = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field} : '{}';
+                                    $currentThreeColumnsList = json_decode($currentThreeColumnsList, true);
+                                @endphp
+                                @if(isset($currentThreeColumnsList) && (count($currentThreeColumnsList)))
+                                    <ul>
+                                        @foreach($currentThreeColumnsList as $values)
+                                            <li>
+                                                @if(isset($values) && (count($values)))
+                                                    <ol>
+                                                        @foreach($values as $value)
+                                                            <li>{{ $value }}</li>
+                                                        @endforeach
+                                                    </ol>
+                                                    <br>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
