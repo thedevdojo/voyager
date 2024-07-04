@@ -328,6 +328,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'markdown_editor',
             'select_dropdown',
             'select_multiple',
+            'simple_list',
             'text',
             'text_area',
             'time',

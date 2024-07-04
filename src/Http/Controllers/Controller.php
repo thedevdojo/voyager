@@ -19,6 +19,7 @@ use TCG\Voyager\Http\Controllers\ContentTypes\MultipleImage;
 use TCG\Voyager\Http\Controllers\ContentTypes\Password;
 use TCG\Voyager\Http\Controllers\ContentTypes\Relationship;
 use TCG\Voyager\Http\Controllers\ContentTypes\SelectMultiple;
+use TCG\Voyager\Http\Controllers\ContentTypes\SimpleList;
 use TCG\Voyager\Http\Controllers\ContentTypes\Text;
 use TCG\Voyager\Http\Controllers\ContentTypes\Timestamp;
 use TCG\Voyager\Traits\AlertsMessages;
@@ -273,6 +274,9 @@ abstract class Controller extends BaseController
             /********** MULTIPLE IMAGES TYPE **********/
             case 'multiple_images':
                 return (new MultipleImage($request, $slug, $row, $options))->handle();
+            /********** SIMPLE LIST TYPE **********/
+            case 'simple_list':
+                return (new SimpleList($request, $slug, $row, $options))->handle();
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
                 return (new SelectMultiple($request, $slug, $row, $options))->handle();
