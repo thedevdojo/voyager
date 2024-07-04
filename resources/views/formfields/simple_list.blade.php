@@ -10,7 +10,7 @@
             <table class="table table-bordered simple-list-table">
                 <thead>
                     <tr>
-                        <th>{{ __('voyager::generic.value') }}</th>
+                        <th>{{ __('voyager::generic.element') }}</th>
                         <th>{{ __('voyager::generic.action') }}</th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                 </tbody>
             </table>
         </div>
-        <button type="button" class="btn btn-success" onclick="simpleListAddRow{{ $row->field }}()">{{ __('voyager::generic.add_row') }}</button>
+        <button type="button" class="btn btn-success" onclick="simpleListAddRow{{ $row->field }}()">{{ __('voyager::generic.add_element') }}</button>
     </div>
 </div>
 
