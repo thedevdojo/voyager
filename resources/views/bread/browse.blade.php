@@ -161,6 +161,18 @@
 
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
+                                                @elseif($row->type == 'simple_list')
+                                                    @php 
+                                                        $currentSimpleList = isset($data->{$row->field}) ? $data->{$row->field} : '{}';
+                                                        $currentSimpleList = json_decode($currentSimpleList, true);
+                                                    @endphp
+                                                    @if(isset($currentSimpleList) && (count($currentSimpleList)))
+                                                        <ul>
+                                                            @foreach($currentSimpleList as $value)
+                                                                <li>{{ $value }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
                                                         {{ \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) }}
