@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\FormFields;
 
-class SimpleListHandler extends AbstractHandler
+class TwoColumnsListHandler extends AbstractHandler
 {
     protected $codename = 'two_columns_list';
 
