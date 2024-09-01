@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
-class AddVoyagerUserFields extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function ($table) {
             if (!Schema::hasColumn('users', 'avatar')) {
@@ -20,7 +21,7 @@ class AddVoyagerUserFields extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('users', 'avatar')) {
             Schema::table('users', function ($table) {
@@ -33,4 +34,4 @@ class AddVoyagerUserFields extends Migration
             });
         }
     }
-}
+};
