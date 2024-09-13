@@ -123,9 +123,20 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key)->get()->map(function ($item, $key) use ($options) {
-            			return $item->{$options->label};
-            		})->all() : array();
+                    $selected_values = isset($relationshipData) ?
+                        $relationshipData->belongsToMany(
+                            $options->model,
+                            $options->pivot_table,
+                            $options->foreign_pivot_key ?? null,
+                            $options->related_pivot_key ?? null,
+                            $options->parent_key ?? null,
+                            $options->key
+                        )
+                        ->get()
+                        ->map(function ($item) use ($options) {
+                            return $item->{$options->label};
+                        })->all()
+                        : array();
                 @endphp
 
                 @if($view == 'browse')
@@ -180,7 +191,7 @@
                                 )->pluck($options->table.'.'.$options->key);
                             }
                             $selected_keys = old($relationshipField, $selected_keys);
-                            $selected_values = app($options->model)->whereIn($options->key, $selected_keys)->pluck($options->label, $options->key);
+                            $selected_values = app($options->model)->whereIn($options->key, $selected_keys)->get()->pluck($options->label, $options->key);
                         @endphp
 
                         @if(!$row->required)
