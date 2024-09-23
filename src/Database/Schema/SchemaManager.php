@@ -2,15 +2,13 @@
 
 namespace TCG\Voyager\Database\Schema;
 
-use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Database\Types\Type;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 
 abstract class SchemaManager
 {
-    // todo: trim parameters
-
     public static function __callStatic($method, $args)
     {
         return static::manager()->$method(...$args);
@@ -18,12 +16,12 @@ abstract class SchemaManager
 
     public static function manager()
     {
-        return DB::connection()->getDoctrineSchemaManager();
+        return DB::connection();
     }
 
     public static function getDatabaseConnection()
     {
-        return DB::connection()->getDoctrineConnection();
+        return DB::connection();
     }
 
     public static function tableExists($table)
@@ -32,112 +30,129 @@ abstract class SchemaManager
             $table = [$table];
         }
 
-        return static::manager()->tablesExist($table);
+        return Schema::hasTable($table[0]);
     }
 
     public static function listTables()
     {
         $tables = [];
+        $tableNames = Schema::getConnection()->getSchemaBuilder()->getTables();
 
-        foreach (static::manager()->listTableNames() as $tableName) {
+        foreach ($tableNames as $tableName) {
             $tables[$tableName] = static::listTableDetails($tableName);
         }
 
         return $tables;
     }
 
-    /**
-     * @param string $tableName
-     *
-     * @return \TCG\Voyager\Database\Schema\Table
-     */
     public static function listTableDetails($tableName)
     {
-        $columns = static::manager()->listTableColumns($tableName);
+        $columns = Schema::getColumnListing($tableName);
+        $columnDetails = collect($columns)->mapWithKeys(function ($column) use ($tableName) {
+            return [$column => static::getColumnDetails($tableName, $column)];
+        });
 
-        $foreignKeys = [];
-        if (static::manager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-            $foreignKeys = static::manager()->listTableForeignKeys($tableName);
-        }
+        $indexes = static::getTableIndexes($tableName);
+        $foreignKeys = static::getTableForeignKeys($tableName);
 
-        $indexes = static::manager()->listTableIndexes($tableName);
-
-        return new Table($tableName, $columns, $indexes, [], $foreignKeys, []);
+        return new Table($tableName, $columnDetails->toArray(), $indexes, [], $foreignKeys, []);
     }
 
-    /**
-     * Describes given table.
-     *
-     * @param string $tableName
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public static function describeTable($tableName)
     {
-        Type::registerCustomPlatformTypes();
+        $columns = Schema::getColumnListing($tableName);
 
-        $table = static::listTableDetails($tableName);
+        return collect($columns)->map(function ($column) use ($tableName) {
+            $columnDetails = static::getColumnDetails($tableName, $column);
+            $indexes = static::getColumnIndexes($tableName, $column);
 
-        return collect($table->columns)->map(function ($column) use ($table) {
-            $columnArr = Column::toArray($column);
-
-            $columnArr['field'] = $columnArr['name'];
-            $columnArr['type'] = $columnArr['type']['name'];
-
-            // Set the indexes and key
-            $columnArr['indexes'] = [];
-            $columnArr['key'] = null;
-            if ($columnArr['indexes'] = $table->getColumnsIndexes($columnArr['name'], true)) {
-                // Convert indexes to Array
-                foreach ($columnArr['indexes'] as $name => $index) {
-                    $columnArr['indexes'][$name] = Index::toArray($index);
-                }
-
-                // If there are multiple indexes for the column
-                // the Key will be one with highest priority
-                $indexType = array_values($columnArr['indexes'])[0]['type'];
-                $columnArr['key'] = substr($indexType, 0, 3);
-            }
-
-            return $columnArr;
+            return [
+                'field' => $column,
+                'type' => $columnDetails['type'],
+                'null' => $columnDetails['nullable'],
+                'key' => $indexes ? substr($indexes[0]['type'], 0, 3) : null,
+                'default' => $columnDetails['default'],
+                'extra' => $columnDetails['auto_increment'] ? 'auto_increment' : '',
+                'indexes' => $indexes,
+            ];
         });
     }
 
     public static function listTableColumnNames($tableName)
     {
-        Type::registerCustomPlatformTypes();
-
-        $columnNames = [];
-
-        foreach (static::manager()->listTableColumns($tableName) as $column) {
-            $columnNames[] = $column->getName();
-        }
-
-        return $columnNames;
+        return Schema::getColumnListing($tableName);
     }
 
     public static function createTable($table)
     {
-        if (!($table instanceof DoctrineTable)) {
-            $table = Table::make($table);
+        if ($table instanceof Blueprint) {
+            Schema::create($table->getTable(), function (Blueprint $blueprint) use ($table) {
+                foreach ($table->getColumns() as $column) {
+                    $blueprint->addColumn(
+                        $column->getType()->getName(),
+                        $column->getName(),
+                        $column->toArray()
+                    );
+                }
+            });
+        } else {
+            throw new \InvalidArgumentException('Table must be an instance of Blueprint');
         }
-
-        static::manager()->createTable($table);
     }
 
-    public static function getDoctrineTable($table)
+    protected static function getColumnDetails($table, $column)
     {
-        $table = trim($table);
+        $schema = Schema::getConnection()->getSchemaBuilder();
+        $columnType = $schema->getColumnType($table, $column);
+        $columnDefinition = $schema->getColumns($table);
 
-        if (!static::tableExists($table)) {
-            throw SchemaException::tableDoesNotExist($table);
+        $columnInfo = collect($columnDefinition)->firstWhere('name', $column);
+
+        if (!$columnInfo) {
+            throw new \InvalidArgumentException("Column '$column' not found in table '$table'.");
         }
 
-        return static::manager()->listTableDetails($table);
+        return [
+            'type' => $columnType,
+            'nullable' => !($columnInfo['nullable'] ?? false),
+            'default' => $columnInfo['default'] ?? null,
+            'auto_increment' => ($columnInfo['auto_increment'] ?? false),
+        ];
     }
 
-    public static function getDoctrineColumn($table, $column)
+    protected static function getTableIndexes($table)
     {
-        return static::getDoctrineTable($table)->getColumn($column);
+        return DB::getSchemaBuilder()->getIndexes($table);
+    }
+
+    protected static function getColumnIndexes($table, $column)
+    {
+        $tableIndexes = static::getTableIndexes($table);
+        return collect($tableIndexes)->filter(function ($index) use ($column) {
+            return in_array($column, $index['columns']);
+        })->toArray();
+    }
+
+    protected static function getTableForeignKeys($table)
+    {
+        return DB::getSchemaBuilder()->getForeignKeys($table);
+    }
+
+    public static function listTableNames()
+    {
+        $connection = Schema::getConnection();
+
+        // Check if the connection supports the getTables method
+        if (method_exists($connection->getSchemaBuilder(), 'getTables')) {
+            $tables = $connection->getSchemaBuilder()->getTables();
+            return collect($tables)->pluck('name')->values()->all();
+        }
+
+        // Fallback method if getTables is not available
+        $tables = $connection->getDoctrineSchemaManager()->listTableNames();
+
+        // Filter out tables that should be excluded (like migrations)
+        $excludedTables = ['migrations', 'failed_jobs', 'password_resets'];
+        return array_values(array_diff($tables, $excludedTables));
     }
 }

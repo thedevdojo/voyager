@@ -15,6 +15,7 @@ abstract class Type extends DoctrineType
     protected static $platformTypes = [];
     protected static $customTypeOptions = [];
     protected static $typeCategories = [];
+    protected static $registeredTypes = [];
 
     public const NAME = 'UNDEFINED_TYPE_NAME';
     public const NOT_SUPPORTED = 'notSupported';
@@ -48,15 +49,15 @@ abstract class Type extends DoctrineType
             static::registerCustomPlatformTypes();
         }
 
-        $platform = SchemaManager::getDatabasePlatform();
+        $platform = SchemaManager::getDatabaseConnection()->getDriverName();
 
         static::$platformTypes = Platform::getPlatformTypes(
-            $platform->getName(),
-            static::getPlatformTypeMapping($platform)
+            $platform,
+            static::getPlatformTypeMapping()
         );
 
         static::$platformTypes = static::$platformTypes->map(function ($type) {
-            return static::toArray(static::getType($type));
+            return static::toArray(new $type());
         })->groupBy('category');
 
         return static::$platformTypes;
@@ -81,8 +82,8 @@ abstract class Type extends DoctrineType
             return;
         }
 
-        $platform = SchemaManager::getDatabasePlatform();
-        $platformName = ucfirst($platform->getName());
+        $platform = SchemaManager::getDatabaseConnection()->getDriverName();
+        $platformName = ucfirst($platform);
 
         $customTypes = array_merge(
             static::getPlatformCustomTypes('Common'),
@@ -91,16 +92,9 @@ abstract class Type extends DoctrineType
 
         foreach ($customTypes as $type) {
             $name = $type::NAME;
-
-            if (static::hasType($name)) {
-                static::overrideType($name, $type);
-            } else {
-                static::addType($name, $type);
-            }
-
-            $dbType = defined("{$type}::DBTYPE") ? $type::DBTYPE : $name;
-
-            $platform->registerDoctrineTypeMapping($dbType, $name);
+            // Instead of overriding or adding Doctrine types,
+            // you might want to register these types in your own type registry
+            static::registerType($name, $type);
         }
 
         static::addCustomTypeOptions($platformName);
@@ -329,5 +323,10 @@ abstract class Type extends DoctrineType
         ];
 
         return static::$typeCategories;
+    }
+
+    public static function registerType($name, $typeClass)
+    {
+        static::$registeredTypes[$name] = $typeClass;
     }
 }

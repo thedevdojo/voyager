@@ -163,7 +163,7 @@
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
-                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) }}
+                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->format('Y-m-d H:i:s') }}
                                                     @else
                                                         {{ $data->{$row->field} }}
                                                     @endif

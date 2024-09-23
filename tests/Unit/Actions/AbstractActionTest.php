@@ -27,6 +27,7 @@ class AbstractActionTest extends TestCase
     {
         parent::setUp();
 
+        $role = \TCG\Voyager\Models\Role::create(['name' => 'test_role', 'display_name' => 'Test Role']);
         $this->userDataType = Voyager::model('DataType')->where('name', 'users')->first();
         $this->user = \TCG\Voyager\Models\User::factory()->create();
     }
@@ -46,7 +47,7 @@ class AbstractActionTest extends TestCase
         // `getRoute` method to retrieve the route.
         $stub->expects($this->any())
              ->method('getDefaultRoute')
-             ->will($this->returnValue(true));
+             ->willReturn(true);
 
         $this->assertTrue($stub->getRoute($this->userDataType->name));
     }
@@ -67,7 +68,7 @@ class AbstractActionTest extends TestCase
         // will call the `getCustomRoute` method if it's defined.
         $stub->expects($this->any())
              ->method('getCustomRoute')
-             ->will($this->returnValue(true));
+             ->willReturn(true);
 
         $this->assertTrue($stub->getRoute('custom'));
     }
@@ -85,11 +86,11 @@ class AbstractActionTest extends TestCase
 
         $stub->expects($this->any())
              ->method('getAttributes')
-             ->will($this->returnValue([
+             ->willReturn([
                  'class'   => 'class1 class2',
                  'data-id' => 5,
                  'id'      => 'delete-5',
-             ]));
+             ]);
 
         $this->assertEquals('class="class1 class2" data-id="5" id="delete-5"', $stub->convertAttributesToHtml());
     }
@@ -120,7 +121,7 @@ class AbstractActionTest extends TestCase
 
         $stub->expects($this->any())
              ->method('getDataType')
-             ->will($this->returnValue($this->userDataType->name));
+             ->willReturn($this->userDataType->name);
 
         $this->assertTrue($stub->shouldActionDisplayOnDataType());
     }
@@ -138,7 +139,7 @@ class AbstractActionTest extends TestCase
 
         $stub->expects($this->any())
              ->method('getDataType')
-             ->will($this->returnValue('not users')); // different data type
+             ->willReturn($this->returnValue('not users')); // different data type
 
         $this->assertFalse($stub->shouldActionDisplayOnDataType());
     }

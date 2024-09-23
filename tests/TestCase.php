@@ -53,9 +53,17 @@ class TestCase extends OrchestraTestCase
 
     public function tearDown(): void
     {
-        //parent::tearDown();
+        // Restore default exception handler
+        $this->app->forgetInstance(ExceptionHandler::class);
 
-        //$this->artisan('migrate:reset');
+        // Restore PHP's default error and exception handlers
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+
+        // Uncomment if you want to reset the database after each test
+        // $this->artisan('migrate:reset');
     }
 
     /**
