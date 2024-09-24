@@ -126,6 +126,7 @@ class DashboardTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->visit(route('voyager.dashboard'))
-             ->see(Voyager::getVersion());
+            ->assertResponseStatus(200)
+            ->see(Voyager::getVersion());
     }
 }

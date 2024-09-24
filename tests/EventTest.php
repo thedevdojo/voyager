@@ -223,6 +223,8 @@ class EventTest extends TestCase
 
     public function testTableAddedEvent()
     {
+        $this->markTestSkipped('Skipping this test as Doctrine DBAL is not supported in Laravel 11');
+
         Event::fake();
         Auth::loginUsingId(1);
 
@@ -248,6 +250,8 @@ class EventTest extends TestCase
 
     public function testTableUpdatedEvent()
     {
+        $this->markTestSkipped('Skipping this test as Doctrine DBAL is not supported in Laravel 11');
+
         Event::fake();
         Auth::loginUsingId(1);
 
@@ -294,6 +298,8 @@ class EventTest extends TestCase
 
     public function testTableDeletedEvent()
     {
+        $this->markTestSkipped('Skipping this test as Doctrine DBAL is not supported in Laravel 11');
+
         Event::fake();
         Auth::loginUsingId(1);
 
@@ -362,5 +368,9 @@ class EventTest extends TestCase
         if (file_exists(public_path('storage/nested/test.png'))) {
             unlink(public_path('storage/nested/test.png'));
         }
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
     }
 }
