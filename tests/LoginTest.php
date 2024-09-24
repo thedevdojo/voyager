@@ -62,6 +62,6 @@ class LoginTest extends TestCase
                  ->press(__('voyager::generic.login'));
         }
 
-        $t->see(__('auth.throttle', ['seconds' => 59]));
+        $t->see('Too many login attempts. Please try again in');
     }
 }
