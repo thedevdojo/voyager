@@ -30,7 +30,14 @@ Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Lar
 
 > Want to use Laravel 6 or 7? Use [Voyager 1.5](https://github.com/the-control-group/voyager/tree/1.5)
 
+> Want to use Laravel 8 or 9? Use [Voyager 1.6](https://github.com/the-control-group/voyager/tree/1.6)
+
+> Want to use Laravel 10? Use [Voyager 1.7](https://github.com/the-control-group/voyager/tree/1.7)
+
 ## Installation Steps
+
+> [!WARNING]
+> As of Laravel 11 the Doctrine DBAL package has been removed from Laravel. This currently breaks the Voyager Database Manager. We are working on a fix for this, but in the meantime, you can just use the Laravel Database migrations to manage your database instead.
 
 ### 1. Require the Package
 

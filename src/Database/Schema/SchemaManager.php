@@ -66,11 +66,15 @@ abstract class SchemaManager
             $columnDetails = static::getColumnDetails($tableName, $column);
             $indexes = static::getColumnIndexes($tableName, $column);
 
+            if (!empty($indexes) && isset($indexes[1])) {
+                $indexes = [$indexes[1]];
+            }
+
             return [
                 'field' => $column,
                 'type' => $columnDetails['type'],
                 'null' => $columnDetails['nullable'],
-                'key' => $indexes ? substr($indexes[0]['type'], 0, 3) : null,
+                'key' => !empty($indexes) ? substr($indexes[0]['type'], 0, 3) : null,
                 'default' => $columnDetails['default'],
                 'extra' => $columnDetails['auto_increment'] ? 'auto_increment' : '',
                 'indexes' => $indexes,

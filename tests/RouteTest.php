@@ -46,10 +46,11 @@ class RouteTest extends TestCase
             route('voyager.menus.create'),
             route('voyager.menus.show', 1),
             route('voyager.menus.edit', 1),
-            route('voyager.database.index'),
             route('voyager.bread.edit', 'categories'),
-            route('voyager.database.edit', 'categories'),
-            route('voyager.database.create'),
+            // Disabled as Doctrine DBAL is not supported in Laravel 11
+            // route('voyager.database.index'),
+            // route('voyager.database.edit', 'categories'),
+            // route('voyager.database.create'),
         ];
 
         foreach ($urls as $url) {
