@@ -274,7 +274,10 @@ class Voyager
 
     public function getVersion()
     {
-        return $this->version;
+        if (!is_null($this->version)) {
+            return $this->version;
+        }
+        return 'dev';
     }
 
     public function addAlert(Alert $alert)
