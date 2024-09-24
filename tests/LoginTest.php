@@ -55,7 +55,7 @@ class LoginTest extends TestCase
     {
         session()->setPreviousUrl(route('voyager.login'));
 
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= 6; $i++) {
             $t = $this->visit(route('voyager.login'))
                  ->type('john@Doe.com', 'email')
                  ->type('pass', 'password')

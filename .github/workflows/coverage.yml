@@ -22,7 +22,7 @@ jobs:
       - name: Select PHP version
         uses: shivammathur/setup-php@master
         with:
-          php-version: '8.1'
+          php-version: '8.2'
           extensions: mbstring, pdo_sqlite, fileinfo, gd
           coverage: pcov
 
