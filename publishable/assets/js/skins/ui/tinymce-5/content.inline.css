@@ -243,6 +243,16 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
     display: none;
   }
 }
+/* stylelint-disable selector-type-no-unknown */
+tiny-math-block {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 16px 0;
+}
+tiny-math-inline {
+  display: inline-block;
+}
+/* stylelint-enable selector-type-no-unknown */
 .mce-content-body figure.align-left {
   float: left;
 }
@@ -271,6 +281,12 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
 }
 .mce-preview-object[data-mce-selected="2"] .mce-shim {
   display: none;
+}
+.mce-content-body .mce-mergetag {
+  cursor: default !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .mce-content-body .mce-mergetag:hover {
   background-color: rgba(0, 108, 231, 0.1);
@@ -352,6 +368,13 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
   color: rgba(34, 47, 62, 0.7);
   content: attr(data-mce-placeholder);
   position: absolute;
+}
+@media (forced-colors: active) {
+  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+    color: highlight;
+    filter: brightness(30%);
+    z-index: -1;
+  }
 }
 .mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
   left: 1px;
@@ -505,7 +528,8 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
 .mce-content-body audio[data-mce-selected],
 .mce-content-body object[data-mce-selected],
 .mce-content-body embed[data-mce-selected],
-.mce-content-body table[data-mce-selected] {
+.mce-content-body table[data-mce-selected],
+.mce-content-body details[data-mce-selected] {
   outline: 3px solid #b4d7ff;
 }
 .mce-content-body hr[data-mce-selected] {
@@ -613,8 +637,11 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
 .mce-toc h2 {
   margin: 4px;
 }
-.mce-toc li {
+.mce-toc ul > li {
   list-style-type: none;
+}
+[data-mce-block] {
+  display: block;
 }
 table[style*="border-width: 0px"],
 .mce-item-table:not([border]),
