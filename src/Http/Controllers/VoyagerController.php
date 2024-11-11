@@ -95,7 +95,7 @@ class VoyagerController extends Controller
             abort(404);
         }
 
-        if (File::exists($path)) {
+        if (File::isFile($path)) {
             $mime = '';
             if (Str::endsWith($path, '.js')) {
                 $mime = 'text/javascript';
