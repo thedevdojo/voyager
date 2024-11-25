@@ -107,3 +107,10 @@ php artisan voyager:admin your@email.com --create
 ```
 
 And you will be prompted for the user's name and password.
+
+## Sponsors
+
+Voyager is proudly supported by our amazing sponsors. A big thank you to:
+
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%203.svg)](https://www.digitalocean.com/?refcode=dc19b9819d06&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
+
