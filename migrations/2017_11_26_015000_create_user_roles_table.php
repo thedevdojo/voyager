@@ -3,18 +3,17 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
-class CreateUserRolesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('user_roles', function (Blueprint $table) {
-            $type = DB::connection()->getDoctrineColumn(DB::getTablePrefix().'users', 'id')->getType()->getName();
+            $type = Schema::getColumnType(DB::getTablePrefix().'users','id');
             if ($type == 'bigint') {
                 $table->bigInteger('user_id')->unsigned()->index();
             } else {
@@ -30,11 +29,9 @@ class CreateUserRolesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('user_roles');
     }
-}
+};
