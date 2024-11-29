@@ -69,12 +69,12 @@ abstract class SchemaManager
             if (!empty($indexes) && isset($indexes[1])) {
                 $indexes = [$indexes[1]];
             }
-
+            $firstIndex = !empty($indexes) ? reset($indexes) : null;
             return [
                 'field' => $column,
                 'type' => $columnDetails['type'],
                 'null' => $columnDetails['nullable'],
-                'key' => !empty($indexes) ? substr($indexes[0]['type'], 0, 3) : null,
+                'key' => $firstIndex && isset($firstIndex['type']) ? substr($firstIndex['type'], 0, 3) : null,
                 'default' => $columnDetails['default'],
                 'extra' => $columnDetails['auto_increment'] ? 'auto_increment' : '',
                 'indexes' => $indexes,
