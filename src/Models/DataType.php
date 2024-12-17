@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -247,16 +248,13 @@ class DataType extends Model
         }
     }
 
-    public function setDetailsAttribute($value)
+    public function details(): Attribute
     {
-        $this->attributes['details'] = json_encode($value);
+        return new Attribute(
+            get: fn($value) => json_decode(!empty($value) ? $value : '{}', false, 512, JSON_THROW_ON_ERROR),
+            set: fn($value) => json_encode($value, JSON_THROW_ON_ERROR)
+        );
     }
-
-    public function getDetailsAttribute($value)
-    {
-        return json_decode(!empty($value) ? $value : '{}');
-    }
-
     public function getOrderColumnAttribute()
     {
         return $this->details->order_column ?? null;
