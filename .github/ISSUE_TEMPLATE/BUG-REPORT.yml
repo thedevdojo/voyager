@@ -1,0 +1,75 @@
+name: Bug Report
+description: Create a report to help us improve
+labels: [possible bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: laravel_version
+    attributes:
+      label: Laravel version
+      description: The full Laravel version including minor and patch version
+      placeholder: ex. 8.2.2
+    validations:
+      required: true
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP version
+      description: Your PHP version
+      placeholder: ex. 7.4.21
+    validations:
+      required: true
+  - type: input
+    id: voyager_version
+    attributes:
+      label: Voyager version
+      description: The full Voyager version including minor and patch version. When using the dev-version please attach the commit-id (1.x-dev#abcdef)
+      placeholder: ex. 1.4.3
+    validations:
+      required: true
+  - type: input
+    id: database_version
+    attributes:
+      label: Database
+      description: Your database type and version
+      placeholder: ex. MySQL 8.0
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behaviour
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+    validations:
+      required: false

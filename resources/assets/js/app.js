@@ -1,6 +1,9 @@
-window.jQuery = window.$ = $ = require('jquery');
-window.Vue = require('vue');
-window.perfectScrollbar = require('perfect-scrollbar/jquery')($);
+import Vue from 'vue';
+window.Vue = Vue;
+import jQuery from 'jquery';
+window.jQuery = jQuery;
+window.$ = jQuery;
+import PerfectScrollbar from 'perfect-scrollbar';
 window.Cropper = require('cropperjs');
 window.Cropper = 'default' in window.Cropper ? window.Cropper['default'] : window.Cropper;
 window.toastr = require('toastr');
@@ -38,7 +41,7 @@ $(document).ready(function () {
         fadedOverlay = $('.fadetoblack'),
         hamburger = $('.hamburger');
 
-    $('.side-menu').perfectScrollbar();
+    new PerfectScrollbar('.side-menu');
 
     $('#voyager-loader').fadeOut();
 

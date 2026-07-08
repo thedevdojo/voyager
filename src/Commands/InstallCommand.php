@@ -117,7 +117,7 @@ class InstallCommand extends Command
         if (false === strpos($routes_contents, 'Voyager::routes()')) {
             $filesystem->append(
                 base_path('routes/web.php'),
-                "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+                PHP_EOL.PHP_EOL."Route::group(['prefix' => 'admin'], function () {".PHP_EOL."    Voyager::routes();".PHP_EOL."});".PHP_EOL
             );
         }
 
@@ -173,10 +173,9 @@ class InstallCommand extends Command
 
         $seeds->each(function ($file) use ($filesystem) {
             $path = database_path('seeders').'/'.$file->getFilename();
-
             $stub = str_replace(
-                "<?php\n\nuse",
-                "<?php\n\nnamespace Database\\Seeders;\n\nuse",
+                ["<?php\n\nuse", "<?php".PHP_EOL.PHP_EOL."use"],
+                "<?php".PHP_EOL.PHP_EOL."namespace Database\\Seeders;".PHP_EOL.PHP_EOL."use",
                 $filesystem->get($path)
             );
 
